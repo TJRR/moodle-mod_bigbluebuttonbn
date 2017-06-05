@@ -15,6 +15,9 @@ $records = $_SESSION["MAP_MEETING_RECORD"];
 
 $meetingId = $records[$recordId];
 
+echo("!!!!!!!!!!!!!!!!\n\n\n\n\n\n");
+echo($meetingId);
+
 
 if ($meetingId) {
 
