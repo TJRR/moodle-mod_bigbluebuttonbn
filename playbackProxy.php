@@ -44,7 +44,7 @@ if ($meetingId) {
     $PAGE->set_pagelayout('base');
 
     // Print the page header
-    echo $OUTPUT->header();
+    //echo $OUTPUT->header();
 
     $address = str_replace("/bigbluebutton/", "", bigbluebuttonbn_get_cfg_server_url_default());
     $version = "/playback/presentation/0.9.0/";
@@ -71,7 +71,7 @@ if ($meetingId) {
 
     echo $page;
 
-    echo $OUTPUT->footer();
+    //echo $OUTPUT->footer();
 } else {
     //user don't have permission to access the meetingId parametrized (forbidden)
     print_error(get_string('view_nojoin', 'bigbluebuttonbn'));
