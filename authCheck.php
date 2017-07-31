@@ -38,6 +38,7 @@ if ($meetingId) {
         if ($urlReferer) {
             $parts = parse_url($urlReferer);
             parse_str($parts['query'], $query);
+            ini_set('memory_limit', '-1');
             $file = $query['file'];
 
             $preUrl = substr($file, 0, strrpos($file, '/'));
