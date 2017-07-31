@@ -293,5 +293,44 @@ function xmldb_bigbluebuttonbn_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2016051910, 'bigbluebuttonbn');
     }
 
+    if ($result && $oldversion < 2017072100) {
+
+      // Define table bigbluebuttonbn_proc to be created
+      $table = new xmldb_table('bigbluebuttonbn_proc');
+
+      // Adding fields to table bigbluebuttonbn_proc
+      $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+      $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('userid',XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'bigbluebuttonbnid');
+      $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+      // Adding keys to table bigbluebuttonbn_proc
+      $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+      // Conditionally launch create table for bigbluebuttonbn_proc
+      if (!$dbman->table_exists($table)) {
+          $dbman->create_table($table);
+      }
+
+      // Define table bigbluebuttonbn_rooms to be created
+      $table = new xmldb_table('bigbluebuttonbn_rooms');
+
+      // Adding fields to table bigbluebuttonbn_rooms
+      $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+      $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('userid',XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'bigbluebuttonbnid');
+      $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+      // Adding keys to table bigbluebuttonbn_rooms
+      $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+      // Conditionally launch create table for bigbluebuttonbn_rooms
+      if (!$dbman->table_exists($table)) {
+          $dbman->create_table($table);
+      }
+
+      upgrade_mod_savepoint(true, 2017072100, 'bigbluebuttonbn');
+    }
+
     return $result;
 }

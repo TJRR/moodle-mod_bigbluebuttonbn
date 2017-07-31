@@ -131,6 +131,7 @@ $string['mod_form_block_presentation'] = 'Presentation content';
 $string['mod_form_block_participants'] = 'Participants';
 $string['mod_form_block_schedule'] = 'Schedule for session';
 $string['mod_form_block_record'] = 'Record settings';
+$string['mod_form_block_rooms'] = 'Physical rooms';
 $string['mod_form_field_openingtime'] = 'Join open';
 $string['mod_form_field_closingtime'] = 'Join closed';
 $string['mod_form_field_intro'] = 'Description';

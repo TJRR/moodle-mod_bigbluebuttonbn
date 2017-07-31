@@ -222,7 +222,7 @@ function bigbluebuttonbn_getRecordingsArray( $meetingIDs, $URL, $SALT ) {
         $xml = bigbluebuttonbn_wrap_xml_load_file( bigbluebuttonbn_getRecordingsURL( $URL, $SALT, $meetingIDs ) );
     }
 
-    
+
 
     if ( $xml && $xml->returncode == 'SUCCESS' && isset($xml->recordings) ) { //If there were meetings already created
 
@@ -232,7 +232,7 @@ function bigbluebuttonbn_getRecordingsArray( $meetingIDs, $URL, $SALT ) {
             $recordId = (string)$recording->recordID;
 
             $recordId = str_replace('-', '', $recordId);
-        
+
             $MAP_MEETING_RECORD[$recordId] = (string) $recording->meetingID;
 
             $recordings[] = bigbluebuttonbn_getRecordingArrayRow($recording);
@@ -240,7 +240,7 @@ function bigbluebuttonbn_getRecordingsArray( $meetingIDs, $URL, $SALT ) {
 
 
         $_SESSION["MAP_MEETING_RECORD"] = $MAP_MEETING_RECORD;
-        
+
         usort($recordings, 'bigbluebuttonbn_recordingBuildSorter');
     }
 
@@ -1659,4 +1659,18 @@ function bigbluebuttonbn_html2text($html, $len) {
         $text = substr($text, 0, $len);
     }
     return $text;
+}
+
+function bigbluebuttonbn_get_rooms_list() {
+    global $DB;
+
+    $table = 'bigbluebuttonbn_rooms';
+
+    //Prepare select for loading records based on existent bigbluebuttonbns
+    $select = "";
+
+    //Execute select for loading records based on existent bigbluebuttonbns
+    $records = $DB->get_records_select($table, $select);
+
+    return $records;
 }

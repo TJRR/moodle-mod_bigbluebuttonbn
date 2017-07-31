@@ -133,6 +133,7 @@ $string['mod_form_block_presentation'] = 'Conteúdo da apresentação';
 $string['mod_form_block_participants'] = 'Participantes';
 $string['mod_form_block_schedule'] = 'Agendamento de sessão';
 $string['mod_form_block_record'] = 'Configurações de gravação';
+$string['mod_form_block_rooms'] = 'Salas físicas';
 $string['mod_form_field_openingtime'] = 'Entrada liberada';
 $string['mod_form_field_closingtime'] = 'Entrada encerrada';
 $string['mod_form_field_intro'] = 'Descrição';

@@ -1,7 +1,7 @@
 <?php
 /**
  * Config all BigBlueButtonBN instances in this course.
- * 
+ *
  * @package   mod_bigbluebuttonbn
  * @author    Fred Dixon  (ffdixon [at] blindsidenetworks [dt] com)
  * @author    Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
@@ -46,9 +46,9 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $userlimit_default = bigbluebuttonbn_get_cfg_userlimit_default();
         $userlimit_editable = bigbluebuttonbn_get_cfg_userlimit_editable();
         $preuploadpresentation_enabled = bigbluebuttonbn_get_cfg_preuploadpresentation_enabled();
-        $sendnotifications_enabled = bigbluebuttonbn_get_cfg_sendnotifications_enabled(); 
+        $sendnotifications_enabled = bigbluebuttonbn_get_cfg_sendnotifications_enabled();
 
-        //Validates if the BigBlueButton server is running 
+        //Validates if the BigBlueButton server is running
         $serverVersion = bigbluebuttonbn_getServerVersion($endpoint);
         if ( !isset($serverVersion) ) {
             print_error( 'general_error_unable_connect', 'bigbluebuttonbn', $CFG->wwwroot.'/admin/settings.php?section=modsettingbigbluebuttonbn' );
@@ -276,6 +276,24 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         // Fourth block ends here
         //-------------------------------------------------------------------------------
 
+        //-------------------------------------------------------------------------------
+        // Fifth block starts here
+        //-------------------------------------------------------------------------------
+        $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn'));
+        $rooms_list = bigbluebuttonbn_get_rooms_list();
+        print_r($rooms_list);
+        $options = array();
+        foreach ($rooms_list as $key) {
+          $options[$key->id] = $key->name;
+        }
+
+        $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options);
+        $select->setMultiple(true);        
+
+        //-------------------------------------------------------------------------------
+        // Fifth block ends here
+        //-------------------------------------------------------------------------------
+
 
         //-------------------------------------------------------------------------------
         // add standard elements, common to all modules
@@ -308,7 +326,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                 $errors['closingtime'] = get_string('bbbduetimeoverstartingtime', 'bigbluebuttonbn');
             }
         }
-        
+
         if ( isset($data['voicebridge']) ) {
             if ( !bigbluebuttonbn_voicebridge_unique($data['voicebridge'], $data['instance'])) {
                 $errors['voicebridge'] = get_string('mod_form_field_voicebridge_notunique_error', 'bigbluebuttonbn');
