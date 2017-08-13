@@ -280,15 +280,14 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         // Fifth block starts here
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn'));
-        $rooms_list = bigbluebuttonbn_get_rooms_list();
-        print_r($rooms_list);
+        $rooms_list = bigbluebuttonbn_get_rooms_list();        
         $options = array();
         foreach ($rooms_list as $key) {
           $options[$key->id] = $key->name;
         }
 
         $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options);
-        $select->setMultiple(true);        
+        $select->setMultiple(true);
 
         //-------------------------------------------------------------------------------
         // Fifth block ends here
