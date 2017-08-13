@@ -44,7 +44,7 @@ $mform = new simplehtml_form();
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 } else if ($fromform = $mform->get_data()) {
-  print_r($fromform);
+
   $record = new stdClass();
   $record->name = $fromform->room;
   $record->userid = $USER->id;
@@ -61,7 +61,13 @@ echo $OUTPUT->heading(get_string('index_heading', 'bigbluebuttonbn'));
 $table = 'bigbluebuttonbn_rooms';
 $select = "";
 $records = $DB->get_records_select($table, $select);
-print_r($records);
+
+echo "<ul>";
+foreach ($records as $row) {
+  echo "<li>".$row->name." <sup><a href='".$row->id."'>x</a></sup></li>";
+  //print_r($row);
+}
+echo "</ul>";
 
 echo "<br><br>";
 
