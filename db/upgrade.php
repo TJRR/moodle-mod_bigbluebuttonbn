@@ -356,5 +356,19 @@ function xmldb_bigbluebuttonbn_upgrade($oldversion=0) {
       upgrade_mod_savepoint(true, 2017081301, 'bigbluebuttonbn');
     }
 
+    if ($result && $oldversion < 2017081400) {
+        // Update the bigbluebuttonbn table
+        $table = new xmldb_table('bigbluebuttonbn');
+
+        //// Add field meta
+        $field = new xmldb_field('tipoaudiencia');
+        $field->set_attributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        if( !$dbman->field_exists($table, $field) ) {
+            $dbman->add_field($table, $field, $continue=true, $feedback=true);
+        }
+
+        upgrade_mod_savepoint(true, 2017081400, 'bigbluebuttonbn');
+    }
+
     return $result;
 }

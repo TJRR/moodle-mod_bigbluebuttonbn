@@ -66,6 +66,18 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
+        $html_process_get = '
+                      <div id="fitem_id_nr_process" class="fitem fitem_ftext  ">
+                        <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_audiencias.php" id="get_audiencias">
+                        <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
+                          <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').' </label>
+                        </div>
+                        <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">
+                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;">
+                        </div>
+                      </div>';
+        $mform->addElement('html', $html_process_get);
+
         $version_major = bigbluebuttonbn_get_moodle_version_major();
         if ( $version_major < '2015051100' ) {
             //This is valid before v2.9
@@ -280,7 +292,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         // Fifth block starts here
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn'));
-        $rooms_list = bigbluebuttonbn_get_rooms_list();        
+        $rooms_list = bigbluebuttonbn_get_rooms_list();
         $options = array();
         foreach ($rooms_list as $key) {
           $options[$key->id] = $key->name;

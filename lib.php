@@ -87,16 +87,20 @@ function bigbluebuttonbn_add_instance($data, $mform) {
 
     bigbluebuttonbn_process_pre_save($data);
 
-    unset($data->presentation);
-    $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
-    $data->id = $bigbluebuttonbn_id;
+    print_r($data->select_rooms);
+    echo date('d/m/Y H:i:s',$data->openingtime);
+    echo $data->closingtime;
+    //unset($data->presentation);
+    //$bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
+    //$data->id = $bigbluebuttonbn_id;
 
-    bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
+    //bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
 
-    bigbluebuttonbn_process_post_save($data);
+    //bigbluebuttonbn_process_post_save($data);
 
     return $bigbluebuttonbn_id;
 }
+
 
 /**
  * Given an object containing all the necessary data,

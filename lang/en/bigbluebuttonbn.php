@@ -19,6 +19,7 @@ $string['bigbluebuttonbn:moderate'] = 'Moderate a meeting';
 $string['bigbluebuttonbn:managerecordings'] = 'Manage recordings';
 $string['bigbluebuttonbn:addinstance'] = 'Add a new meeting';
 $string['bigbluebuttonbn'] = 'Mconf';
+$string['search:activity'] = 'MConf - Audiências';
 
 
 $string['config_general'] = 'General configuration';

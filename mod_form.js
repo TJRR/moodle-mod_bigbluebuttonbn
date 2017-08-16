@@ -52,7 +52,7 @@ bigbluebuttonbn_participant_add = function() {
     var participant_selection_type = document.getElementById('bigbluebuttonbn_participant_selection_type');
     var participant_selection = document.getElementById('bigbluebuttonbn_participant_selection');
 
-    //Lookup to see if it has been added already 
+    //Lookup to see if it has been added already
     var found = false;
     for( var i = 0; i < bigbluebuttonbn_participant_list.length; i++ ){
         if( bigbluebuttonbn_participant_list[i].selectiontype == participant_selection_type.value && bigbluebuttonbn_participant_list[i].selectionid == participant_selection.value ){
@@ -77,7 +77,7 @@ bigbluebuttonbn_participant_add = function() {
         cell1.width = "125px";
         if( participant_selection_type.value == 'all' )
             cell1.innerHTML = '<b><i>' + participant_selection_type.options[participant_selection_type.selectedIndex].text + '</i></b>';
-        else    
+        else
             cell1.innerHTML = '<b><i>' + participant_selection_type.options[participant_selection_type.selectedIndex].text + ':&nbsp;</i></b>';
         var cell2 = row.insertCell(2);
         if( participant_selection_type.value == 'all' )
@@ -125,7 +125,49 @@ bigbluebuttonbn_select_disable = function(id) {
 bigbluebuttonbn_select_add_option = function(id, text, value) {
     var select = document.getElementById(id);
     var option = document.createElement('option');
-    option.text = text; 
+    option.text = text;
     option.value = value;
     select.add(option , 0);
+}
+
+bigbluebuttonbn_process_get = function() {
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", document.getElementById('get_audiencias').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
+    xmlHttp.send( null );
+    if (window.DOMParser){
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(xmlHttp.responseText, "text/xml");
+    }
+    else{
+        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = false;
+        xmlDoc.loadXML(xmlHttp.responseText);
+    }
+    childs = xmlDoc.getElementsByTagName("consultarAudienciaProcessoResponse")[0].childNodes;
+    console.log(childs);
+
+    if(typeof childs[5] === 'undefined') {
+      console.log('não possui audiencias');
+      document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
+      document.getElementById('id_openingtime_enabled').checked = false;
+    }else{
+      document.getElementById('id_select_rooms').removeAttribute("disabled");
+      var dia = childs[4].innerHTML.substr(0,2);
+      var mes = childs[4].innerHTML.substr(2,2);
+      var ano = childs[4].innerHTML.substr(4,4);
+      var hora = childs[4].innerHTML.substr(8,2);
+      var min = childs[4].innerHTML.substr(10,2);
+      var seg = childs[4].innerHTML.substr(12,2);
+      var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
+      var datebegin = new Date(thisDateF);
+      var mesSimple = parseInt(mes);
+      document.getElementById('id_openingtime_enabled').checked = true;
+      document.getElementById('id_openingtime_day').value = dia;
+      document.getElementById('id_openingtime_month').value = mesSimple+'';
+      document.getElementById('id_openingtime_year').value = ano;
+      document.getElementById('id_openingtime_hour').value = hora;
+      document.getElementById('id_openingtime_minute').value = min;
+    }
+
 }
