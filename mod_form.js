@@ -144,21 +144,22 @@ bigbluebuttonbn_process_get = function() {
         xmlDoc.async = false;
         xmlDoc.loadXML(xmlHttp.responseText);
     }
+    document.getElementsByName('nrprocesso')[0].value = document.getElementById('id_nr_process').value;
     childs = xmlDoc.getElementsByTagName("consultarAudienciaProcessoResponse")[0].childNodes;
-    console.log(childs);
 
     if(typeof childs[5] === 'undefined') {
-      console.log('não possui audiencias');
       document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
       document.getElementById('id_openingtime_enabled').checked = false;
-      if(document.getElementById('fitem_tipo_audiencia')){
-        document.getElementById('fitem_tipo_audiencia').parentNode.removeChild(document.getElementById('fitem_tipo_audiencia'));
-      }
+
+      document.getElementById('nome_audiencia').innerHTML = '';
+      document.getElementsByName('tipoaudiencia')[0].value = '';
+
     }else{
       document.getElementById('id_select_rooms').removeAttribute("disabled");
-      if(document.getElementById('fitem_tipo_audiencia')){
-        document.getElementById('fitem_tipo_audiencia').parentNode.removeChild(document.getElementById('fitem_tipo_audiencia'));
-      }
+
+      document.getElementById('nome_audiencia').innerHTML = '';
+      document.getElementsByName('tipoaudiencia')[0].value = '';
+
       var dia = childs[4].innerHTML.substr(0,2);
       var mes = childs[4].innerHTML.substr(2,2);
       var ano = childs[4].innerHTML.substr(4,4);
@@ -175,11 +176,8 @@ bigbluebuttonbn_process_get = function() {
       document.getElementById('id_openingtime_hour').value = hora;
       document.getElementById('id_openingtime_minute').value = min;
 
-      var tipoAudiencia = '<div id="fitem_tipo_audiencia" class="fitem fitem_ftext">';
-      tipoAudiencia = tipoAudiencia + '<div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042"><label for="id_nr_process">Tipo da Audiência </label></div>';
-      tipoAudiencia = tipoAudiencia + '<div class="felement ftext">' + childs[5].innerHTML + '<input name="tipo_audiencia" type="hidden" id="id_tipo_audiencia" value="' + childs[5].innerHTML + '"></div></div>';
-
-      document.getElementById('fitem_id_nr_process').insertAdjacentHTML('afterend', tipoAudiencia);;
+      document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
+      document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
     }
 
 }

@@ -85,18 +85,26 @@ function bigbluebuttonbn_add_instance($data, $mform) {
     $draftitemid = isset($data->presentation)? $data->presentation: null;
     $context = bigbluebuttonbn_get_context_module($data->coursemodule);
 
-    bigbluebuttonbn_process_pre_save($data);
+    bigbluebuttonbn_process_pre_save($data);    
 
-    print_r($data->select_rooms);
-    echo date('d/m/Y H:i:s',$data->openingtime);
-    echo $data->closingtime;
-    //unset($data->presentation);
-    //$bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
-    //$data->id = $bigbluebuttonbn_id;
+    unset($data->presentation);
+    $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
+    $data->id = $bigbluebuttonbn_id;
 
-    //bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
+    foreach ($data->select_rooms as $row) {
+      $data_reserva = new stdClass();
 
-    //bigbluebuttonbn_process_post_save($data);
+      $data_reserva->id_physical_room = $row;
+      $data_reserva->id_bbb = $data->id;
+      $data_reserva->openingtime = $data->openingtime;
+      $data_reserva->closingtime = $data->closingtime;
+      $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
+      $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
+    }
+
+    bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
+
+    bigbluebuttonbn_process_post_save($data);
 
     return $bigbluebuttonbn_id;
 }

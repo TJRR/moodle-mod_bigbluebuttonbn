@@ -77,6 +77,18 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                         </div>
                       </div>';
         $mform->addElement('html', $html_process_get);
+        $mform->addElement('hidden', 'nrprocesso', '');
+
+        $html_tipo_processo = '<div id="fitem_tipo_audiencia" class="fitem fitem_ftext">
+                                <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
+                                  <label for="id_nr_process">Tipo da Audiência </label>
+                                </div>
+                               <div class="felement ftext">
+                                <span id="nome_audiencia"></span>
+                               </div>
+                              </div>';
+        $mform->addElement('html', $html_tipo_processo);
+        $mform->addElement('hidden', 'tipoaudiencia', '');
 
         $version_major = bigbluebuttonbn_get_moodle_version_major();
         if ( $version_major < '2015051100' ) {
