@@ -151,8 +151,14 @@ bigbluebuttonbn_process_get = function() {
       console.log('não possui audiencias');
       document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
       document.getElementById('id_openingtime_enabled').checked = false;
+      if(document.getElementById('fitem_tipo_audiencia')){
+        document.getElementById('fitem_tipo_audiencia').parentNode.removeChild(document.getElementById('fitem_tipo_audiencia'));
+      }
     }else{
       document.getElementById('id_select_rooms').removeAttribute("disabled");
+      if(document.getElementById('fitem_tipo_audiencia')){
+        document.getElementById('fitem_tipo_audiencia').parentNode.removeChild(document.getElementById('fitem_tipo_audiencia'));
+      }
       var dia = childs[4].innerHTML.substr(0,2);
       var mes = childs[4].innerHTML.substr(2,2);
       var ano = childs[4].innerHTML.substr(4,4);
@@ -168,6 +174,12 @@ bigbluebuttonbn_process_get = function() {
       document.getElementById('id_openingtime_year').value = ano;
       document.getElementById('id_openingtime_hour').value = hora;
       document.getElementById('id_openingtime_minute').value = min;
+
+      var tipoAudiencia = '<div id="fitem_tipo_audiencia" class="fitem fitem_ftext">';
+      tipoAudiencia = tipoAudiencia + '<div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042"><label for="id_nr_process">Tipo da Audiência </label></div>';
+      tipoAudiencia = tipoAudiencia + '<div class="felement ftext">' + childs[5].innerHTML + '<input name="tipo_audiencia" type="hidden" id="id_tipo_audiencia" value="' + childs[5].innerHTML + '"></div></div>';
+
+      document.getElementById('fitem_id_nr_process').insertAdjacentHTML('afterend', tipoAudiencia);;
     }
 
 }
