@@ -12,7 +12,7 @@ $body = '<?xml version="1.0" ?>
     <ns2:consultarAudienciaProcesso xmlns:ns3="http://impl.processo.webservice.projudi.gov/" xmlns:ns2="http://impl.consulta.webservice.projudi.gov/">
       <ns2:numeroUnicoProcesso>'.$_GET['nrprocesso'].'</ns2:numeroUnicoProcesso>
       <ns2:sistemaTribunal>FUT</ns2:sistemaTribunal>
-      <ns2:systemPass>cdb875fc4260a119a7115d059e813ac7</ns2:systemPass>
+      <ns2:systemPass>3bd3d2e6d73513cee07cdbd39ce00cf5</ns2:systemPass>
     </ns2:consultarAudienciaProcesso>
   </S:Body>
 </S:Envelope>';

@@ -178,6 +178,39 @@ bigbluebuttonbn_process_get = function() {
 
       document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
       document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
+
+      var xmlHttp2 = new XMLHttpRequest();
+      xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
+      xmlHttp2.send( null );
+      if (window.DOMParser){
+          parser = new DOMParser();
+          xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
+      }
+      else{
+          xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
+          xmlDoc2.async = false;
+          xmlDoc2.loadXML(xmlHttp2.responseText);
+      }
+
+      xml_final = xmlDoc2.getElementsByTagName("consultarProcessoResponse")[0].childNodes;
+
+      //convertendo em HTML com um parser do navegador para remover os &lt... etc
+      var el = document.createElement( 'html' );
+      el.innerHTML = xml_final[0].innerHTML;
+      var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+      if (window.DOMParser){
+          parser = new DOMParser();
+          xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
+      }
+      else{
+          xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+          xmlDoc3.async = false;
+          xmlDoc3.loadXML(xml_comtags);
+      }
+
+      var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
+
+      console.log(proc);
     }
 
 }

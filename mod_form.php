@@ -69,6 +69,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext  ">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_audiencias.php" id="get_audiencias">
+                        <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_process.php" id="get_process">
                         <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
                           <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').' </label>
                         </div>
