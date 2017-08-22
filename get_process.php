@@ -5,7 +5,7 @@ $url = 'https://projudi.tjrr.jus.br:443/projudi/webservices/consultaProcessualWe
 @$result=curl_exec($ch);
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/certificado_projudi.cer");
+curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/projudi.cer");
 $body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:impl="http://impl.consulta.webservice.projudi.gov/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -15,7 +15,7 @@ $body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelo
          <!--Optional:-->
          <impl:sistemaTribunal>FUT</impl:sistemaTribunal>
          <!--Optional:-->
-         <impl:systemPass>3bd3d2e6d73513cee07cdbd39ce00cf5</impl:systemPass>
+         <impl:systemPass>4613cc065e3f391c4a4add4c03d00a0a</impl:systemPass>
       </impl:consultarProcesso>
    </soapenv:Body>
 </soapenv:Envelope>';

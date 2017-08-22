@@ -5,14 +5,14 @@ $url = 'https://projudi.tjrr.jus.br/projudi/webservices/consultaProcessualWebSer
 @$result=curl_exec($ch);
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/certificado_projudi.cer");
+curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/projudi.cer");
 $body = '<?xml version="1.0" ?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
   <S:Body>
     <ns2:consultarAudienciaProcesso xmlns:ns3="http://impl.processo.webservice.projudi.gov/" xmlns:ns2="http://impl.consulta.webservice.projudi.gov/">
       <ns2:numeroUnicoProcesso>'.$_GET['nrprocesso'].'</ns2:numeroUnicoProcesso>
       <ns2:sistemaTribunal>FUT</ns2:sistemaTribunal>
-      <ns2:systemPass>3bd3d2e6d73513cee07cdbd39ce00cf5</ns2:systemPass>
+      <ns2:systemPass>4613cc065e3f391c4a4add4c03d00a0a</ns2:systemPass>
     </ns2:consultarAudienciaProcesso>
   </S:Body>
 </S:Envelope>';
@@ -25,6 +25,7 @@ CURLOPT_SSL_VERIFYPEER => true,
 CURLOPT_POSTFIELDS => $body,
 CURLOPT_HTTPHEADER => array('Content-Type: text/xml; charset=utf-8')
 );
+
 @$fp = fopen("./curl.log", "w");
 @curl_setopt($ch, CURLOPT_STDERR, $fp);
 curl_setopt($ch, CURLOPT_VERBOSE, true);

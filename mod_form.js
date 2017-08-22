@@ -130,6 +130,27 @@ bigbluebuttonbn_select_add_option = function(id, text, value) {
     select.add(option , 0);
 }
 
+gravaPartes = function(element, index, array){
+  var nome = element.getElementsByTagName('nome')[0].innerHTML;
+  var guardado = document.getElementsByName('partes')[0].value;
+  if (guardado != '') {
+    guardado = guardado + '///';
+  }
+  document.getElementsByName('partes')[0].value = guardado + nome;
+  var adv = element.getElementsByTagName('advogados')[0];
+  var guardadoAdv = document.getElementsByName('advogados')[0].value;
+  if (guardadoAdv != '') {
+    guardadoAdv = guardadoAdv + '///';
+  }
+  if(adv.innerHTML == ''){
+    document.getElementsByName('advogados')[0].value = guardadoAdv + ' ';
+  }else{
+    advEach = adv.getElementsByTagName('advogado')[0].childNodes;
+    var nomeAdv = advEach[3].innerHTML + '---' + advEach[0].innerHTML + '/' + advEach[2].innerHTML;
+    document.getElementsByName('advogados')[0].value = guardadoAdv + nomeAdv;
+  }
+}
+
 bigbluebuttonbn_process_get = function() {
 
     var xmlHttp = new XMLHttpRequest();
@@ -145,7 +166,7 @@ bigbluebuttonbn_process_get = function() {
         xmlDoc.loadXML(xmlHttp.responseText);
     }
     document.getElementsByName('nrprocesso')[0].value = document.getElementById('id_nr_process').value;
-    childs = xmlDoc.getElementsByTagName("consultarAudienciaProcessoResponse")[0].childNodes;
+    childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
 
     if(typeof childs[5] === 'undefined') {
       document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
@@ -192,7 +213,7 @@ bigbluebuttonbn_process_get = function() {
           xmlDoc2.loadXML(xmlHttp2.responseText);
       }
 
-      xml_final = xmlDoc2.getElementsByTagName("consultarProcessoResponse")[0].childNodes;
+      xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
 
       //convertendo em HTML com um parser do navegador para remover os &lt... etc
       var el = document.createElement( 'html' );
@@ -209,8 +230,12 @@ bigbluebuttonbn_process_get = function() {
       }
 
       var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
+      document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
+      document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
 
-      console.log(proc);
+      var partes = proc[8].childNodes;
+      partes.forEach(gravaPartes);
+
     }
 
 }

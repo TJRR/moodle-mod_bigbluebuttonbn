@@ -85,12 +85,39 @@ function bigbluebuttonbn_add_instance($data, $mform) {
     $draftitemid = isset($data->presentation)? $data->presentation: null;
     $context = bigbluebuttonbn_get_context_module($data->coursemodule);
 
-    bigbluebuttonbn_process_pre_save($data);    
+    bigbluebuttonbn_process_pre_save($data);
 
     unset($data->presentation);
     $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
     $data->id = $bigbluebuttonbn_id;
 
+    //Salvando as partes e os advs de cada parte
+    $partes = explode("///",$data->partes);
+    $advogados = explode("///",$data->advogados);
+
+    $cont = 0;
+    foreach ($partes as $row) {
+      $parte_bd = new stdClass();
+      $parte_bd->id_parte=0;
+      $parte_bd->id_bbb=$bigbluebuttonbn_id;
+      $parte_bd->name=$row;
+      $parte_bd->oab=0;
+      $parte_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+      $parte_id = $DB->insert_record('bigbluebuttonbn_partes', $parte_bd);
+      if($advogados[$cont]!=' '){
+        $adv_aux = explode("---",$advogados[$cont]);
+        $adv_bd = new stdClass();
+        $adv_bd->id_parte=$parte_id;
+        $adv_bd->id_bbb=$bigbluebuttonbn_id;
+        $adv_bd->name=$adv_aux[0];
+        $adv_bd->oab=$adv_aux[1];
+        $adv_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+        $adv_id = $DB->insert_record('bigbluebuttonbn_partes', $adv_bd);
+      }
+      $cont++;
+    }
+
+    //Salvando as salas
     foreach ($data->select_rooms as $row) {
       $data_reserva = new stdClass();
 

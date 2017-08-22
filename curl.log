@@ -1,6 +1,0 @@
-*   Trying 200.151.25.198...
-* Connected to projudi.tjrr.jus.br (200.151.25.198) port 443 (#0)
-* error setting certificate verify locations:
-  CAfile: /Applications/MAMP/htdocs/moodle_tj/mod/bigbluebuttonbn/certificado_projudi.cer
-  CApath: none
-* Closing connection 0

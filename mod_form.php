@@ -91,6 +91,12 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $mform->addElement('html', $html_tipo_processo);
         $mform->addElement('hidden', 'tipoaudiencia', '');
 
+        //Inserindo campos no mform para enviar os dados pro backend
+        $mform->addElement('hidden', 'segredojustica', '');
+        $mform->addElement('hidden', 'assuntoprincipal', '');
+        $mform->addElement('hidden', 'partes', '');
+        $mform->addElement('hidden', 'advogados', '');
+
         $version_major = bigbluebuttonbn_get_moodle_version_major();
         if ( $version_major < '2015051100' ) {
             //This is valid before v2.9
