@@ -19,6 +19,7 @@ $string['bigbluebuttonbn:moderate'] = 'Moderate a meeting';
 $string['bigbluebuttonbn:managerecordings'] = 'Manage recordings';
 $string['bigbluebuttonbn:addinstance'] = 'Add a new meeting';
 $string['bigbluebuttonbn'] = 'Mconf';
+$string['mod_form_field_nrprocess'] = "Process number";
 $string['search:activity'] = 'MConf - Audiências';
 
 
@@ -133,6 +134,8 @@ $string['mod_form_block_participants'] = 'Participants';
 $string['mod_form_block_schedule'] = 'Schedule for session';
 $string['mod_form_block_record'] = 'Record settings';
 $string['mod_form_block_rooms'] = 'Physical rooms';
+$string['mod_form_field_selectrooms'] = 'Select room';
+$string['mod_form_field_addroom'] = 'Add Room';
 $string['mod_form_field_openingtime'] = 'Join open';
 $string['mod_form_field_closingtime'] = 'Join closed';
 $string['mod_form_field_intro'] = 'Description';

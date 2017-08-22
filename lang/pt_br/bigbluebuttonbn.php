@@ -21,6 +21,8 @@ $string['bigbluebuttonbn:moderate'] = 'Moderar uma webconferência';
 $string['bigbluebuttonbn:managerecordings'] = 'Gerenciar gravações';
 $string['bigbluebuttonbn:addinstance'] = 'Adicionar uma nova webconferência';
 $string['bigbluebuttonbn'] = 'Mconf';
+$string['mod_form_field_nrprocess'] = "Número do processo";
+$string['search:activity'] = 'MConf - Audiências';
 
 
 $string['config_general'] = 'Configurações gerais';
@@ -134,6 +136,8 @@ $string['mod_form_block_participants'] = 'Participantes';
 $string['mod_form_block_schedule'] = 'Agendamento de sessão';
 $string['mod_form_block_record'] = 'Configurações de gravação';
 $string['mod_form_block_rooms'] = 'Salas físicas';
+$string['mod_form_field_selectrooms'] = 'Selecione a sala';
+$string['mod_form_field_addroom'] = 'Adicionar Sala';
 $string['mod_form_field_openingtime'] = 'Entrada liberada';
 $string['mod_form_field_closingtime'] = 'Entrada encerrada';
 $string['mod_form_field_intro'] = 'Descrição';
