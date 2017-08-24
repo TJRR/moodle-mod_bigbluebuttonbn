@@ -15,6 +15,10 @@ global $BIGBLUEBUTTONBN_CFG;
 
 require_once(dirname(__FILE__).'/locallib.php');
 
+$ADMIN->add('modsettings', new admin_category('modbigbluebuttonbnfolder', new lang_string('pluginname', 'mod_bigbluebuttonbn'), $module->is_enabled() === false));
+
+$settings = new admin_settingpage($section, get_string('config_general', 'mod_bigbluebuttonbn'), 'moodle/site:config', $module->is_enabled() === false);
+
 if ($ADMIN->fulltree) {
     if( !isset($BIGBLUEBUTTONBN_CFG->bigbluebuttonbn_server_url) ||
         !isset($BIGBLUEBUTTONBN_CFG->bigbluebuttonbn_shared_secret) ) {
@@ -34,6 +38,12 @@ if ($ADMIN->fulltree) {
                     get_string( 'config_shared_secret_description', 'bigbluebuttonbn' ),
                     BIGBLUEBUTTONBN_DEFAULT_SHARED_SECRET));
         }
+    }
+
+    if( !isset($BIGBLUEBUTTONBN_CFG->bigbluebuttonbn_detect_mobile) ) {
+      $settings->add( new admin_setting_configcheckbox( 'bigbluebuttonbn_detect_mobile',
+                get_string( 'config_detect_mobile', 'bigbluebuttonbn' ),
+                get_string( 'config_detect_mobile_description', 'bigbluebuttonbn' ), 1));
     }
 
     //// Configuration for 'recording' feature
@@ -279,4 +289,20 @@ if ($ADMIN->fulltree) {
                     0));
         }
     }
+
+    //$settings->add('teste', new admin_externalpage('pathxmlwspeoplesoft', 'pagina', 'www.google.com.br', 'moodle/site:config', false));
+
+    $ADMIN->add('modbigbluebuttonbnfolder', $settings);
+    // Tell core we already added the settings structure.
+    $settings=null;
+
+    // Physical Rooms menu
+    //$ADMIN->add('modbigbluebuttonbnfolder', new admin_category('bigbluebuttonbnphysicalrooms',
+    //    get_string('mod_form_block_rooms', 'bigbluebuttonbn'), !$module->is_enabled()));
+
+    $settings = new admin_externalpage('physicalrooms', get_string('mod_form_block_rooms', 'mod_bigbluebuttonbn'), $CFG->wwwroot . '/mod/bigbluebuttonbn/rooms_form.php', 'moodle/site:config', $module->is_enabled() === false);
+
+    $ADMIN->add('modbigbluebuttonbnfolder', $settings);
+
+    $settings=null;
 }

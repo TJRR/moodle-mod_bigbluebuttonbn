@@ -52,7 +52,7 @@ bigbluebuttonbn_participant_add = function() {
     var participant_selection_type = document.getElementById('bigbluebuttonbn_participant_selection_type');
     var participant_selection = document.getElementById('bigbluebuttonbn_participant_selection');
 
-    //Lookup to see if it has been added already 
+    //Lookup to see if it has been added already
     var found = false;
     for( var i = 0; i < bigbluebuttonbn_participant_list.length; i++ ){
         if( bigbluebuttonbn_participant_list[i].selectiontype == participant_selection_type.value && bigbluebuttonbn_participant_list[i].selectionid == participant_selection.value ){
@@ -77,7 +77,7 @@ bigbluebuttonbn_participant_add = function() {
         cell1.width = "125px";
         if( participant_selection_type.value == 'all' )
             cell1.innerHTML = '<b><i>' + participant_selection_type.options[participant_selection_type.selectedIndex].text + '</i></b>';
-        else    
+        else
             cell1.innerHTML = '<b><i>' + participant_selection_type.options[participant_selection_type.selectedIndex].text + ':&nbsp;</i></b>';
         var cell2 = row.insertCell(2);
         if( participant_selection_type.value == 'all' )
@@ -125,7 +125,117 @@ bigbluebuttonbn_select_disable = function(id) {
 bigbluebuttonbn_select_add_option = function(id, text, value) {
     var select = document.getElementById(id);
     var option = document.createElement('option');
-    option.text = text; 
+    option.text = text;
     option.value = value;
     select.add(option , 0);
+}
+
+gravaPartes = function(element, index, array){
+  var nome = element.getElementsByTagName('nome')[0].innerHTML;
+  var guardado = document.getElementsByName('partes')[0].value;
+  if (guardado != '') {
+    guardado = guardado + '///';
+  }
+  document.getElementsByName('partes')[0].value = guardado + nome;
+  var adv = element.getElementsByTagName('advogados')[0];
+  var guardadoAdv = document.getElementsByName('advogados')[0].value;
+  if (guardadoAdv != '') {
+    guardadoAdv = guardadoAdv + '///';
+  }
+  if(adv.innerHTML == ''){
+    document.getElementsByName('advogados')[0].value = guardadoAdv + ' ';
+  }else{
+    advEach = adv.getElementsByTagName('advogado')[0].childNodes;
+    var nomeAdv = advEach[3].innerHTML + '---' + advEach[0].innerHTML + '/' + advEach[2].innerHTML;
+    document.getElementsByName('advogados')[0].value = guardadoAdv + nomeAdv;
+  }
+}
+
+bigbluebuttonbn_process_get = function() {
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", document.getElementById('get_audiencias').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
+    xmlHttp.send( null );
+    if (window.DOMParser){
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(xmlHttp.responseText, "text/xml");
+    }
+    else{
+        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = false;
+        xmlDoc.loadXML(xmlHttp.responseText);
+    }
+    document.getElementsByName('nrprocesso')[0].value = document.getElementById('id_nr_process').value;
+    childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
+
+    if(typeof childs[5] === 'undefined') {
+      document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
+      document.getElementById('id_openingtime_enabled').checked = false;
+
+      document.getElementById('nome_audiencia').innerHTML = '';
+      document.getElementsByName('tipoaudiencia')[0].value = '';
+
+    }else{
+      document.getElementById('id_select_rooms').removeAttribute("disabled");
+
+      document.getElementById('nome_audiencia').innerHTML = '';
+      document.getElementsByName('tipoaudiencia')[0].value = '';
+
+      var dia = childs[4].innerHTML.substr(0,2);
+      var mes = childs[4].innerHTML.substr(2,2);
+      var ano = childs[4].innerHTML.substr(4,4);
+      var hora = childs[4].innerHTML.substr(8,2);
+      var min = childs[4].innerHTML.substr(10,2);
+      var seg = childs[4].innerHTML.substr(12,2);
+      var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
+      var datebegin = new Date(thisDateF);
+      var mesSimple = parseInt(mes);
+      document.getElementById('id_openingtime_enabled').checked = true;
+      document.getElementById('id_openingtime_day').value = dia;
+      document.getElementById('id_openingtime_month').value = mesSimple+'';
+      document.getElementById('id_openingtime_year').value = ano;
+      document.getElementById('id_openingtime_hour').value = hora;
+      document.getElementById('id_openingtime_minute').value = min;
+
+      document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
+      document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
+
+      var xmlHttp2 = new XMLHttpRequest();
+      xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
+      xmlHttp2.send( null );
+      if (window.DOMParser){
+          parser = new DOMParser();
+          xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
+      }
+      else{
+          xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
+          xmlDoc2.async = false;
+          xmlDoc2.loadXML(xmlHttp2.responseText);
+      }
+
+      xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
+
+      //convertendo em HTML com um parser do navegador para remover os &lt... etc
+      var el = document.createElement( 'html' );
+      el.innerHTML = xml_final[0].innerHTML;
+      var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+      if (window.DOMParser){
+          parser = new DOMParser();
+          xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
+      }
+      else{
+          xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+          xmlDoc3.async = false;
+          xmlDoc3.loadXML(xml_comtags);
+      }
+
+      var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
+      document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
+      document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
+
+      var partes = proc[8].childNodes;
+      partes.forEach(gravaPartes);
+
+    }
+
 }

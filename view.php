@@ -11,6 +11,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/locallib.php');
+require_once(dirname(__FILE__) . '/Mobile_Detect.php');
 
 $id = required_param('id', PARAM_INT); // Course Module ID, or
 $b  = optional_param('n', 0, PARAM_INT); // bigbluebuttonbn instance ID
@@ -110,6 +111,10 @@ $bbbsession['originServerName'] = $parsedUrl['host'];
 $bbbsession['originServerUrl'] = $CFG->wwwroot;
 $bbbsession['originServerCommonName'] = '';
 $bbbsession['originTag'] = 'moodle-mod_bigbluebuttonbn (' . $module_version . ')';
+
+// Mobile Detection
+$bbbsession['detectmobile'] = $CFG->bigbluebuttonbn_detect_mobile;
+$bbbsession['ismobilesession'] = bigbluebutton_is_device_for_mobile_client();
 ////////////////////////////////////////////////
 /////   BigBlueButton Session Setup Ends   /////
 ////////////////////////////////////////////////
@@ -206,6 +211,7 @@ if ($groupmode == NOGROUPS) {  //No groups mode
 $bbbsession['contextActivityName'] = $bbbsession['meetingname'];
 $bbbsession['contextActivityDescription'] = bigbluebuttonbn_html2text($bbbsession['meetingdescription'], 64);
 $bbbsession['contextActivityTags'] = "";
+$bbbsession['contextActivityLitigation'] = "";
 
 $bigbluebuttonbn_activity = 'open';
 $now = time();
@@ -267,6 +273,14 @@ function bigbluebuttonbn_view($bbbsession, $activity) {
     echo '<br><br><span id="join_button"></span>&nbsp;<span id="end_button"></span>' . "\n";
     echo $OUTPUT->box_end();
 
+    // Show mobile client options if mobile is detected
+    if ($bbbsession['ismobilesession'])
+    {
+        echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_action_button_box');
+        include 'mobile_apps.php';
+        echo $OUTPUT->box_end();
+    }
+
     if ($activity == 'not_started') {
         // Do nothing
     } else {
@@ -301,6 +315,10 @@ function bigbluebuttonbn_view_joining($bbbsession) {
             '        <div>' . "\n" .
             '          <label for="tags">' . get_string('view_recording_tags', 'bigbluebuttonbn') . '</label><br/>' . "\n" .
             '          <input type="text" name="tags" id="recording_tags" value="" placeholder="">' . "\n" .
+            '        </div><br>' . "\n" .
+            '        <div>' . "\n" .
+            '          <label for="litigation">' . get_string('view_recording_litigation', 'bigbluebuttonbn') . '</label><br/>' . "\n" .
+            '          <input type="text" name="litigation" id="recording_litigation" value="" placeholder="" required>' . "\n" .
             '        </div>' . "\n" .
             '      </fieldset>' . "\n" .
             '    </form>' . "\n" .
@@ -368,4 +386,9 @@ function bigbluebuttonbn_view_recordings($bbbsession) {
 
         echo $output;
     }
+}
+
+function bigbluebutton_is_device_for_mobile_client(){
+    $detect = new Mobile_Detect;
+    return $detect->isAndroidOS() || $detect->isiOS();
 }
