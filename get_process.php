@@ -1,6 +1,6 @@
 <?php
 
-$url = 'https://projudi.tjrr.jus.br:443/projudi/webservices/consultaProcessualWebService';
+$url = 'http://projudi-mni.tjrr.jus.br/projudi/webservices/consultaProcessualWebService';
 
 @$result=curl_exec($ch);
 
@@ -15,7 +15,7 @@ $body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelo
          <!--Optional:-->
          <impl:sistemaTribunal>FUT</impl:sistemaTribunal>
          <!--Optional:-->
-         <impl:systemPass>4613cc065e3f391c4a4add4c03d00a0a</impl:systemPass>
+         <impl:systemPass>ad53a501086996d3bf87e3c45efdf42f</impl:systemPass>
       </impl:consultarProcesso>
    </soapenv:Body>
 </soapenv:Envelope>';
