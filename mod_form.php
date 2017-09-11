@@ -62,19 +62,18 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('mod_form_block_general', 'bigbluebuttonbn'));
 
-        $mform->addElement('text', 'name', get_string('mod_form_field_name','bigbluebuttonbn'), 'maxlength="64" size="32"');
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', null, 'required', null, 'client');
+        $mform->addElement('hidden', 'name','');        
 
         $html_process_get = '
-                      <div id="fitem_id_nr_process" class="fitem fitem_ftext  ">
+                      <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_audiencias.php" id="get_audiencias">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_process.php" id="get_process">
                         <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
-                          <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').' </label>
+                          <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').'
+                          <img class="req" title="Required field" alt="Required field" src="http://localhost/moodle_tj/theme/image.php/clean/core/1503604317/req"></label>
                         </div>
                         <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">
-                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;">
+                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required>
                         </div>
                       </div>';
         $mform->addElement('html', $html_process_get);

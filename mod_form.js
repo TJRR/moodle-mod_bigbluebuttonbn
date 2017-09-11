@@ -166,6 +166,7 @@ bigbluebuttonbn_process_get = function() {
         xmlDoc.loadXML(xmlHttp.responseText);
     }
     document.getElementsByName('nrprocesso')[0].value = document.getElementById('id_nr_process').value;
+    document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
     childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
 
     if(typeof childs[5] === 'undefined') {
