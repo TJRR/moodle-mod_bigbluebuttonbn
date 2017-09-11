@@ -50,7 +50,16 @@ if ($mform->is_cancelled()) {
   $record->userid = $USER->id;
   $record->timecreated = time();
   $lastinsertid = $DB->insert_record('bigbluebuttonbn_rooms', $record, false);
-  //In this case you process validated data. $mform->get_data() returns data posted in form.
+
+  $log = new stdClass();
+  $log->courseid = 1;
+  $log->bigbluebuttonbnid = 1;
+  $log->userid = $USER->id;
+  $log->timecreated = time();
+  $log->meetingid = '';
+  $log->log = "Sala ".$lastinsertid." - ".$fromform->room." incluída";
+  $log->meta = '';
+  $log_insert = $DB->insert_record('bigbluebuttonbn_logs', $log, false);
 }
 
 echo $OUTPUT->header();

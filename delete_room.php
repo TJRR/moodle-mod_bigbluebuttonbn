@@ -22,8 +22,17 @@ $PAGE->set_title(get_string('modulename', 'bigbluebuttonbn'));
 $PAGE->set_cacheable(false);
 $PAGE->set_pagelayout('incourse');
 
+$room = $DB->get_record('bigbluebuttonbn_rooms', array('id'=>$_GET['id']));
+$log = new stdClass();
+$log->courseid = 1;
+$log->bigbluebuttonbnid = 1;
+$log->userid = $USER->id;
+$log->timecreated = time();
+$log->meetingid = '';
+$log->log = "Sala ".$room->id." - ".$room->name." excluída";
+$log->meta = '';
+$log_insert = $DB->insert_record('bigbluebuttonbn_logs', $log, false);
 
-//Apresenta todas as salas
 $table = 'bigbluebuttonbn_rooms';
 $records = $DB->delete_records($table, ['id'=>$_GET['id']]);
 
