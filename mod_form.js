@@ -153,6 +153,10 @@ gravaPartes = function(element, index, array){
 
 bigbluebuttonbn_process_get = function() {
 
+    var procMask = "9999999-99.9999.9.99.9999";
+    var proc = document.querySelector("#id_nr_process");
+    VMasker(proc).maskPattern(procMask);
+
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", document.getElementById('get_audiencias').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
     xmlHttp.send( null );
@@ -233,6 +237,7 @@ bigbluebuttonbn_process_get = function() {
       var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
       document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
       document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
+      //document.getElementsByName('introeditor[text]')[0].value = "Segredo de justiça:";//+proc[2].innerHTML+"<strong><br>Assunto principal: "+proc[7].innerHTML+"<br>";
 
       var partes = proc[8].childNodes;
       partes.forEach(gravaPartes);

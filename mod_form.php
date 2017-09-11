@@ -62,7 +62,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('mod_form_block_general', 'bigbluebuttonbn'));
 
-        $mform->addElement('hidden', 'name','');        
+        $mform->addElement('hidden', 'name','');
 
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
@@ -75,6 +75,12 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                         <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">
                           <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required>
                         </div>
+                        <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>
+                        <script>                            
+                              var procMask = "9999999-99.9999.9.99.9999";
+                              var proc = document.querySelector("#id_nr_process");
+                              VMasker(proc).maskPattern(procMask);
+                        </script>
                       </div>';
         $mform->addElement('html', $html_process_get);
         $mform->addElement('hidden', 'nrprocesso', '');
