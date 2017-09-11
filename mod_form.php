@@ -76,7 +76,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                           <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required>
                         </div>
                         <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>
-                        <script>                            
+                        <script>
                               var procMask = "9999999-99.9999.9.99.9999";
                               var proc = document.querySelector("#id_nr_process");
                               VMasker(proc).maskPattern(procMask);
@@ -315,7 +315,9 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         // Fifth block starts here
         //-------------------------------------------------------------------------------
-        $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn'));
+        $link_room = "<a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/rooms_form.php' style='float:right; text-decoration:underline; font-size:0.8em;'>".get_string('mod_form_field_addroom', 'bigbluebuttonbn')."</a>";
+        $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn').$link_room);
+
         $rooms_list = bigbluebuttonbn_get_rooms_list();
         $options = array();
         foreach ($rooms_list as $key) {

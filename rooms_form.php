@@ -64,7 +64,7 @@ $records = $DB->get_records_select($table, $select);
 
 echo "<ul>";
 foreach ($records as $row) {
-  echo "<li>".$row->name." <sup><a href='".$row->id."'>x</a></sup></li>";
+  echo "<li>".$row->name." <sup><a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/delete_room.php?id=".$row->id."' onclick='if(!confirm(\"Deseja realmente deletar a sala?\")) return false;'>x</a></sup></li>";
   //print_r($row);
 }
 echo "</ul>";
