@@ -137,7 +137,7 @@ gravaPartes = function(element, index, array){
     guardado = guardado + '///';
   }
   document.getElementsByName('partes')[0].value = guardado + nome;
-  document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"\nParte: "+nome;
+  document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"<br>Parte: "+nome;
   var adv = element.getElementsByTagName('advogados')[0];
   var guardadoAdv = document.getElementsByName('advogados')[0].value;
   if (guardadoAdv != '') {
@@ -145,12 +145,12 @@ gravaPartes = function(element, index, array){
   }
   if(adv.innerHTML == ''){
     document.getElementsByName('advogados')[0].value = guardadoAdv + ' ';
-    document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+" - sem advogado";
+    document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+" - sem advogado";
   }else{
     advEach = adv.getElementsByTagName('advogado')[0].childNodes;
     var nomeAdv = advEach[3].innerHTML + '---' + advEach[0].innerHTML + '/' + advEach[2].innerHTML;
     document.getElementsByName('advogados')[0].value = guardadoAdv + nomeAdv;
-    document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+" - Adv: "+advEach[3].innerHTML+" - OAB: "+advEach[0].innerHTML+"/"+advEach[2].innerHTML;
+    document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+" - Adv: "+advEach[3].innerHTML+" - OAB: "+advEach[0].innerHTML+"/"+advEach[2].innerHTML;
   }
 }
 
@@ -202,8 +202,8 @@ bigbluebuttonbn_process_get = function() {
       document.getElementById('id_openingtime_day').value = dia;
       document.getElementById('id_openingtime_month').value = mesSimple+'';
       document.getElementById('id_openingtime_year').value = ano;
-      document.getElementById('id_openingtime_hour').value = hora;
-      document.getElementById('id_openingtime_minute').value = min;
+      document.getElementById('id_openingtime_hour').value = 8;
+      document.getElementById('id_openingtime_minute').value = 0;
 
       document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
       document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
@@ -240,10 +240,11 @@ bigbluebuttonbn_process_get = function() {
       var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
       document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
       document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
+      document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
       if(proc[2].innerHTML == 'true'){
-        document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
+        document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
       }
-      document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
+      document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
 
       var partes = proc[8].childNodes;
       partes.forEach(gravaPartes);
