@@ -15,7 +15,7 @@ function get_cod_tj(){
     return md5($codigoSistema.$ddMM);
   }
 
-$url = 'http://projudi-mni.tjrr.jus.br/projudi/webservices/consultaProcessualWebService';
+$url = 'https://projudi.tjrr.jus.br/projudi/webservices/consultaProcessualWebService';
 
 @$result=curl_exec($ch);
 
