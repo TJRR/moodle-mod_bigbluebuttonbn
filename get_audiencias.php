@@ -1,5 +1,20 @@
 <?php
 
+function get_cod_tj(){
+    $INTERVALO_HORAS_PERMITE_VALIDAR_AUTENTICACAO = 2;
+    $ddMM = "";
+    $senha = "";
+    $codigoSistema = "6745231";
+    $dataAtualSuperior = time() + ($INTERVALO_HORAS_PERMITE_VALIDAR_AUTENTICACAO * 60 * 60);
+    $dataBase = mktime(23,59,59,date('m'),date('d'),date('Y'));
+    $dataHoraAtual = time();
+    $ddMM = date('Ymd', $dataHoraAtual);
+    if($dataHoraAtual>$dataBase){
+      $ddMM = date('Ymd', $dataAtualSuperior);
+    }
+    return md5($codigoSistema.$ddMM);
+  }
+
 $url = 'http://projudi-mni.tjrr.jus.br/projudi/webservices/consultaProcessualWebService';
 
 @$result=curl_exec($ch);
@@ -12,7 +27,7 @@ $body = '<?xml version="1.0" ?>
     <ns2:consultarAudienciaProcesso xmlns:ns3="http://impl.processo.webservice.projudi.gov/" xmlns:ns2="http://impl.consulta.webservice.projudi.gov/">
       <ns2:numeroUnicoProcesso>'.$_GET['nrprocesso'].'</ns2:numeroUnicoProcesso>
       <ns2:sistemaTribunal>FUT</ns2:sistemaTribunal>
-      <ns2:systemPass>281ca63549322564c88ce42dbda16a48</ns2:systemPass>
+      <ns2:systemPass>'.get_cod_tj().'</ns2:systemPass>
     </ns2:consultarAudienciaProcesso>
   </S:Body>
 </S:Envelope>';

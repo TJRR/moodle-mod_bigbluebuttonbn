@@ -1,5 +1,20 @@
 <?php
 
+function get_cod_tj(){
+    $INTERVALO_HORAS_PERMITE_VALIDAR_AUTENTICACAO = 2;
+    $ddMM = "";
+    $senha = "";
+    $codigoSistema = "6745231";
+    $dataAtualSuperior = time() + ($INTERVALO_HORAS_PERMITE_VALIDAR_AUTENTICACAO * 60 * 60);
+    $dataBase = mktime(23,59,59,date('m'),date('d'),date('Y'));
+    $dataHoraAtual = time();
+    $ddMM = date('Ymd', $dataHoraAtual);
+    if($dataHoraAtual>$dataBase){
+      $ddMM = date('Ymd', $dataAtualSuperior);
+    }
+    return md5($codigoSistema.$ddMM);
+  }
+
 $url = 'http://projudi-mni.tjrr.jus.br/projudi/webservices/consultaProcessualWebService';
 
 @$result=curl_exec($ch);
@@ -15,7 +30,7 @@ $body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelo
          <!--Optional:-->
          <impl:sistemaTribunal>FUT</impl:sistemaTribunal>
          <!--Optional:-->
-         <impl:systemPass>281ca63549322564c88ce42dbda16a48</impl:systemPass>
+         <impl:systemPass>'.get_cod_tj().'</impl:systemPass>
       </impl:consultarProcesso>
    </soapenv:Body>
 </soapenv:Envelope>';
