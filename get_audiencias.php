@@ -6,9 +6,9 @@ function get_cod_tj(){
     $senha = "";
     $codigoSistema = "6745231";
     $dataAtualSuperior = time() + ($INTERVALO_HORAS_PERMITE_VALIDAR_AUTENTICACAO * 60 * 60);
-    $dataBase = mktime(23,59,59,date('m'),date('d'),date('Y'));
+    @$dataBase = mktime(23,59,59,date('m'),date('d'),date('Y'));
     $dataHoraAtual = time();
-    $ddMM = date('Ymd', $dataHoraAtual);
+    @$ddMM = date('Ymd', $dataHoraAtual);
     if($dataHoraAtual>$dataBase){
       $ddMM = date('Ymd', $dataAtualSuperior);
     }
