@@ -74,7 +74,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                           <img class="req" title="Required field" alt="Required field" src="http://localhost/moodle_tj/theme/image.php/clean/core/1503604317/req"></label>
                         </div>
                         <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">
-                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required oninvalid="setCustomValidity(\' \')">
+                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="if(verificaProcesso() == 0){bigbluebuttonbn_process_get()}; return 0;" required oninvalid="setCustomValidity(\' \')">
                         </div>
                         <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>
                         <script>

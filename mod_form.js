@@ -152,6 +152,17 @@ verificaSala = function(){
   }
 }
 
+verificaProcesso = function(){
+  var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
+  console.log(document.getElementById('id_nr_process').value);
+  if(existe_processo==1){
+    alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
+    return 1;
+  }else{
+    return 0;
+  }
+}
+
 gravaPartes = function(element, index, array){
   var nome = element.getElementsByTagName('nome')[0].innerHTML;
   var guardado = document.getElementsByName('partes')[0].value;
@@ -206,8 +217,6 @@ bigbluebuttonbn_process_get = function() {
 
       document.getElementById('nome_audiencia').innerHTML = '';
       document.getElementsByName('tipoaudiencia')[0].value = '';
-
-      alert("O processo não possui audiência designada");
 
     }else{
       document.getElementById('nome_audiencia').innerHTML = '';
