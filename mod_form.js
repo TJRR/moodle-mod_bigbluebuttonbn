@@ -180,7 +180,6 @@ bigbluebuttonbn_process_get = function() {
     childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
 
     if(typeof childs[5] === 'undefined') {
-      document.getElementById('id_select_rooms').setAttribute("disabled","disabled");
       document.getElementById('id_openingtime_enabled').checked = false;
 
       document.getElementById('nome_audiencia').innerHTML = '';
@@ -188,9 +187,7 @@ bigbluebuttonbn_process_get = function() {
 
       alert("O processo não possui audiência designada");
 
-    }else{
-      document.getElementById('id_select_rooms').removeAttribute("disabled");
-
+    }else{      
       document.getElementById('nome_audiencia').innerHTML = '';
       document.getElementsByName('tipoaudiencia')[0].value = '';
 
