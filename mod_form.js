@@ -199,14 +199,19 @@ bigbluebuttonbn_process_get = function() {
       var min = childs[4].innerHTML.substr(10,2);
       var seg = childs[4].innerHTML.substr(12,2);
       var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
-      var datebegin = new Date(thisDateF);
       var mesSimple = parseInt(mes);
-      document.getElementById('id_openingtime_enabled').checked = true;
-      document.getElementById('id_openingtime_day').value = dia;
-      document.getElementById('id_openingtime_month').value = mesSimple+'';
-      document.getElementById('id_openingtime_year').value = ano;
-      document.getElementById('id_openingtime_hour').value = 8;
-      document.getElementById('id_openingtime_minute').value = 0;
+      var datebegin = new Date(thisDateF);
+      var today_date = new Date();
+      if(datebegin.getTime()>=today_date.getTime()){
+        document.getElementById('id_openingtime_enabled').checked = true;
+        document.getElementById('id_openingtime_day').value = dia;
+        document.getElementById('id_openingtime_month').value = mesSimple+'';
+        document.getElementById('id_openingtime_year').value = ano;
+        document.getElementById('id_openingtime_hour').value = 8;
+        document.getElementById('id_openingtime_minute').value = 0;
+      }else{
+        document.getElementById('id_openingtime_enabled').checked = false;    
+      }
 
       document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
       document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
