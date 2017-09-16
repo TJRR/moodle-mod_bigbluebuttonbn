@@ -138,6 +138,7 @@ gravaPartes = function(element, index, array){
   }
   document.getElementsByName('partes')[0].value = guardado + nome;
   document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"<br>Parte: "+nome;
+  document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"\nParte: "+nome;
   var adv = element.getElementsByTagName('advogados')[0];
   var guardadoAdv = document.getElementsByName('advogados')[0].value;
   if (guardadoAdv != '') {
@@ -146,11 +147,13 @@ gravaPartes = function(element, index, array){
   if(adv.innerHTML == ''){
     document.getElementsByName('advogados')[0].value = guardadoAdv + ' ';
     document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+" - sem advogado";
+    document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+" - sem advogado";
   }else{
     advEach = adv.getElementsByTagName('advogado')[0].childNodes;
     var nomeAdv = advEach[3].innerHTML + '---' + advEach[0].innerHTML + '/' + advEach[2].innerHTML;
     document.getElementsByName('advogados')[0].value = guardadoAdv + nomeAdv;
     document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+" - Adv: "+advEach[3].innerHTML+" - OAB: "+advEach[0].innerHTML+"/"+advEach[2].innerHTML;
+    document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+" - Adv: "+advEach[3].innerHTML+" - OAB: "+advEach[0].innerHTML+"/"+advEach[2].innerHTML;
   }
 }
 
@@ -241,10 +244,13 @@ bigbluebuttonbn_process_get = function() {
       document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
       document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
       document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
+      document.getElementById('id_welcome').value = '';
       if(proc[2].innerHTML == 'true'){
         document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
+        document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
       }
       document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
+      document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
 
       var partes = proc[8].childNodes;
       partes.forEach(gravaPartes);
