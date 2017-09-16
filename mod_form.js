@@ -154,7 +154,6 @@ verificaSala = function(){
 
 verificaProcesso = function(){
   var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
-  console.log(document.getElementById('id_nr_process').value);
   if(existe_processo==1){
     alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
     return 1;
@@ -212,11 +211,31 @@ bigbluebuttonbn_process_get = function() {
     document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
     childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
 
+    var processo_valido = 1;
     if(typeof childs[5] === 'undefined') {
-      document.getElementById('id_openingtime_enabled').checked = false;
+      if(typeof childs[1] === 'undefined'){
+        document.getElementById('id_openingtime_enabled').checked = false;
 
-      document.getElementById('nome_audiencia').innerHTML = '';
-      document.getElementsByName('tipoaudiencia')[0].value = '';
+        document.getElementById('nome_audiencia').innerHTML = '';
+        document.getElementsByName('tipoaudiencia')[0].value = '';
+        processo_valido = 0;
+        alert('O processo informado não foi localizado');
+      }
+      //Aqui caso eventualmente precisarmos tratar a mensagem enviada quando um processo não tem audiência
+      //tratando o xml para inserir as tags certinho
+      // var el2 = document.createElement( 'html' );
+      // el2.innerHTML = childs[4].innerHTML;
+      // var xml2_comtags = el2.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+      // if (window.DOMParser){
+      //     parser3 = new DOMParser();
+      //     xmlDoc3 = parser3.parseFromString(xml2_comtags, "text/xml");
+      // }
+      // else{
+      //     xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+      //     xmlDoc3.async = false;
+      //     xmlDoc3.loadXML(xml2_comtags);
+      // }
+      // console.log(xmlDoc3);
 
     }else{
       document.getElementById('nome_audiencia').innerHTML = '';
@@ -246,6 +265,8 @@ bigbluebuttonbn_process_get = function() {
 
       document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
       document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
+    }
+    if(processo_valido == 1){
 
       var xmlHttp2 = new XMLHttpRequest();
       xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
