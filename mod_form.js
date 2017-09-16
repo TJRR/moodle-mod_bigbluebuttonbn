@@ -186,6 +186,8 @@ bigbluebuttonbn_process_get = function() {
       document.getElementById('nome_audiencia').innerHTML = '';
       document.getElementsByName('tipoaudiencia')[0].value = '';
 
+      alert("O processo não possui audiência designada");
+
     }else{
       document.getElementById('id_select_rooms').removeAttribute("disabled");
 
@@ -210,7 +212,8 @@ bigbluebuttonbn_process_get = function() {
         document.getElementById('id_openingtime_hour').value = 8;
         document.getElementById('id_openingtime_minute').value = 0;
       }else{
-        document.getElementById('id_openingtime_enabled').checked = false;    
+        document.getElementById('id_openingtime_enabled').checked = false;
+        alert("Não existem audiências futuras para o processo");
       }
 
       document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
