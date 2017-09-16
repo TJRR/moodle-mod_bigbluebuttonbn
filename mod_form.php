@@ -66,6 +66,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
+                        <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/" id="base_url_get">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_audiencias.php" id="get_audiencias">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_process.php" id="get_process">
                         <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
@@ -324,7 +325,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
           $options[$key->id] = $key->name;
         }
 
-        $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options);
+        $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onChange='verificaSala();'");
         $select->setMultiple(true);
 
         //-------------------------------------------------------------------------------

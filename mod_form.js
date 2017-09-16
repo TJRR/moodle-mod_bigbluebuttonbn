@@ -130,6 +130,28 @@ bigbluebuttonbn_select_add_option = function(id, text, value) {
     select.add(option , 0);
 }
 
+httpGet = function(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+verificaSala = function(){
+  var openingtime = 0;
+  var data = document.getElementById('id_openingtime_year').value + '-' + document.getElementById('id_openingtime_month').value + '-' + document.getElementById('id_openingtime_day').value + 'T' + document.getElementById('id_openingtime_hour').value + ':' + document.getElementById('id_openingtime_minute').value + ':00';
+  openingtime = new Date(data);
+  var values =  document.getElementById('id_select_rooms').options;
+  for (var i = 0; i < values.length; i++) {
+    if(values[i].selected){
+      if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+openingtime.getTime())==1){
+        alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+      }
+    }
+  }
+}
+
 gravaPartes = function(element, index, array){
   var nome = element.getElementsByTagName('nome')[0].innerHTML;
   var guardado = document.getElementsByName('partes')[0].value;
@@ -187,7 +209,7 @@ bigbluebuttonbn_process_get = function() {
 
       alert("O processo não possui audiência designada");
 
-    }else{      
+    }else{
       document.getElementById('nome_audiencia').innerHTML = '';
       document.getElementsByName('tipoaudiencia')[0].value = '';
 

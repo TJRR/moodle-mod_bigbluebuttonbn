@@ -87,51 +87,65 @@ function bigbluebuttonbn_add_instance($data, $mform) {
 
     bigbluebuttonbn_process_pre_save($data);
 
-    unset($data->presentation);
-    $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
-    $data->id = $bigbluebuttonbn_id;
-
-    //Salvando as partes e os advs de cada parte
-    $partes = explode("///",$data->partes);
-    $advogados = explode("///",$data->advogados);
-
-    $cont = 0;
-    foreach ($partes as $row) {
-      $parte_bd = new stdClass();
-      $parte_bd->id_parte=0;
-      $parte_bd->id_bbb=$bigbluebuttonbn_id;
-      $parte_bd->name=$row;
-      $parte_bd->oab=0;
-      $parte_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
-      $parte_id = $DB->insert_record('bigbluebuttonbn_partes', $parte_bd);
-      if($advogados[$cont]!=' '){
-        $adv_aux = explode("---",$advogados[$cont]);
-        $adv_bd = new stdClass();
-        $adv_bd->id_parte=$parte_id;
-        $adv_bd->id_bbb=$bigbluebuttonbn_id;
-        $adv_bd->name=$adv_aux[0];
-        $adv_bd->oab=$adv_aux[1];
-        $adv_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
-        $adv_id = $DB->insert_record('bigbluebuttonbn_partes', $adv_bd);
-      }
-      $cont++;
-    }
-
-    //Salvando as salas
+    //verifica se a sala pode ser gravada
+    $podegravar = 1;
     foreach ($data->select_rooms as $row) {
-      $data_reserva = new stdClass();
-
-      $data_reserva->id_physical_room = $row;
-      $data_reserva->id_bbb = $data->id;
-      $data_reserva->openingtime = $data->openingtime;
-      $data_reserva->closingtime = $data->closingtime;
-      $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
-      $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
+      $sql = 'SELECT * FROM {bigbluebuttonbn_r_reserved} WHERE openingtime = ? and id_physical_room = ?';
+      $sala = $DB->get_record_sql($sql, array($data->openingtime,$row));
+      if($sala){
+        $podegravar = 0;
+      }
     }
+    if($podegravar = 1){
+      unset($data->presentation);
+      $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
+      $data->id = $bigbluebuttonbn_id;
 
-    bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
+      //Salvando as salas
+      foreach ($data->select_rooms as $row) {
+        $data_reserva = new stdClass();
 
-    bigbluebuttonbn_process_post_save($data);
+        $data_reserva->id_physical_room = $row;
+        $data_reserva->id_bbb = $data->id;
+        $data_reserva->openingtime = $data->openingtime;
+        $data_reserva->closingtime = $data->closingtime;
+        $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
+        $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
+      }
+
+      //Salvando as partes e os advs de cada parte
+      $partes = explode("///",$data->partes);
+      $advogados = explode("///",$data->advogados);
+
+      $cont = 0;
+      foreach ($partes as $row) {
+        $parte_bd = new stdClass();
+        $parte_bd->id_parte=0;
+        $parte_bd->id_bbb=$bigbluebuttonbn_id;
+        $parte_bd->name=$row;
+        $parte_bd->oab=0;
+        $parte_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+        $parte_id = $DB->insert_record('bigbluebuttonbn_partes', $parte_bd);
+        if($advogados[$cont]!=' '){
+          $adv_aux = explode("---",$advogados[$cont]);
+          $adv_bd = new stdClass();
+          $adv_bd->id_parte=$parte_id;
+          $adv_bd->id_bbb=$bigbluebuttonbn_id;
+          $adv_bd->name=$adv_aux[0];
+          $adv_bd->oab=$adv_aux[1];
+          $adv_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+          $adv_id = $DB->insert_record('bigbluebuttonbn_partes', $adv_bd);
+        }
+        $cont++;
+      }
+
+      bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
+
+      bigbluebuttonbn_process_post_save($data);
+    }else{
+      $bigbluebuttonbn_id = 0;
+      echo "<p>Já existe uma audiência agendada para alguma das salas selecionadas. Por favor selecione outra sala ou outra data.</p>";
+    }
 
     return $bigbluebuttonbn_id;
 }
