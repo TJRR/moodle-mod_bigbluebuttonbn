@@ -140,7 +140,7 @@ httpGet = function(theUrl)
 
 verificaSala = function(){
   var openingtime = 0;
-  var data = document.getElementById('id_openingtime_year').value + '-' + document.getElementById('id_openingtime_month').value + '-' + document.getElementById('id_openingtime_day').value + 'T' + document.getElementById('id_openingtime_hour').value + ':' + document.getElementById('id_openingtime_minute').value + ':00';
+  var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00';
   openingtime = new Date(data);
   var values =  document.getElementById('id_select_rooms').options;
   for (var i = 0; i < values.length; i++) {

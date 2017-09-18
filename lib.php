@@ -96,7 +96,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
         $podegravar = 0;
       }
     }
-    if($podegravar = 1){
+    if($podegravar == 1){
       unset($data->presentation);
       $bigbluebuttonbn_id = $DB->insert_record('bigbluebuttonbn', $data);
       $data->id = $bigbluebuttonbn_id;
