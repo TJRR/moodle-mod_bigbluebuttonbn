@@ -56,7 +56,6 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $mform =& $this->_form;
         $current_activity =& $this->current;
-
         //-------------------------------------------------------------------------------
         // First block starts here
         //-------------------------------------------------------------------------------
@@ -73,8 +72,13 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                           <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').'
                           <img class="req" title="Required field" alt="Required field" src="http://localhost/moodle_tj/theme/image.php/clean/core/1503604317/req"></label>
                         </div>
-                        <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">
-                          <input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="if(verificaProcesso() == 0){bigbluebuttonbn_process_get()}; return 0;" required oninvalid="setCustomValidity(\' \')">
+                        <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">';
+        if($_GET['update'] == 2){
+          $html_process_get .= '<input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required oninvalid="setCustomValidity(\' \')" value="'.$current_activity->name.'">';
+        }else{
+          $html_process_get .= '<input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="if(verificaProcesso() == 0){bigbluebuttonbn_process_get()}; return 0;" required oninvalid="setCustomValidity(\' \')">';
+        }
+        $html_process_get .= '
                         </div>
                         <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>
                         <script>
