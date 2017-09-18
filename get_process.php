@@ -20,13 +20,13 @@ $url = 'https://projudi.tjrr.jus.br/projudi/webservices/consultaProcessualWebSer
 @$result=curl_exec($ch);
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/projudi.cer");
+//curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/projudi.cer");
 $body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:impl="http://impl.consulta.webservice.projudi.gov/">
    <soapenv:Header/>
    <soapenv:Body>
       <impl:consultarProcesso>
          <!--Optional:-->
-         <impl:numeroUnicoProcesso>'.$_GET['nrprocesso'].'</impl:numeroUnicoProcesso>
+         <impl:numeroUnicoProcesso>'.str_replace('-','',str_replace('.','',$_GET['nrprocesso'])).'</impl:numeroUnicoProcesso>
          <!--Optional:-->
          <impl:sistemaTribunal>FUT</impl:sistemaTribunal>
          <!--Optional:-->
