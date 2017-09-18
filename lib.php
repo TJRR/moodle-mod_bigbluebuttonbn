@@ -132,7 +132,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
           $adv_bd->id_parte=$parte_id;
           $adv_bd->id_bbb=$bigbluebuttonbn_id;
           $adv_bd->name=$adv_aux[0];
-          $adv_bd->oab=$adv_aux[1];
+          @$adv_bd->oab=$adv_aux[1];
           $adv_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
           $adv_id = $DB->insert_record('bigbluebuttonbn_partes', $adv_bd);
         }
