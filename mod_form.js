@@ -209,109 +209,113 @@ bigbluebuttonbn_process_get = function() {
     }
     document.getElementsByName('nrprocesso')[0].value = document.getElementById('id_nr_process').value;
     document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
-    childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
+    if(typeof xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0] !== 'undefined'){
+      childs = xmlDoc.getElementsByTagName("ns2:consultarAudienciaProcessoResponse")[0].childNodes;
 
-    var processo_valido = 1;
-    if(typeof childs[5] === 'undefined') {
-      if(typeof childs[1] === 'undefined'){
-        document.getElementById('id_openingtime_enabled').checked = false;
+      var processo_valido = 1;
+      if(typeof childs[5] === 'undefined') {
+        if(typeof childs[1] === 'undefined'){
+          document.getElementById('id_openingtime_enabled').checked = false;
 
+          document.getElementById('nome_audiencia').innerHTML = '';
+          document.getElementsByName('tipoaudiencia')[0].value = '';
+          processo_valido = 0;
+          alert('O processo informado não foi localizado');
+        }
+        //Aqui caso eventualmente precisarmos tratar a mensagem enviada quando um processo não tem audiência
+        //tratando o xml para inserir as tags certinho
+        // var el2 = document.createElement( 'html' );
+        // el2.innerHTML = childs[4].innerHTML;
+        // var xml2_comtags = el2.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+        // if (window.DOMParser){
+        //     parser3 = new DOMParser();
+        //     xmlDoc3 = parser3.parseFromString(xml2_comtags, "text/xml");
+        // }
+        // else{
+        //     xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+        //     xmlDoc3.async = false;
+        //     xmlDoc3.loadXML(xml2_comtags);
+        // }
+        // console.log(xmlDoc3);
+
+      }else{
         document.getElementById('nome_audiencia').innerHTML = '';
         document.getElementsByName('tipoaudiencia')[0].value = '';
-        processo_valido = 0;
-        alert('O processo informado não foi localizado');
-      }
-      //Aqui caso eventualmente precisarmos tratar a mensagem enviada quando um processo não tem audiência
-      //tratando o xml para inserir as tags certinho
-      // var el2 = document.createElement( 'html' );
-      // el2.innerHTML = childs[4].innerHTML;
-      // var xml2_comtags = el2.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
-      // if (window.DOMParser){
-      //     parser3 = new DOMParser();
-      //     xmlDoc3 = parser3.parseFromString(xml2_comtags, "text/xml");
-      // }
-      // else{
-      //     xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
-      //     xmlDoc3.async = false;
-      //     xmlDoc3.loadXML(xml2_comtags);
-      // }
-      // console.log(xmlDoc3);
 
+        var dia = childs[4].innerHTML.substr(0,2);
+        var mes = childs[4].innerHTML.substr(2,2);
+        var ano = childs[4].innerHTML.substr(4,4);
+        var hora = childs[4].innerHTML.substr(8,2);
+        var min = childs[4].innerHTML.substr(10,2);
+        var seg = childs[4].innerHTML.substr(12,2);
+        var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
+        var mesSimple = parseInt(mes);
+        var datebegin = new Date(thisDateF);
+        var today_date = new Date();
+        if(datebegin.getTime()>=today_date.getTime()){
+          document.getElementById('id_openingtime_enabled').checked = true;
+          document.getElementById('id_openingtime_day').value = dia;
+          document.getElementById('id_openingtime_month').value = mesSimple+'';
+          document.getElementById('id_openingtime_year').value = ano;
+          document.getElementById('id_openingtime_hour').value = 8;
+          document.getElementById('id_openingtime_minute').value = 0;
+        }else{
+          document.getElementById('id_openingtime_enabled').checked = false;
+          alert("Não existem audiências futuras para o processo");
+        }
+
+        document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
+        document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
+      }
+      if(processo_valido == 1){
+
+        var xmlHttp2 = new XMLHttpRequest();
+        xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
+        xmlHttp2.send( null );
+        if (window.DOMParser){
+            parser = new DOMParser();
+            xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
+        }
+        else{
+            xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc2.async = false;
+            xmlDoc2.loadXML(xmlHttp2.responseText);
+        }
+
+        xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
+
+        //convertendo em HTML com um parser do navegador para remover os &lt... etc
+        var el = document.createElement( 'html' );
+        el.innerHTML = xml_final[0].innerHTML;
+        var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+        if (window.DOMParser){
+            parser = new DOMParser();
+            xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
+        }
+        else{
+            xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc3.async = false;
+            xmlDoc3.loadXML(xml_comtags);
+        }
+
+        var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
+        document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
+        document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
+        document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
+        document.getElementById('id_welcome').value = '';
+        if(proc[2].innerHTML == 'true'){
+          document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
+          document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
+        }
+        document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
+        document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
+
+        var partes = proc[8].childNodes;
+        partes.forEach(gravaPartes);
+
+      }
     }else{
-      document.getElementById('nome_audiencia').innerHTML = '';
-      document.getElementsByName('tipoaudiencia')[0].value = '';
-
-      var dia = childs[4].innerHTML.substr(0,2);
-      var mes = childs[4].innerHTML.substr(2,2);
-      var ano = childs[4].innerHTML.substr(4,4);
-      var hora = childs[4].innerHTML.substr(8,2);
-      var min = childs[4].innerHTML.substr(10,2);
-      var seg = childs[4].innerHTML.substr(12,2);
-      var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
-      var mesSimple = parseInt(mes);
-      var datebegin = new Date(thisDateF);
-      var today_date = new Date();
-      if(datebegin.getTime()>=today_date.getTime()){
-        document.getElementById('id_openingtime_enabled').checked = true;
-        document.getElementById('id_openingtime_day').value = dia;
-        document.getElementById('id_openingtime_month').value = mesSimple+'';
-        document.getElementById('id_openingtime_year').value = ano;
-        document.getElementById('id_openingtime_hour').value = 8;
-        document.getElementById('id_openingtime_minute').value = 0;
-      }else{
-        document.getElementById('id_openingtime_enabled').checked = false;
-        alert("Não existem audiências futuras para o processo");
-      }
-
-      document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
-      document.getElementsByName('tipoaudiencia')[0].value = childs[5].innerHTML;
-    }
-    if(processo_valido == 1){
-
-      var xmlHttp2 = new XMLHttpRequest();
-      xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
-      xmlHttp2.send( null );
-      if (window.DOMParser){
-          parser = new DOMParser();
-          xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
-      }
-      else{
-          xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
-          xmlDoc2.async = false;
-          xmlDoc2.loadXML(xmlHttp2.responseText);
-      }
-
-      xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
-
-      //convertendo em HTML com um parser do navegador para remover os &lt... etc
-      var el = document.createElement( 'html' );
-      el.innerHTML = xml_final[0].innerHTML;
-      var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
-      if (window.DOMParser){
-          parser = new DOMParser();
-          xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
-      }
-      else{
-          xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
-          xmlDoc3.async = false;
-          xmlDoc3.loadXML(xml_comtags);
-      }
-
-      var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
-      document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
-      document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
-      document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
-      document.getElementById('id_welcome').value = '';
-      if(proc[2].innerHTML == 'true'){
-        document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
-        document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
-      }
-      document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
-      document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
-
-      var partes = proc[8].childNodes;
-      partes.forEach(gravaPartes);
-
+      alert('O processo informado não foi localizado');
     }
 
 }
