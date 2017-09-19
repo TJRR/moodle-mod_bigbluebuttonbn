@@ -142,10 +142,11 @@ verificaSala = function(){
   var openingtime = 0;
   var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00';
   openingtime = new Date(data);
+  time = openingtime.getTime()/1000;
   var values =  document.getElementById('id_select_rooms').options;
   for (var i = 0; i < values.length; i++) {
     if(values[i].selected){
-      if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+openingtime.getTime())==1){
+      if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time)==1){
         alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
       }
     }

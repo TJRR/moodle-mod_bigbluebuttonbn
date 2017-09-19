@@ -73,7 +73,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                           <img class="req" title="Required field" alt="Required field" src="http://localhost/moodle_tj/theme/image.php/clean/core/1503604317/req"></label>
                         </div>
                         <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">';
-        if($_GET['update'] == 2){
+        if(isset($_GET['update'])){
           $html_process_get .= '<input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="bigbluebuttonbn_process_get(); return 0;" required oninvalid="setCustomValidity(\' \')" value="'.$current_activity->name.'">';
         }else{
           $html_process_get .= '<input maxlength="64" size="32" name="nr_process" type="text" id="id_nr_process" onblur="if(verificaProcesso() == 0){bigbluebuttonbn_process_get()}; return 0;" required oninvalid="setCustomValidity(\' \')">';
