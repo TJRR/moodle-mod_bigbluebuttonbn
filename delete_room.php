@@ -29,7 +29,7 @@ $log->bigbluebuttonbnid = 1;
 $log->userid = $USER->id;
 $log->timecreated = time();
 $log->meetingid = '';
-$log->log = "Sala ".$room->id." - ".$room->name." excluída";
+$log->log = substr("Sala ".$room->id." - ".$room->name." excluída",0,30);
 $log->meta = '';
 $log_insert = $DB->insert_record('bigbluebuttonbn_logs', $log, false);
 
