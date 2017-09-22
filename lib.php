@@ -89,9 +89,15 @@ function bigbluebuttonbn_add_instance($data, $mform) {
 
     //verifica se a sala pode ser gravada
     $podegravar = 1;
-    foreach ($data->select_rooms as $row) {
+
+    //Transformando a data em UTC
+    $format = 'Y-m-d H:i:s';
+    $x = date($format,$data->openingtime);
+    $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+
+    foreach ($data->select_rooms as $row){
       $sql = 'SELECT * FROM {bigbluebuttonbn_r_reserved} WHERE openingtime = ? and id_physical_room = ?';
-      $sala = $DB->get_record_sql($sql, array($data->openingtime,$row));
+      $sala = $DB->get_record_sql($sql, array($datebd->getTimestamp(),$row));
       if($sala){
         $podegravar = 0;
       }
@@ -107,7 +113,13 @@ function bigbluebuttonbn_add_instance($data, $mform) {
 
         $data_reserva->id_physical_room = $row;
         $data_reserva->id_bbb = $data->id;
-        $data_reserva->openingtime = $data->openingtime;
+
+        //Transformando a data em UTC
+        $format = 'Y-m-d H:i:s';
+        $x = date($format,$data->openingtime);
+        $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+
+        $data_reserva->openingtime = $datebd->getTimestamp();
         $data_reserva->closingtime = $data->closingtime;
         $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
         $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
