@@ -204,6 +204,9 @@ gravaPartes = function(element, index, array){
 
 bigbluebuttonbn_process_get = function() {
 
+    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+
     var procMask = "9999999-99.9999.9.99.9999";
     var proc = document.querySelector("#id_nr_process");
     VMasker(proc).maskPattern(procMask);
