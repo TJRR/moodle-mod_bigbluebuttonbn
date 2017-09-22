@@ -149,10 +149,13 @@ verificaSala = function(){
   for (var i = 0; i < values.length; i++) {
     if(values[i].selected){
       if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time)==1){
-        alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+        if(valido==1){
+          alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+        }
         document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
         document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
         valido = 0;
+        values[i].selected = false;
       }
     }
   }
