@@ -310,7 +310,11 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
             $mform->setExpanded('schedule');
 
         $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => true));
-        $mform->setDefault('openingtime', 0);
+        if(isset($_GET['d'])){
+          $mform->setDefault('openingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 08:00'));
+        }else{
+          $mform->setDefault('openingtime', 0);
+        }
         $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => true));
         $mform->setDefault('closingtime', 0);
         //-------------------------------------------------------------------------------
