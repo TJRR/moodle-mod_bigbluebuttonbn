@@ -335,6 +335,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onChange='verificaSala();'");
         $select->setMultiple(true);
+        $mform->addRule('select_rooms',null,'required');
 
         //-------------------------------------------------------------------------------
         // Fifth block ends here
