@@ -70,7 +70,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_process.php" id="get_process">
                         <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
                           <label for="id_nr_process" id="yui_3_17_2_1_1502717703933_1041">'.get_string('mod_form_field_nrprocess','bigbluebuttonbn').'
-                          <img class="req" title="Required field" alt="Required field" src="http://localhost/moodle_tj/theme/image.php/clean/core/1503604317/req"></label>
+                          <img class="req" title="Required field" alt="Required field" src="/theme/image.php/clean/core/1503604317/req"></label>
                         </div>
                         <div class="felement ftext" id="yui_3_17_2_1_1502717703933_1004">';
         if(isset($_GET['update'])){
