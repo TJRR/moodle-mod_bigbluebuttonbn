@@ -231,6 +231,8 @@ bigbluebuttonbn_process_get = function() {
           document.getElementsByName('tipoaudiencia')[0].value = '';
           processo_valido = 0;
           alert('O processo informado não foi localizado');
+        }else{
+          alert('Processo sem audiência designada');
         }
         //Aqui caso eventualmente precisarmos tratar a mensagem enviada quando um processo não tem audiência
         //tratando o xml para inserir as tags certinho
@@ -271,7 +273,7 @@ bigbluebuttonbn_process_get = function() {
           document.getElementById('id_openingtime_minute').value = 0;
         }else{
           document.getElementById('id_openingtime_enabled').checked = false;
-          alert("Não existem audiências futuras para o processo");
+          alert("Processo sem audiência designada");
         }
 
         document.getElementById('nome_audiencia').innerHTML = childs[5].innerHTML;
