@@ -139,29 +139,40 @@ httpGet = function(theUrl)
 }
 
 verificaSala = function(){
-  var openingtime = 0;
-  var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00Z';
-  openingtime = new Date(data);
-  //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
-  var time = openingtime.getTime()/1000;
-  var values =  document.getElementById('id_select_rooms').options;
-  var valido = 1;
-  for (var i = 0; i < values.length; i++) {
-    if(values[i].selected){
-      if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time)==1){
-        if(valido==1){
-          alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+  if(document.getElementById('id_openingtime_enabled').checked == false){
+    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+  }else{
+    var openingtime = 0;
+    var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00Z';
+    openingtime = new Date(data);
+    //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
+    var time = openingtime.getTime()/1000;
+    var values =  document.getElementById('id_select_rooms').options;
+    var valido = 1;
+    var selecteds = 0;
+    for (var i = 0; i < values.length; i++) {
+      if(values[i].selected){
+        if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time)==1){
+          if(valido==1){
+            alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+          }
+          document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+          document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+          valido = 0;
+          values[i].selected = false;
+        }else{
+          selecteds = 1;
         }
-        document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-        document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-        valido = 0;
-        values[i].selected = false;
       }
     }
-  }
-  if(valido == 1){
-    document.getElementById('id_submitbutton').removeAttribute("disabled");
-    document.getElementById('id_submitbutton2').removeAttribute("disabled");
+    if(valido == 1 && selecteds == 1){
+      document.getElementById('id_submitbutton').removeAttribute("disabled");
+      document.getElementById('id_submitbutton2').removeAttribute("disabled");
+    }else{
+      document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+      document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+    }
   }
 }
 
