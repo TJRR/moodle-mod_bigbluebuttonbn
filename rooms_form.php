@@ -57,7 +57,7 @@ if ($mform->is_cancelled()) {
   $log->userid = $USER->id;
   $log->timecreated = time();
   $log->meetingid = '';
-  $log->log = "Sala ".$lastinsertid." - ".$fromform->room." incluída";
+  $log->log = substr("Sala ".$lastinsertid." - ".$fromform->room." incluída",0,30);
   $log->meta = '';
   $log_insert = $DB->insert_record('bigbluebuttonbn_logs', $log, false);
 }
