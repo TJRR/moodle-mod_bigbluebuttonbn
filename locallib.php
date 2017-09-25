@@ -1674,3 +1674,17 @@ function bigbluebuttonbn_get_rooms_list() {
 
     return $records;
 }
+
+function bigbluebuttonbn_get_rooms_list_complete($idbbb) {
+    global $DB;
+
+    $table = 'bigbluebuttonbn_r_reserved';
+
+    //Prepare select for loading records based on existent bigbluebuttonbns
+    $select = 'id_bbb = '.$idbbb;
+
+    //Execute select for loading records based on existent bigbluebuttonbns
+    $records = $DB->get_records_select($table, $select);
+
+    return $records;
+}

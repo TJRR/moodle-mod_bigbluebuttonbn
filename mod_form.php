@@ -335,6 +335,14 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onClick='verificaSala();'");
         $select->setMultiple(true);
+        if(isset($_GET['update'])){
+          $rooms_list_complete = bigbluebuttonbn_get_rooms_list_complete($current_activity->id);          
+          $selecionadas = array();
+          foreach ($rooms_list_complete as $key) {
+            array_push($selecionadas, $key->id_physical_room);
+          }
+          $select->setSelected($selecionadas);
+        }
         $mform->addRule('select_rooms',null,'required');
 
         //-------------------------------------------------------------------------------
