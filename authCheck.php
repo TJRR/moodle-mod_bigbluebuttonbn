@@ -15,10 +15,6 @@ $records = $_SESSION["MAP_MEETING_RECORD"];
 
 $meetingId = $records[$recordId];
 
-echo("!!!!!!!!!!!!!!!!\n\n\n\n\n\n");
-echo($meetingId);
-
-
 if ($meetingId) {
 
     $parts = explode('-', $meetingId);
@@ -53,13 +49,9 @@ if ($meetingId) {
     curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-<<<<<<< HEAD
-    $urlContent = curl_exec($ch);
-=======
 // memory limit endless
-	ini_set('memory_limit', '-1');
-	$urlContent = curl_exec($ch);
->>>>>>> 384f43b9f17d32913b6d0151e0f978a5979d5c8a
+    ini_set('memory_limit', '-1');
+    $urlContent = curl_exec($ch);
 
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     $header = substr($urlContent, 0, $header_size);
@@ -79,13 +71,4 @@ if ($meetingId) {
     error_log(print_r("else", true));
     http_response_code(401);
 }
-<<<<<<< HEAD
 ?>
-=======
-else {
-	error_log(print_r("else",true));
-	http_response_code(401);
-}
-
-?>
->>>>>>> 384f43b9f17d32913b6d0151e0f978a5979d5c8a
