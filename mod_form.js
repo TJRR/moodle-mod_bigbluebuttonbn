@@ -133,6 +133,15 @@ bigbluebuttonbn_select_add_option = function(id, text, value) {
 httpGet = function(theUrl)
 {
     var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function() {
+    if (xmlHttp.readyState === 4){   //if complete
+            if(xmlHttp.status === 200){  //check if "OK" (200)
+                //success
+            } else {
+                //return 'erro';
+            }
+        }
+    }
     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
     xmlHttp.send( null );
     return xmlHttp.responseText;
@@ -157,7 +166,8 @@ verificaSala = function(){
     }
     for (var i = 0; i < values.length; i++) {
       if(values[i].selected){
-        if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time+id_bbb)==1){
+        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time+id_bbb);        
+        if(retornohttp==1){
           if(valido==1){
             alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
           }
@@ -166,7 +176,17 @@ verificaSala = function(){
           valido = 0;
           values[i].selected = false;
         }else{
-          selecteds = 1;
+          if(retornohttp==0){
+            selecteds = 1;
+          }else{
+            if(valido==1){
+              alert('Não foi possível acessar o servidor para reservar a sala! Tente novamente');
+            }
+            document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+            document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+            valido = 0;
+            values[i].selected = false;
+          }
         }
       }
     }
