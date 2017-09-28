@@ -13,7 +13,12 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 global $DB;
 
 $sql = 'SELECT * FROM {bigbluebuttonbn_r_reserved} WHERE openingtime = ? and id_physical_room = ?';
-$sala = $DB->get_record_sql($sql, array($_GET['date'],$_GET['id']));
+if(isset($_GET['id_bbb'])){
+  $sql .= ' and id_bbb <> ?';
+  $sala = $DB->get_record_sql($sql, array($_GET['date'],$_GET['id'],$_GET['id_bbb']));
+}else{
+  $sala = $DB->get_record_sql($sql, array($_GET['date'],$_GET['id']));
+}
 if($sala){
   echo 1;
 }else{

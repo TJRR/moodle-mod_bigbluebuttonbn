@@ -89,6 +89,11 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                       </div>';
         $mform->addElement('html', $html_process_get);
         $mform->addElement('hidden', 'nrprocesso', '');
+        if(isset($_GET['update'])){
+          $mform->addElement('hidden', 'idbbb_update', $current_activity->id);
+        }else{
+          $mform->addElement('hidden', 'idbbb_update', '0');
+        }
 
         $html_tipo_processo = '<div id="fitem_tipo_audiencia" class="fitem fitem_ftext">
                                 <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
@@ -336,7 +341,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onClick='verificaSala();'");
         $select->setMultiple(true);
         if(isset($_GET['update'])){
-          $rooms_list_complete = bigbluebuttonbn_get_rooms_list_complete($current_activity->id);          
+          $rooms_list_complete = bigbluebuttonbn_get_rooms_list_complete($current_activity->id);
           $selecionadas = array();
           foreach ($rooms_list_complete as $key) {
             array_push($selecionadas, $key->id_physical_room);

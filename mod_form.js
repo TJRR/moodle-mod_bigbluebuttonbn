@@ -151,9 +151,13 @@ verificaSala = function(){
     var values =  document.getElementById('id_select_rooms').options;
     var valido = 1;
     var selecteds = 0;
+    var id_bbb = '';
+    if(document.getElementsByName('idbbb_update')[0].value != '0'){
+      id_bbb = '&id_bbb='+document.getElementsByName('idbbb_update')[0].value;
+    }
     for (var i = 0; i < values.length; i++) {
       if(values[i].selected){
-        if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time)==1){
+        if(httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time+id_bbb)==1){
           if(valido==1){
             alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
           }
