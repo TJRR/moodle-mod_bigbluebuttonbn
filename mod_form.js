@@ -157,16 +157,16 @@ verificaSala = function(){
     openingtime = new Date(data);
     //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
     var time = openingtime.getTime()/1000;
-    var values =  document.getElementById('id_select_rooms').options;
+    var selecao_valores =  document.getElementById('id_select_rooms').options;
     var valido = 1;
     var selecteds = 0;
     var id_bbb = '';
     if(document.getElementsByName('idbbb_update')[0].value != '0'){
       id_bbb = '&id_bbb='+document.getElementsByName('idbbb_update')[0].value;
     }
-    for (var i = 0; i < values.length; i++) {
-      if(values[i].selected){
-        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+values[i].value+'&date='+time+id_bbb);        
+    for (var i = 0; i < selecao_valores.length; i++) {
+      if(selecao_valores[i].selected){
+        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date='+time+id_bbb);
         if(retornohttp==1){
           if(valido==1){
             alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
@@ -174,7 +174,7 @@ verificaSala = function(){
           document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
           document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
           valido = 0;
-          values[i].selected = false;
+          selecao_valores[i].selected = false;
         }else{
           if(retornohttp==0){
             selecteds = 1;
@@ -185,7 +185,7 @@ verificaSala = function(){
             document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
             document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
             valido = 0;
-            values[i].selected = false;
+            selecao_valores[i].selected = false;
           }
         }
       }
