@@ -346,6 +346,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
           foreach ($rooms_list_complete as $key) {
             array_push($selecionadas, $key->id_physical_room);
           }
+          //print_r($selecionadas);
           $select->setSelected($selecionadas);
         }
         $mform->addRule('select_rooms',null,'required');

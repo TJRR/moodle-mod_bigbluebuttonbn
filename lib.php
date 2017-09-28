@@ -183,6 +183,27 @@ function bigbluebuttonbn_update_instance($data, $mform) {
     unset($data->presentation);
     $DB->update_record("bigbluebuttonbn", $data);
 
+    //Deleta as anteriores para salvar as novas
+    $DB->delete_records('bigbluebuttonbn_r_reserved', array('id_bbb'=>$data->id));
+
+    //Salvando as salas
+    foreach ($data->select_rooms as $row) {
+      $data_reserva = new stdClass();
+
+      $data_reserva->id_physical_room = $row;
+      $data_reserva->id_bbb = $data->id;
+
+      //Transformando a data em UTC
+      $format = 'Y-m-d H:i:s';
+      $x = date($format,$data->openingtime);
+      $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+
+      $data_reserva->openingtime = $datebd->getTimestamp();
+      $data_reserva->closingtime = $data->closingtime;
+      $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
+      $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
+    }
+
     bigbluebuttonbn_update_media_file($data->id, $context, $draftitemid);
 
     bigbluebuttonbn_process_post_save($data);
