@@ -314,7 +314,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         if( isset($current_activity->openingtime) && $current_activity->openingtime != 0 || isset($current_activity->closingtime) && $current_activity->closingtime != 0 )
             $mform->setExpanded('schedule');
 
-        $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => true), 'onChange=verificaSala();');
         if(isset($_GET['d'])){
           $mform->setDefault('openingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 08:00'));
         }else{
