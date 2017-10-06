@@ -148,6 +148,8 @@ httpGet = function(theUrl)
 }
 
 verificaSala = function(){
+  document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
+  document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
   if(document.getElementById('id_openingtime_enabled').checked == false){
     var selecteds = 0;
     var selecao_valores =  document.getElementById('id_select_rooms').options;
@@ -214,6 +216,8 @@ verificaSala = function(){
 }
 
 verificaProcesso = function(){
+  document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
+  document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
   var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
   if(existe_processo==1){
     alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
@@ -251,6 +255,9 @@ gravaPartes = function(element, index, array){
 }
 
 bigbluebuttonbn_process_get = function() {
+
+    document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
+    document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
 
     document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
     document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
