@@ -134,6 +134,7 @@ $string['mod_form_block_participants'] = 'Participants';
 $string['mod_form_block_schedule'] = 'Schedule for session';
 $string['mod_form_block_record'] = 'Record settings';
 $string['mod_form_block_rooms'] = 'Physical rooms';
+$string['mod_form_field_select_process_type'] = 'Process type';
 $string['mod_form_field_selectrooms'] = 'Select room';
 $string['mod_form_field_addroom'] = 'Add Room';
 $string['mod_form_field_openingtime'] = 'Join open';

@@ -424,5 +424,19 @@ function xmldb_bigbluebuttonbn_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2017081700, 'bigbluebuttonbn');
     }
 
+    if ($result && $oldversion < 2017102700) {
+        // Update the bigbluebuttonbn table
+        $table = new xmldb_table('bigbluebuttonbn');
+
+        //// Add field meta
+        $field = new xmldb_field('process_type');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, 0);
+        if( !$dbman->field_exists($table, $field) ) {
+            $dbman->add_field($table, $field, $continue=true, $feedback=true);
+        }
+
+        upgrade_mod_savepoint(true, 2017102700, 'bigbluebuttonbn');
+    }
+
     return $result;
 }

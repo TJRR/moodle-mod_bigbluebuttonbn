@@ -136,6 +136,7 @@ $string['mod_form_block_participants'] = 'Participantes';
 $string['mod_form_block_schedule'] = 'Agendamento de sessão';
 $string['mod_form_block_record'] = 'Configurações de gravação';
 $string['mod_form_block_rooms'] = 'Salas físicas';
+$string['mod_form_field_select_process_type'] = 'Tipo de processo';
 $string['mod_form_field_selectrooms'] = 'Selecione a sala';
 $string['mod_form_field_addroom'] = 'Adicionar Sala';
 $string['mod_form_field_openingtime'] = 'Entrada liberada';

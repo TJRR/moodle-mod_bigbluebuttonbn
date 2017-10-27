@@ -63,6 +63,13 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $mform->addElement('hidden', 'name','');
 
+        $process_types = array();
+        $process_types['0'] = 'Processo Digital';
+        $process_types['1'] = 'Processo Físico';
+        $process_types['2'] = 'Outros';
+
+        $mform->addElement('select', 'process_type', get_string('mod_form_field_select_process_type', 'bigbluebuttonbn'), $process_types, 'onchange="selectProcessType();"');
+
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/" id="base_url_get">
