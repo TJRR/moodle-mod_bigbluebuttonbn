@@ -324,6 +324,8 @@ bigbluebuttonbn_process_get = function() {
         var thisDateF = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + min + ':' + seg;
         var mesSimple = parseInt(mes);
         var diaSimple = parseInt(dia);
+        var horaSimple = parseInt(hora);
+        var minSimple = parseInt(min);
         var datebegin = new Date(thisDateF);
         var today_date = new Date();
         if(datebegin.getTime()>=today_date.getTime()){
@@ -331,8 +333,16 @@ bigbluebuttonbn_process_get = function() {
           document.getElementById('id_openingtime_day').value = diaSimple+'';
           document.getElementById('id_openingtime_month').value = mesSimple+'';
           document.getElementById('id_openingtime_year').value = ano;
-          document.getElementById('id_openingtime_hour').value = 8;
-          document.getElementById('id_openingtime_minute').value = 0;
+          document.getElementById('id_openingtime_hour').value = horaSimple;
+          document.getElementById('id_openingtime_minute').value = minSimple;
+
+          document.getElementById('id_closingtime_enabled').checked = true;
+          document.getElementById('id_closingtime_day').value = diaSimple+'';
+          document.getElementById('id_closingtime_month').value = mesSimple+'';
+          document.getElementById('id_closingtime_year').value = ano;
+          document.getElementById('id_closingtime_hour').value = horaSimple+1;
+          document.getElementById('id_closingtime_minute').value = minSimple;
+
         }else{
           document.getElementById('id_openingtime_enabled').checked = false;
           alert("Processo sem audiência designada");

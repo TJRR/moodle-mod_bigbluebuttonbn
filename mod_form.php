@@ -327,7 +327,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         }else{
           $mform->setDefault('openingtime', 0);
         }
-        $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => true), 'onChange=verificaSala();');
         $mform->setDefault('closingtime', 0);
         //-------------------------------------------------------------------------------
         // Fourth block ends here
