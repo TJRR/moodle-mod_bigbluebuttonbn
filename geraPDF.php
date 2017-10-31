@@ -17,6 +17,6 @@
  $css = file_get_contents("css/estilo.css");
  $mpdf->WriteHTML($css,1);
  $mpdf->WriteHTML($html);
- $mpdf->Output('/sites/dev-conecta/PDF/pdf_tj_teste.pdf','F');
+ $mpdf->Output('../../../PDF/pdf_tj_teste.pdf','F');
 
  exit;
