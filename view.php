@@ -376,7 +376,19 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         $recordings = array_merge($recordings, $recordings_imported);
         echo "5.1 - ".$course->fullname;
         echo "<pre>";
-        print_r($recordings);
+        foreach($recordings as $record){
+          echo "5.4 - ".$record['meetingID'];
+          echo "<br>5.5 - ".$record['meta_meetingName'];
+          echo "<br>5.6 - ".$record['startTime'];
+          echo "<br>5.7 - ".$record['endTime']."<br>";
+          $year = date("Y", $record['startTime']/1000);
+          echo "<br>5.8 - 172.16.1.62/PDF/".$year."/".$course->fullname."/";
+          echo "<br>5.9 - json{'".$record['meetingID']."':'".$year."/".$course->fullname."/".$record['meetingID'].".pdf','<size>','<md5 pdf>','<lenght>'}";
+          echo "<br>5.10 - {size}";
+          echo "<br>5.11 - {hash}";
+          echo "<br>5.12 - ".$record['playbacks']['presentation']['length']."<br>";
+          print_r($record);
+        }
         echo "</pre>";
         // Render the table
         $output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
