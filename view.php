@@ -374,6 +374,9 @@ function bigbluebuttonbn_view_recordings($bbbsession) {
         $recordings_imported = bigbluebuttonbn_getRecordingsImportedArray($bbbsession['course']->id, $bbbsession['bigbluebuttonbn']->id);
         // Merge the recordings
         $recordings = array_merge($recordings, $recordings_imported);
+        echo "<pre>";
+        print_r($recordings);
+        echo "</pre>";
         // Render the table
         $output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
 
