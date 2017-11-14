@@ -231,7 +231,7 @@ if (!empty($bigbluebuttonbn->openingtime) && $now < $bigbluebuttonbn->openingtim
 
 // Initialize session variable used across views
 $SESSION->bigbluebuttonbn_bbbsession = $bbbsession;
-bigbluebuttonbn_view($bbbsession, $bigbluebuttonbn_activity);
+bigbluebuttonbn_view($bbbsession, $bigbluebuttonbn_activity, $course);
 
 //JavaScript variables
 $waitformoderator_ping_interval = bigbluebuttonbn_get_cfg_waitformoderator_ping_interval();
@@ -259,7 +259,7 @@ $PAGE->requires->js_init_call('M.mod_bigbluebuttonbn.view_init', array(), false,
 // Finish the page
 echo $OUTPUT->footer();
 
-function bigbluebuttonbn_view($bbbsession, $activity) {
+function bigbluebuttonbn_view($bbbsession, $activity, $course) {
     global $CFG, $DB, $OUTPUT;
 
     echo $OUTPUT->heading($bbbsession['meetingname'], 3);
@@ -290,7 +290,7 @@ function bigbluebuttonbn_view($bbbsession, $activity) {
             bigbluebuttonbn_view_joining($bbbsession);
         }
 
-        bigbluebuttonbn_view_recordings($bbbsession);
+        bigbluebuttonbn_view_recordings($bbbsession, $course);
     }
 }
 
@@ -340,7 +340,7 @@ function bigbluebuttonbn_view_ended($bbbsession) {
     }
 }
 
-function bigbluebuttonbn_view_recordings($bbbsession) {
+function bigbluebuttonbn_view_recordings($bbbsession, $course) {
     global $CFG;
 
     if (isset($bbbsession['record']) && $bbbsession['record']) {
@@ -374,6 +374,7 @@ function bigbluebuttonbn_view_recordings($bbbsession) {
         $recordings_imported = bigbluebuttonbn_getRecordingsImportedArray($bbbsession['course']->id, $bbbsession['bigbluebuttonbn']->id);
         // Merge the recordings
         $recordings = array_merge($recordings, $recordings_imported);
+        echo "5.1 - ".$course->fullname;
         echo "<pre>";
         print_r($recordings);
         echo "</pre>";

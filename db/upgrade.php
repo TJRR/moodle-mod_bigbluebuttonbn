@@ -438,5 +438,38 @@ function xmldb_bigbluebuttonbn_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2017102700, 'bigbluebuttonbn');
     }
 
+    if ($result && $oldversion < 2017111400) {
+
+      // Define table bigbluebuttonbn_proc to be created
+      $table = new xmldb_table('bigbluebuttonbn_a_record');
+
+      // Adding fields to table bigbluebuttonbn_proc
+      $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+      $table->add_field('id_bbb', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+      $table->add_field('placeidtribunal', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('hearingidtribunal', XMLDB_TYPE_TEXT, null, null, null, null, null,null);
+      $table->add_field('cast', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('nrprocesso', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('expectedate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+      $table->add_field('publishdate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+      $table->add_field('basefilepath', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('files', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('size', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+      $table->add_field('hash', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('duration', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+      $table->add_field('meetingid', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+      $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+      // Adding keys to table bigbluebuttonbn_proc
+      $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+      // Conditionally launch create table for bigbluebuttonbn_r_reserved
+      if (!$dbman->table_exists($table)) {
+          $dbman->create_table($table);
+      }
+
+      upgrade_mod_savepoint(true, 2017111400, 'bigbluebuttonbn');
+    }
+
     return $result;
 }
