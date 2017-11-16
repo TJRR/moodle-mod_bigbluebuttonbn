@@ -62,6 +62,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('mod_form_block_general', 'bigbluebuttonbn'));
 
         $mform->addElement('hidden', 'name','');
+        $mform->setType('name', PARAM_RAW);
 
         $process_types = array();
         $process_types['0'] = 'Processo Digital';
@@ -96,11 +97,13 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                       </div>';
         $mform->addElement('html', $html_process_get);
         $mform->addElement('hidden', 'nrprocesso', '');
+        $mform->setType('nrprocesso', PARAM_RAW);
         if(isset($_GET['update'])){
           $mform->addElement('hidden', 'idbbb_update', $current_activity->id);
         }else{
           $mform->addElement('hidden', 'idbbb_update', '0');
         }
+        $mform->setType('idbbb_update', PARAM_RAW);
 
         $html_tipo_processo = '<div id="fitem_tipo_audiencia" class="fitem fitem_ftext">
                                 <div class="fitemtitle" id="yui_3_17_2_1_1502717703933_1042">
@@ -112,12 +115,17 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                               </div>';
         $mform->addElement('html', $html_tipo_processo);
         $mform->addElement('hidden', 'tipoaudiencia', '');
+        $mform->setType('tipoaudiencia', PARAM_RAW);
 
         //Inserindo campos no mform para enviar os dados pro backend
         $mform->addElement('hidden', 'segredojustica', '');
+        $mform->setType('segredojustica', PARAM_RAW);
         $mform->addElement('hidden', 'assuntoprincipal', '');
+        $mform->setType('assuntoprincipal', PARAM_RAW);
         $mform->addElement('hidden', 'partes', '');
+        $mform->setType('partes', PARAM_RAW);
         $mform->addElement('hidden', 'advogados', '');
+        $mform->setType('advogados', PARAM_RAW);
 
         $version_major = bigbluebuttonbn_get_moodle_version_major();
         if ( $version_major < '2015051100' ) {
