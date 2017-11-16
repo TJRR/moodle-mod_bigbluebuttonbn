@@ -341,7 +341,7 @@ function bigbluebuttonbn_view_ended($bbbsession) {
 }
 
 function bigbluebuttonbn_view_recordings($bbbsession, $course) {
-    global $CFG;
+    global $CFG,$DB;
 
     if (isset($bbbsession['record']) && $bbbsession['record']) {
         $output = html_writer::tag('h4', get_string('view_section_title_recordings', 'bigbluebuttonbn'));
@@ -374,22 +374,32 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         $recordings_imported = bigbluebuttonbn_getRecordingsImportedArray($bbbsession['course']->id, $bbbsession['bigbluebuttonbn']->id);
         // Merge the recordings
         $recordings = array_merge($recordings, $recordings_imported);
-        echo "5.1 - ".$course->fullname;
-        echo "<pre>";
+
         foreach($recordings as $record){
-          echo "5.4 - ".$record['meetingID'];
-          echo "<br>5.5 - ".$record['meta_meetingName'];
-          echo "<br>5.6 - ".$record['startTime'];
-          echo "<br>5.7 - ".$record['endTime']."<br>";
-          $year = date("Y", $record['startTime']/1000);
-          echo "<br>5.8 - 172.16.1.62/PDF/".$year."/".$course->fullname."/";
-          echo "<br>5.9 - json{'".$record['meetingID']."':'".$year."/".$course->fullname."/".$record['meetingID'].".pdf','<size>','<md5 pdf>','<lenght>'}";
-          echo "<br>5.10 - {size}";
-          echo "<br>5.11 - {hash}";
-          echo "<br>5.12 - ".$record['playbacks']['presentation']['length']."<br>";
-          print_r($record);
+          $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE cast = ?';
+          $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
+          if(!$aud_gravada){
+            $year = date("Y", $record['startTime']/1000);
+            $aud = new stdClass();
+            $aud->id_bbb=$bbbsession['bigbluebuttonbn']->id;
+            $aud->placeidtribunal=$course->fullname;
+            $aud->hearingidtribunal=$record['meta_bbb-recording-description'];
+            $aud->cast=$record['recordID'];
+            $aud->nrprocesso=$record['meetingName'];
+            $aud->expectedate=$record['startTime'];
+            $aud->publishdate=$record['endTime'];
+            $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->fullname."/";
+            $aud->files="json{'".$record['recordID']."':'".$year."/".$course->fullname."/".$record['recordID'].".pdf','<size>','<md5 pdf>','<lenght>'}";
+            $aud->size=0;
+            $aud->hash=0;
+            $aud->duration=$record['playbacks']['presentation']['length'];
+            $aud->meetingid=$record['meetingID'];
+            $aud->link=$record['playbacks']['presentation']['url'];
+            $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
+            $aud = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
+          }
         }
-        echo "</pre>";
+
         // Render the table
         $output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
 
