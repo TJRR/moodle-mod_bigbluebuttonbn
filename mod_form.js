@@ -271,7 +271,7 @@ bigbluebuttonbn_process_get = function() {
     var proc = document.querySelector("#id_nr_process");
     VMasker(proc).maskPattern(procMask);
 
-    if(tipo_proc==1){
+    if(tipo_proc==0){
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open( "GET", document.getElementById('get_audiencias').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
       xmlHttp.send( null );
