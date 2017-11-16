@@ -396,7 +396,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->meetingid=$record['meetingID'];
             $aud->link=$record['playbacks']['presentation']['url'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
-            $aud = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
+            $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
+            gera_pdf($aud_id);
           }
         }
 

@@ -415,6 +415,10 @@ selectProcessType = function(){
 
   var tipo_proc = document.getElementById('id_process_type').value;
 
+  if(tipo_proc==0){
+    bigbluebuttonbn_process_get();
+  }
+
   var procMask = "9999999-99.9999.9.99.9999";
   if(tipo_proc==2){
     procMask = 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';

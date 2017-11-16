@@ -31,12 +31,12 @@ class simplehtml_form extends moodleform {
         $mform = $this->_form; // Don't forget the underscore!
 
         $mform->addElement('text', 'nome','nome'); // Add elements to your form
-         $mform->setType('nome', PARAM_RAW);
+        $mform->setType('nome', PARAM_RAW);
         $mform->addElement('editor', 'descrição','descrição'); // Add elements to your form
         $mform->setType('descrição', PARAM_RAW);
 
         $mform->addElement('text', 'etiqueta','etiqueta'); // Add elements to your form
-        $mform->setType('etiqueta', PARAM_RAW);        
+        $mform->setType('etiqueta', PARAM_RAW);
 
         $this->add_action_buttons();
 
