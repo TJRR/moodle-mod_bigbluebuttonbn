@@ -970,7 +970,7 @@ function bigbluebuttonbn_bbb_broker_add_error($org_msg, $new_msg='') {
     return $error;
 }
 
-function bigbluebuttonbn_get_recording_data_row($bbbsession, $recording, $tools=["publishing", "deleting"]) {
+function bigbluebuttonbn_get_recording_data_row($bbbsession, $recording, $tools=["publishing", "deleting","editing"]) {
     global $OUTPUT, $CFG, $USER;
 
     $row = null;
@@ -1081,6 +1081,23 @@ function bigbluebuttonbn_get_recording_data_row($bbbsession, $recording, $tools=
                 }
             }
 
+             if (in_array("editing", $tools)) {
+                //mandar para a página de edição
+                $editPage = $CFG->wwwroot . '/mod/bigbluebuttonbn/edit_record_data.php?'.$recording['recordID'];
+
+                if ( bigbluebuttonbn_get_cfg_recording_icons_enabled() ) {
+                    //With icon for edit
+                    $icon_attributes = array('id' => 'recording-btn-edit-'.$recording['recordID']);
+                    $icon = new pix_icon('t/edit', get_string('edit').$tag_tail, 'moodle', $icon_attributes);
+                    $link_attributes = array('id' => 'recording-link-edit-'.$recording['recordID'], 'href' => $onclick, 'data-links' => $recordings_imported_count);
+                    $actionbar .= $OUTPUT->action_icon($editPage, $icon, $action, $link_attributes, false);
+                } else {
+                    //With text for edit
+                    $link_attributes = array('title' => get_string('edit').$tag_tail, 'class' => 'btn btn-xs btn-danger', 'onclick' => $onclick, 'data-links' => $recordings_imported_count);
+                    $actionbar .= $OUTPUT->action_link($editPage, get_string('edit').$tag_tail, $action, $link_attributes);
+                }
+            }
+
             if (in_array("importing", $tools)) {
                 $onclick = 'M.mod_bigbluebuttonbn.broker_manageRecording("import", "'.$recording['recordID'].'", "'.$recording['meetingID'].'");';
 
@@ -1143,7 +1160,7 @@ function bigbluebuttonbn_get_recording_columns($bbbsession, $recordings) {
     return $recordingsbn_columns;
 }
 
-function bigbluebuttonbn_get_recording_data($bbbsession, $recordings, $tools=["publishing", "deleting"]) {
+function bigbluebuttonbn_get_recording_data($bbbsession, $recordings, $tools=["publishing", "deleting", "editing"]) {
     $table_data = array();
 
     ///Build table content
@@ -1159,7 +1176,7 @@ function bigbluebuttonbn_get_recording_data($bbbsession, $recordings, $tools=["p
     return $table_data;
 }
 
-function bigbluebuttonbn_get_recording_table($bbbsession, $recordings, $tools=['publishing','deleting']) {
+function bigbluebuttonbn_get_recording_table($bbbsession, $recordings, $tools=['publishing','deleting', 'editing']) {
     global $OUTPUT, $CFG;
 
     ///Set strings to show
@@ -1592,7 +1609,7 @@ function bigbluebuttonbn_import_exlcude_recordings_already_imported($courseID, $
     return $recordings;
 }
 
-function bigbluebutton_output_recording_table($bbbsession, $recordings, $tools=['publishing','deleting']) {
+function bigbluebutton_output_recording_table($bbbsession, $recordings, $tools=['publishing','deleting','editing']) {
 
     if ( isset($recordings) && !empty($recordings) ) {  // There are recordings for this meeting
         $table = bigbluebuttonbn_get_recording_table($bbbsession, $recordings, $tools);
