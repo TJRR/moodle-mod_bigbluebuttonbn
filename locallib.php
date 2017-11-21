@@ -1771,6 +1771,6 @@ function gera_pdf($id_aud){
      mkdir ($diretorio, 0777 ); // criar o diretorio
   }
 
-  $mpdf->Output($diretorio.'/'.$aud_gravada->cast.'.pdf','F');
+  $mpdf->Output($diretorio.'/'.$aud_gravada->recordid.'.pdf','F');
 
 }

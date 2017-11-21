@@ -376,7 +376,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         $recordings = array_merge($recordings, $recordings_imported);
 
         foreach($recordings as $record){
-          $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE cast = ?';
+          $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE recordid = ?';
           $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
           if(!$aud_gravada){
             $year = date("Y", $record['startTime']/1000);
@@ -384,7 +384,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->id_bbb=$bbbsession['bigbluebuttonbn']->id;
             $aud->placeidtribunal=$course->fullname;
             $aud->hearingidtribunal=$record['meta_bbb-recording-description'];
-            $aud->cast=$record['recordID'];
+            $aud->recordid=$record['recordID'];
             $aud->nrprocesso=$record['meetingName'];
             $aud->expectedate=$record['startTime'];
             $aud->publishdate=$record['endTime'];

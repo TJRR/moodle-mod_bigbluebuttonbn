@@ -61,7 +61,7 @@
     mkdir ($diretorio, 0777 ); // criar o diretorio
  }
 
- $mpdf->Output($diretorio.'/'.$aud_gravada->cast.'.pdf','F');
+ $mpdf->Output($diretorio.'/'.$aud_gravada->recordid.'.pdf','F');
  //endereçamento no servidor
  //$mpdf->Output('../../../PDF/pdf_tj_teste.pdf','F');
 
