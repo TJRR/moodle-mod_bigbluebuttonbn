@@ -1716,8 +1716,8 @@ function gera_pdf($id_aud){
   $sql2 = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
   $processo = $DB->get_record_sql($sql2, array($aud_gravada->id_bbb));
 
-  $sql3 = 'SELECT * FROM {bigbluebuttonbn_partes} WHERE id_bbb = ? and oab=0';
-  $partes = $DB->get_records_sql($sql3, array($aud_gravada->id_bbb));
+  //$sql3 = 'SELECT * FROM {bigbluebuttonbn_partes} WHERE id_bbb = ? and oab="0"';
+  $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
 
   if($processo->segredojustica == ''){
     $sigilo = "Não";
