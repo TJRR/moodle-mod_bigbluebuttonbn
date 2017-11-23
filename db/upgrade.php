@@ -504,5 +504,25 @@ function xmldb_bigbluebuttonbn_upgrade($oldversion=0) {
 
         upgrade_mod_savepoint(true, 2017112100, 'bigbluebuttonbn');
     }
+
+    if ($result && $oldversion < 2017112300) {
+
+        // Update the bigbluebuttonbn_a_record table
+        $table = new xmldb_table('bigbluebuttonbn_a_record');
+
+        // Define field 'cast' to be renamed
+        $field = new xmldb_field('recordid');
+        $field->set_attributes(XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+
+        // Conditionally rename the table
+        if ($dbman->table_exists($table)) {
+            // Update the bigbluebuttonbn_a_record table
+            if ( $dbman->field_exists($table, $field) ) {
+                $dbman->rename_field($table, $field, 'guid', $continue=true, $feedback=true);
+            }
+        }
+
+        upgrade_mod_savepoint(true, 2017112300, 'bigbluebuttonbn');
+    }
     return $result;
 }
