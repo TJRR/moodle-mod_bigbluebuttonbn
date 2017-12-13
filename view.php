@@ -403,6 +403,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
             gera_pdf($aud_id);
           }else{
+            $aud_gravada->link=$record['playbacks']['presentation']['url'];
+            $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             if($aud_gravada->id_course==''||$aud_gravada->id_course==0){
               $aud_gravada->id_course=$_GET['id'];
               $aud_gravada->name=$record['meta_bbb-recording-name'];
