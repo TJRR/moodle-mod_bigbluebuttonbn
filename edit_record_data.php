@@ -36,6 +36,9 @@ class simplehtml_form extends moodleform {
         $mform->addElement('hidden', 'id','id'); // Add elements to your form
         $mform->setType('id', PARAM_RAW);
         $mform->setDefault('id',$records->id);
+        $mform->addElement('hidden', 'id_course','id_course'); // Add elements to your form
+        $mform->setType('id_course', PARAM_RAW);
+        $mform->setDefault('id_course',$records->id_course);
 
         $mform->addElement('text', 'name','nome'); // Add elements to your form
         $mform->setType('name', PARAM_RAW);
@@ -67,7 +70,7 @@ if ($mform->is_cancelled()) {
   $records->description = $fromform->description['text'];
   $records->tags = $fromform->tag;
   $DB->update_record('bigbluebuttonbn_a_record', $records, false);
-
+  redirect($CFG->wwwroot.'/mod/bigbluebuttonbn/view.php?id='.$fromform->id_course);
 }
 
 echo $OUTPUT->header();

@@ -398,10 +398,18 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->name=$record['meta_bbb-recording-name'];
             $aud->description=$record['meta_bbb-recording-description'];
             $aud->tags=$record['meta_bbb-recording-tags'];
+            $aud->id_course=$_GET['id'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
             gera_pdf($aud_id);
           }else{
+            if($aud_gravada->id_course==''||$aud_gravada->id_course==0){
+              $aud_gravada->id_course=$_GET['id'];
+              $aud_gravada->name=$record['meta_bbb-recording-name'];
+              $aud_gravada->description=$record['meta_bbb-recording-description'];
+              $aud_gravada->tags=$record['meta_bbb-recording-tags'];
+              $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
+            }
             gera_pdf($aud_gravada->id);
           }
         }
