@@ -16,7 +16,7 @@ $course = $DB->get_record('course', array('id' => '1'), '*', MUST_EXIST);
 require_login($course, true);
 
 /// Print the header
-$PAGE->set_url('/mod/bigbluebuttonbn/rooms_form.php');
+$PAGE->set_url('/mod/bigbluebuttonbn/edit_record_data.php');
 $PAGE->set_title(get_string('modulename', 'bigbluebuttonbn'));
 $PAGE->set_cacheable(false);
 $PAGE->set_pagelayout('incourse');
@@ -26,17 +26,28 @@ $PAGE->set_pagelayout('incourse');
 class simplehtml_form extends moodleform {
 
     function definition() {
-        global $CFG;
+        global $CFG, $DB;
+
+        $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
+        $records = $DB->get_record_sql($sql, array($_GET['id']));
 
         $mform = $this->_form; // Don't forget the underscore!
 
-        $mform->addElement('text', 'nome','nome'); // Add elements to your form
-        $mform->setType('nome', PARAM_RAW);
-        $mform->addElement('editor', 'descrição','descrição'); // Add elements to your form
-        $mform->setType('descrição', PARAM_RAW);
+        $mform->addElement('hidden', 'id','id'); // Add elements to your form
+        $mform->setType('id', PARAM_RAW);
+        $mform->setDefault('id',$records->id);
 
-        $mform->addElement('text', 'etiqueta','etiqueta'); // Add elements to your form
-        $mform->setType('etiqueta', PARAM_RAW);
+        $mform->addElement('text', 'name','nome'); // Add elements to your form
+        $mform->setType('name', PARAM_RAW);
+        $mform->setDefault('name',$records->name);
+
+        $mform->addElement('editor', 'description','descrição'); // Add elements to your form
+        $mform->setType('description', PARAM_RAW);
+        $mform->setDefault('description',array('text'=>$records->description));
+
+        $mform->addElement('text', 'tag','etiqueta'); // Add elements to your form
+        $mform->setType('tag', PARAM_RAW);
+        $mform->setDefault('tag',$records->tags);
 
         $this->add_action_buttons();
 
@@ -50,40 +61,18 @@ if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 } else if ($fromform = $mform->get_data()) {
 
-  $record = new stdClass();
-  $record->name = $fromform->room;
-  $record->userid = $USER->id;
-  $record->timecreated = time();
-  $lastinsertid = $DB->insert_record('bigbluebuttonbn_rooms', $record, false);
+  $records = new stdClass();
+  $records->id = $fromform->id;
+  $records->name = $fromform->name;
+  $records->description = $fromform->description['text'];
+  $records->tags = $fromform->tag;
+  $DB->update_record('bigbluebuttonbn_a_record', $records, false);
 
-  $log = new stdClass();
-  $log->courseid = 1;
-  $log->bigbluebuttonbnid = 1;
-  $log->userid = $USER->id;
-  $log->timecreated = time();
-  $log->meetingid = '';
-  $log->log = substr("Sala ".$lastinsertid." - ".$fromform->room." incluída",0,30);
-  $log->meta = '';
-  $log_insert = $DB->insert_record('bigbluebuttonbn_logs', $log, false);
 }
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->heading('Editar processo: ');
-
-// //Apresenta todas as salas
-// $table = 'bigbluebuttonbn_rooms';
-// $select = "";
-// $records = $DB->get_records_select($table, $select);
-
-// echo "<ul>";
-// foreach ($records as $row) {
-//   echo "<li>".$row->name." <sup><a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/delete_room.php?id=".$row->id."' onclick='if(!confirm(\"Deseja realmente deletar a sala?\")) return false;'>x</a></sup></li>";
-//   //print_r($row);
-// }
-// echo "</ul>";
-
-// echo "<br><br>";
+echo $OUTPUT->heading('Editar audiência: ');
 
 $mform->display();
 

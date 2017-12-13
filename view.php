@@ -395,21 +395,59 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->duration=$record['playbacks']['presentation']['length'];
             $aud->meetingid=$record['meetingID'];
             $aud->link=$record['playbacks']['presentation']['url'];
+            $aud->name=$record['meta_bbb-recording-name'];
+            $aud->description=$record['meta_bbb-recording-description'];
+            $aud->tags=$record['meta_bbb-recording-tags'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
             gera_pdf($aud_id);
+          }else{
+            gera_pdf($aud_gravada->id);
           }
         }
 
-        // Render the table
-        $output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
+        // // Render the table
+        //$output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
+        //
+        // if ($bbbsession['managerecordings'] && bigbluebuttonbn_get_cfg_importrecordings_enabled()) {
+        //     $button_import_recordings = html_writer::tag('input', '', array('type' => 'button', 'value' => get_string('view_recording_button_import', 'bigbluebuttonbn'), 'onclick' => 'window.location=\'' . $CFG->wwwroot . '/mod/bigbluebuttonbn/import_view.php?bn=' . $bbbsession['bigbluebuttonbn']->id . '\''));
+        //     $output .= html_writer::start_tag('br');
+        //     $output .= html_writer::tag('span', $button_import_recordings, ['id'=>"import_recording_links_button"]);
+        //     $output .= html_writer::tag('span', '', ['id'=>"import_recording_links_table"]);
+        // }
 
-        if ($bbbsession['managerecordings'] && bigbluebuttonbn_get_cfg_importrecordings_enabled()) {
-            $button_import_recordings = html_writer::tag('input', '', array('type' => 'button', 'value' => get_string('view_recording_button_import', 'bigbluebuttonbn'), 'onclick' => 'window.location=\'' . $CFG->wwwroot . '/mod/bigbluebuttonbn/import_view.php?bn=' . $bbbsession['bigbluebuttonbn']->id . '\''));
-            $output .= html_writer::start_tag('br');
-            $output .= html_writer::tag('span', $button_import_recordings, ['id'=>"import_recording_links_button"]);
-            $output .= html_writer::tag('span', '', ['id'=>"import_recording_links_table"]);
+        $output .= '<br>
+        <table class="generaltable">
+          <thead>
+            <tr>
+              <th class="header c0" style="text-align:left;" scope="col">'.get_string('view_recording_litigation', 'bigbluebuttonbn').'</th>
+              <th class="header c1" style="text-align:left;" scope="col">'.get_string('view_recording_name', 'bigbluebuttonbn').'</th>
+              <th class="header c2" style="text-align:left;" scope="col">'.get_string('view_recording_description', 'bigbluebuttonbn').'</th>
+              <th class="header c3" style="text-align:left;" scope="col">Date</th>
+              <th class="header c4" style="text-align:center;" scope="col">Duration</th>
+              <th class="header c5 lastcol" style="text-align:left;" scope="col">Toolbar</th>
+            </tr>
+          </thead>
+          <tbody>';
+        foreach($recordings as $record){
+          $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
+          $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
+          if($aud_gravada){
+            $output .= '<tr>
+              <td class="cell c0"style=" text-align:left;"><a title="audiência" target="_blank" href="'.$aud_gravada->link.'">audiência</a></td>
+              <td class="cell c1"style=" text-align:left;">'.$aud_gravada->name.'</td>
+              <td class="cell c2"style=" text-align:left;">'.$aud_gravada->description.'</td>
+              <td class="cell c3"style=" text-align:left;">'.date('d/m/Y h:i',$aud_gravada->publishdate/1000).'</td>
+              <td class="cell c4"style=" text-align:left;">'.$aud_gravada->duration.'</td>
+              <td class="cell c5 lastcol" style="text-align:left;">
+                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a>
+                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a>
+                <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/edit_record_data.php?id='.$aud_gravada->guid.'" data-links="0" class="action-icon"><img alt="Edit" class="smallicon" title="Edit" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/edit"></a></td>
+            </tr>';
+          }
         }
+        $output .= '  </tbody>
+        </table>';
 
         echo $output;
     }

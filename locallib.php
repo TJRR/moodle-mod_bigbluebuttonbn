@@ -1084,7 +1084,7 @@ function bigbluebuttonbn_get_recording_data_row($bbbsession, $recording, $tools=
 
              if (in_array("editing", $tools)) {
                 //mandar para a página de edição
-                $editPage = $CFG->wwwroot . '/mod/bigbluebuttonbn/edit_record_data.php?'.$recording['recordID'];
+                $editPage = $CFG->wwwroot . '/mod/bigbluebuttonbn/edit_record_data.php?id='.$recording['recordID'];
 
                 if ( bigbluebuttonbn_get_cfg_recording_icons_enabled() ) {
                     //With icon for edit
