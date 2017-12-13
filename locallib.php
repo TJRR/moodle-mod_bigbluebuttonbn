@@ -1745,7 +1745,7 @@ function gera_pdf($id_aud){
   <br>Nível de sigilo: ".$sigilo."
   </p>
   <p>Aos ".$data.", às ".$hora.", na ".$aud_gravada->placeidtribunal.", as partes ".$partes_text." participaram da audiência por videoconferência que encotra-se disponível em ".$aud_gravada->link." .</p>
-  <p>".$aud_gravada->hearingidtribunal."</p>
+  <p>".$aud_gravada->description."</p>
   </fieldset>
   ";
   //local
