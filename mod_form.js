@@ -170,10 +170,14 @@ verificaSala = function(){
     // }
   }else{
     var openingtime = 0;
-    var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00Z';
+    var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00Z';
     openingtime = new Date(data);
     //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
-    var time = openingtime.getTime()/1000;
+    var time_ini = openingtime.getTime()/1000;
+
+    var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00Z';
+    endingtime = new Date(data_fim);
+    var time_fim = endingtime.getTime()/1000;
     var selecao_valores =  document.getElementById('id_select_rooms').options;
     var valido = 1;
     var selecteds = 0;
@@ -183,7 +187,7 @@ verificaSala = function(){
     }
     for (var i = 0; i < selecao_valores.length; i++) {
       if(selecao_valores[i].selected){
-        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date='+time+id_bbb);
+        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);      
         if(retornohttp==1){
           if(valido==1){
             alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
