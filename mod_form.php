@@ -394,7 +394,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         }
     }
 
-    function validation($data, $files) {
+    function validation($data, $files) {        
         $errors = parent::validation($data, $files);
 
         if ( isset($data['openingtime']) && isset($data['closingtime']) ) {
@@ -408,7 +408,6 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                 $errors['voicebridge'] = get_string('mod_form_field_voicebridge_notunique_error', 'bigbluebuttonbn');
             }
         }
-
         return $errors;
     }
 }

@@ -216,6 +216,7 @@ verificaSala = function(){
 }
 
 verificaProcesso = function(){
+  document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
   document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
   var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
@@ -421,7 +422,7 @@ selectProcessType = function(){
 
   var procMask = "9999999-99.9999.9.99.9999";
   if(tipo_proc==2){
-    procMask = 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
+     procMask = 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
   }
   var proc = document.querySelector("#id_nr_process");
   VMasker(proc).maskPattern(procMask);
