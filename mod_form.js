@@ -150,22 +150,24 @@ httpGet = function(theUrl)
 verificaSala = function(){
   document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
-  if(document.getElementById('id_openingtime_enabled').checked == false){
-    var selecteds = 0;
-    var selecao_valores =  document.getElementById('id_select_rooms').options;
-    for (var i = 0; i < selecao_valores.length; i++) {
-      if(selecao_valores[i].selected){
-        selecteds=1;
-        break;
-      }
-    }
-    if(selecteds==1){
-      document.getElementById('id_submitbutton').removeAttribute("disabled");
-      document.getElementById('id_submitbutton2').removeAttribute("disabled");
-    }else{
-      document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-      document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-    }
+  if(document.getElementById('id_openingtime_enabled').checked == false || document.getElementById('id_closingtime_enabled').checked == false){
+    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+    // var selecteds = 0;
+    // var selecao_valores =  document.getElementById('id_select_rooms').options;
+    // for (var i = 0; i < selecao_valores.length; i++) {
+    //   if(selecao_valores[i].selected){
+    //     selecteds=1;
+    //     break;
+    //   }
+    // }
+    // if(selecteds==1){
+    //   document.getElementById('id_submitbutton').removeAttribute("disabled");
+    //   document.getElementById('id_submitbutton2').removeAttribute("disabled");
+    // }else{
+    //   document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    //   document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+    // }
   }else{
     var openingtime = 0;
     var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':00:00Z';
