@@ -69,7 +69,10 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $process_types['1'] = 'Processo Físico';
         $process_types['2'] = 'Outros';
 
-        $mform->addElement('select', 'process_type', get_string('mod_form_field_select_process_type', 'bigbluebuttonbn'), $process_types, 'onchange="selectProcessType();"');
+        $tipo_processo = $mform->addElement('select', 'process_type', get_string('mod_form_field_select_process_type', 'bigbluebuttonbn'), $process_types, 'onchange="selectProcessType();"');
+        if(isset($_GET['update'])){        
+          $tipo_processo->setSelected($current_activity->process_type);
+        }
 
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
@@ -394,7 +397,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         }
     }
 
-    function validation($data, $files) {        
+    function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
         if ( isset($data['openingtime']) && isset($data['closingtime']) ) {
