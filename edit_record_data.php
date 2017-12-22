@@ -48,9 +48,9 @@ class simplehtml_form extends moodleform {
         $mform->setType('description', PARAM_RAW);
         $mform->setDefault('description',array('text'=>$records->description));
 
-        $mform->addElement('text', 'tag','etiqueta'); // Add elements to your form
+        $mform->addElement('tags', 'tag','etiqueta'); // Add elements to your form
         $mform->setType('tag', PARAM_RAW);
-        $mform->setDefault('tag',$records->tags);
+        $mform->setDefault('tag',explode(',',$records->tags));
 
         $this->add_action_buttons();
 
@@ -64,11 +64,21 @@ if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 } else if ($fromform = $mform->get_data()) {
 
+  $tagsplan = '';
+  $cont = 0;
+  foreach ($fromform->tag as $key) {
+    if($cont > 0){
+      $tagsplan = $tagsplan.',';
+    }
+    $tagsplan = $tagsplan.$key;
+    $cont++;
+  }  
+
   $records = new stdClass();
   $records->id = $fromform->id;
   $records->name = $fromform->name;
   $records->description = $fromform->description['text'];
-  $records->tags = $fromform->tag;
+  $records->tags = $tagsplan;
   $DB->update_record('bigbluebuttonbn_a_record', $records, false);
   redirect($CFG->wwwroot.'/mod/bigbluebuttonbn/view.php?id='.$fromform->id_course);
 }
