@@ -187,7 +187,7 @@ verificaSala = function(){
     }
     for (var i = 0; i < selecao_valores.length; i++) {
       if(selecao_valores[i].selected){
-        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);      
+        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);
         if(retornohttp==1){
           if(valido==1){
             alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
@@ -271,12 +271,15 @@ bigbluebuttonbn_process_get = function() {
     document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
     document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
 
-    var procMask = "9999999-99.9999.9.99.9999";
-    if(tipo_proc==2){
-      procMask = 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
-    }
+    /*var procMask = "9999999-99.9999.9.99.9999";
     var proc = document.querySelector("#id_nr_process");
-    VMasker(proc).maskPattern(procMask);
+    if(tipo_proc==2){
+      console.log(proc.value);
+      VMasker(proc).unMask();
+      console.log(proc.value);
+    }else{
+      VMasker(proc).maskPattern(procMask);
+    }*/
 
     if(tipo_proc==0){
       var xmlHttp = new XMLHttpRequest();
@@ -427,9 +430,11 @@ selectProcessType = function(){
   }
 
   var procMask = "9999999-99.9999.9.99.9999";
-  if(tipo_proc==2){
-     procMask = 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
-  }
   var proc = document.querySelector("#id_nr_process");
-  VMasker(proc).maskPattern(procMask);
+  if(tipo_proc==2){
+    console.log(proc.value);
+    VMasker(proc).unMask();
+  }else{
+    VMasker(proc).maskPattern(procMask);
+  }
 }

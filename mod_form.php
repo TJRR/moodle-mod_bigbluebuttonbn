@@ -70,7 +70,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         $process_types['2'] = 'Outros';
 
         $tipo_processo = $mform->addElement('select', 'process_type', get_string('mod_form_field_select_process_type', 'bigbluebuttonbn'), $process_types, 'onchange="selectProcessType();"');
-        if(isset($_GET['update'])){        
+        if(isset($_GET['update'])){
           $tipo_processo->setSelected($current_activity->process_type);
         }
 
@@ -91,13 +91,24 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         }
         $html_process_get .= '
                         </div>
-                        <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>
-                        <script>
+                        <script src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/vanilla-masker.min.js"></script>';
+
+        if(isset($_GET['update'])){
+          if($current_activity->process_type!=2){
+            $html_process_get .= '<script>
                               var procMask = "9999999-99.9999.9.99.9999";
                               var proc = document.querySelector("#id_nr_process");
                               VMasker(proc).maskPattern(procMask);
-                        </script>
-                      </div>';
+                        </script>';
+                }
+        }else{
+          $html_process_get .= '<script>
+                            var procMask = "9999999-99.9999.9.99.9999";
+                            var proc = document.querySelector("#id_nr_process");
+                            VMasker(proc).maskPattern(procMask);
+                      </script>';              
+        }
+        $html_process_get .= '</div>';
         $mform->addElement('html', $html_process_get);
         $mform->addElement('hidden', 'nrprocesso', '');
         $mform->setType('nrprocesso', PARAM_RAW);
