@@ -379,6 +379,43 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
           $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
           $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
           if(!$aud_gravada){
+            //Montando o campo descrição
+            $sql = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
+            $processo = $DB->get_record_sql($sql, array($bbbsession['bigbluebuttonbn']->id));
+
+            $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
+
+            $ano = date('Y',$record['startTime']/1000);
+            $hora = date('h',$record['startTime']/1000);
+            $minuto = date('i',$record['startTime']/1000);
+            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+            date_default_timezone_set('America/Sao_Paulo');
+            $data = strftime('%d de %B de %Y',$record['startTime']/1000);
+
+            if($processo->segredojustica == ''){
+              $sigilo = "Público";
+            }else{
+              $sigilo = "Sim";
+            }
+
+            $partes_text = "";
+            foreach ($partes as $parte) {
+              if($partes_text!=""){
+                $partes_text .= " e ";
+              }
+              $partes_text .= $parte->name;
+            }
+
+            $descricao = "<h2>".$course->fullname."</h2>
+            <strong>AUTOS:</strong>&nbsp;&nbsp;&nbsp;<strong>".$record['meetingName']."</strong><br>
+            <strong>SIGILO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$sigilo."</strong><br>
+            <strong>ASSUNTO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$processo->assuntoprincipal."</strong>
+            <h2 style='text-decoration:underline;'>TERMO DE AUDIÊNCIA</h2>
+            <p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz [[Nome do Magistrado]] e as partes: ".$partes_text.".
+            Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
+            e ficará disponível no endereço eletrônico: ".$record['playbacks']['presentation']['url']." .</p>
+            <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";
+
             $year = date("Y", $record['startTime']/1000);
             $aud = new stdClass();
             $aud->id_bbb=$bbbsession['bigbluebuttonbn']->id;
@@ -396,12 +433,12 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->meetingid=$record['meetingID'];
             $aud->link=$record['playbacks']['presentation']['url'];
             $aud->name=$record['meta_bbb-recording-name'];
-            $aud->description=$record['meta_bbb-recording-description'];
+            $aud->description=$descricao;//$record['meta_bbb-recording-description'];
             $aud->tags=$record['meta_bbb-recording-tags'];
             $aud->id_course=$_GET['id'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
-            gera_pdf($aud_id);
+            //gera_pdf($aud_id);
           }else{
             $aud_gravada->link=$record['playbacks']['presentation']['url'];
             $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
@@ -412,7 +449,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               $aud_gravada->tags=$record['meta_bbb-recording-tags'];
               $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             }
-            gera_pdf($aud_gravada->id);
+            //gera_pdf($aud_gravada->id);
           }
         }
 
@@ -432,7 +469,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             <tr>
               <th class="header c0" style="text-align:left;" scope="col">'.get_string('view_recording_litigation', 'bigbluebuttonbn').'</th>
               <th class="header c1" style="text-align:left;" scope="col">'.get_string('view_recording_name', 'bigbluebuttonbn').'</th>
-              <th class="header c2" style="text-align:left;" scope="col">'.get_string('view_recording_description', 'bigbluebuttonbn').'</th>
+              <th class="header c2" style="text-align:left;" scope="col">Termo de Audiência</th>
               <th class="header c3" style="text-align:left;" scope="col">Date</th>
               <th class="header c4" style="text-align:center;" scope="col">Duration</th>
               <th class="header c5 lastcol" style="text-align:left;" scope="col">Toolbar</th>

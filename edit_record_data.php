@@ -40,15 +40,15 @@ class simplehtml_form extends moodleform {
         $mform->setType('id_course', PARAM_RAW);
         $mform->setDefault('id_course',$records->id_course);
 
-        $mform->addElement('text', 'name','nome'); // Add elements to your form
+        $mform->addElement('text', 'name','Nome'); // Add elements to your form
         $mform->setType('name', PARAM_RAW);
         $mform->setDefault('name',$records->name);
 
-        $mform->addElement('editor', 'description','descrição'); // Add elements to your form
+        $mform->addElement('editor', 'description','Termo de Audiência'); // Add elements to your form
         $mform->setType('description', PARAM_RAW);
         $mform->setDefault('description',array('text'=>$records->description));
 
-        $mform->addElement('tags', 'tag','etiqueta'); // Add elements to your form
+        $mform->addElement('tags', 'tag','Etiqueta'); // Add elements to your form
         $mform->setType('tag', PARAM_RAW);
         $mform->setDefault('tag',explode(',',$records->tags));
 
@@ -72,7 +72,7 @@ if ($mform->is_cancelled()) {
     }
     $tagsplan = $tagsplan.$key;
     $cont++;
-  }  
+  }
 
   $records = new stdClass();
   $records->id = $fromform->id;

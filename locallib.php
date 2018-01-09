@@ -1713,50 +1713,40 @@ function gera_pdf($id_aud){
   $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE id = ?';
   $aud_gravada = $DB->get_record_sql($sql, array($id_aud));
 
-  $sql2 = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
-  $processo = $DB->get_record_sql($sql2, array($aud_gravada->id_bbb));
+  // $sql2 = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
+  // $processo = $DB->get_record_sql($sql2, array($aud_gravada->id_bbb));
 
   //$sql3 = 'SELECT * FROM {bigbluebuttonbn_partes} WHERE id_bbb = ? and oab="0"';
-  $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
+  // $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
 
-  if($processo->segredojustica == ''){
-    $sigilo = "Público";
-  }else{
-    $sigilo = "Sim";
-  }
+  // if($processo->segredojustica == ''){
+  //   $sigilo = "Público";
+  // }else{
+  //   $sigilo = "Sim";
+  // }
 
-  $ano = date('Y',$aud_gravada->expectedate/1000);
-  $hora = date('h',$aud_gravada->expectedate/1000);
-  $minuto = date('i',$aud_gravada->expectedate/1000);
-  setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-  date_default_timezone_set('America/Sao_Paulo');
-  $data = strftime('%d de %B de %Y',$aud_gravada->expectedate/1000);
+  // $ano = date('Y',$aud_gravada->expectedate/1000);
+  // $hora = date('h',$aud_gravada->expectedate/1000);
+  // $minuto = date('i',$aud_gravada->expectedate/1000);
+  // setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+  // date_default_timezone_set('America/Sao_Paulo');
+  // $data = strftime('%d de %B de %Y',$aud_gravada->expectedate/1000);
 
-  $partes_text = "";
-  foreach ($partes as $parte) {
-    if($partes_text!=""){
-      $partes_text .= " e ";
-    }
-    $partes_text .= $parte->name;
-  }
+  // $partes_text = "";
+  // foreach ($partes as $parte) {
+  //   if($partes_text!=""){
+  //     $partes_text .= " e ";
+  //   }
+  //   $partes_text .= $parte->name;
+  // }
 
   $html = "
   <fieldset>
   <div style='width:100%; text-align:center;'>
     <img src='pix/cabecalho_tj.jpeg' style='display:block; margin-left:auto; margin-right:auto; width:200px;'>
   </div>
-  <h2>".$aud_gravada->placeidtribunal."</h2>
-  <strong>AUTOS:</strong>&nbsp;&nbsp;&nbsp;<strong>".$aud_gravada->nrprocesso."</strong><br>
-  <strong>SIGILO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$sigilo."</strong><br>
-  <strong>ASSUNTO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$processo->assuntoprincipal."</strong>
-  <h2 style='text-decoration:underline;'>TERMO DE AUDIÊNCIA</h2>
-  <p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$aud_gravada->placeidtribunal.", presentes o Juiz x e as partes: ".$partes_text.".
-  Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-  e ficará disponível no endereço eletrônico: ".$aud_gravada->link." .</p>
-  <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>
-  <p>".$aud_gravada->description."</p>
-  </fieldset>
-  ";
+  ".$aud_gravada->description."
+  </fieldset>";
   //local
   //$diretorio = '../../../../moodledata/PDF/';
   //servidor
