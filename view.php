@@ -92,7 +92,9 @@ $bbbsession['record'] = $bigbluebuttonbn->record;
 if ($bigbluebuttonbn->record) {
     $bbbsession['welcome'] .= '<br><br>' . get_string('bbbrecordwarning', 'bigbluebuttonbn');
 }
-$bbbsession['tagging'] = $bigbluebuttonbn->tagging;
+//Foi colocado um de forma fixa para desativar as taggins manualmente...
+//para reativar basta colocar //$bigbluebuttonbn->tagging; no lugar do 0
+$bbbsession['tagging'] = 0;
 
 $bbbsession['openingtime'] = $bigbluebuttonbn->openingtime;
 $bbbsession['closingtime'] = $bigbluebuttonbn->closingtime;
@@ -207,6 +209,7 @@ if ($groupmode == NOGROUPS) {  //No groups mode
     }
     $bbbsession['meetingname'] = $bbbsession['bigbluebuttonbn']->name . ' (' . $group_name . ')';
 }
+
 // Metadata (context)
 $bbbsession['contextActivityName'] = $bbbsession['meetingname'];
 $bbbsession['contextActivityDescription'] = bigbluebuttonbn_html2text($bbbsession['meetingdescription'], 64);
@@ -231,6 +234,7 @@ if (!empty($bigbluebuttonbn->openingtime) && $now < $bigbluebuttonbn->openingtim
 
 // Initialize session variable used across views
 $SESSION->bigbluebuttonbn_bbbsession = $bbbsession;
+
 bigbluebuttonbn_view($bbbsession, $bigbluebuttonbn_activity, $course);
 
 //JavaScript variables
@@ -264,6 +268,7 @@ function bigbluebuttonbn_view($bbbsession, $activity, $course) {
 
     echo $OUTPUT->heading($bbbsession['meetingname'], 3);
     echo $OUTPUT->heading($bbbsession['meetingdescription'], 5);
+
     echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_message_box');
     echo '<br><span id="status_bar"></span><br>';
     echo '<span id="control_panel"></span>';
@@ -272,7 +277,6 @@ function bigbluebuttonbn_view($bbbsession, $activity, $course) {
     echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_action_button_box');
     echo '<br><br><span id="join_button"></span>&nbsp;<span id="end_button"></span>' . "\n";
     echo $OUTPUT->box_end();
-
     // Show mobile client options if mobile is detected
     if ($bbbsession['ismobilesession'])
     {
