@@ -485,7 +485,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
           $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
           if($aud_gravada){
             $output .= '<tr>
-              <td class="cell c0"style=" text-align:left;"><a title="audiência" target="_blank" href="'.$aud_gravada->link.'">audiência</a></td>
+              <td class="cell c0"style=" text-align:left;"><a href="'.$aud_gravada->link.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/pix/play.png" style="width:22px; height:22px;"></a></td>
               <td class="cell c1"style=" text-align:left;">'.$aud_gravada->name.'</td>
               <td class="cell c2"style=" text-align:left;">'.$aud_gravada->description.'</td>
               <td class="cell c3"style=" text-align:left;">'.date('d/m/Y h:i',$aud_gravada->publishdate/1000).'</td>
