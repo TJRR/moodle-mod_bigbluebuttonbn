@@ -346,7 +346,6 @@ function bigbluebuttonbn_view_ended($bbbsession) {
 
 function bigbluebuttonbn_view_recordings($bbbsession, $course) {
     global $CFG,$DB;
-
     if (isset($bbbsession['record']) && $bbbsession['record']) {
         $output = html_writer::tag('h4', get_string('view_section_title_recordings', 'bigbluebuttonbn'));
 
@@ -389,9 +388,12 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
 
             $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
 
+            $date_ = new DateTime();
+            $date_->setTimestamp($record['startTime']/1000);
+
             $ano = date('Y',$record['startTime']/1000);
-            $hora = date('h',$record['startTime']/1000);
-            $minuto = date('i',$record['startTime']/1000);
+            $hora = date_format($date_->sub(new DateInterval('PT4H')), 'H');
+            $minuto = date_format($date_->sub(new DateInterval('PT4H')), 'i');
             setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
             date_default_timezone_set('America/Sao_Paulo');
             $data = strftime('%d de %B de %Y',$record['startTime']/1000);
@@ -412,7 +414,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
 
             $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz [[Nome do Magistrado]] e as partes: ".$partes_text.".
             Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-            e ficará disponível no endereço eletrônico: ".$record['playbacks']['presentation']['url']." .</p>
+            e ficará disponível no endereço eletrônico: <a href='".$record['playbacks']['presentation']['url']."'>".$record['playbacks']['presentation']['url']." .</a></p>
             <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";
 
             $year = date("Y", $record['startTime']/1000);
@@ -477,16 +479,19 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         foreach($recordings as $record){
           $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
           $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
+          $aud_gravada->publishdate = $aud_gravada->publishdate/1000;
+          $date_ = new DateTime();
+          $date_->setTimestamp($aud_gravada->publishdate);
           if($aud_gravada){
             $output .= '<tr>
               <td class="cell c1" style=" text-align:left;">'.$aud_gravada->name.'</td>
               <td class="cell c2" style=" text-align:left;">'.$aud_gravada->description.'</td>
-              <td class="cell c3" style=" text-align:left;">'.date('d/m/Y h:i',$aud_gravada->publishdate/1000).'</td>
+              <td class="cell c3" style=" text-align:left;">'.date_format($date_->sub(new DateInterval('PT4H')), 'd/m/Y H:i').'</td>
               <td class="cell c4" style=" text-align:left;">'.$aud_gravada->duration.'</td>
               <td class="cell c5 lastcol" style="text-align:left; width:10%">
-                <a href="'.$aud_gravada->link.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a>
-                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a>
-                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a>
+                <a href="'.$aud_gravada->link.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>
+                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a><br>
+                <a onclick="M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");" data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a><br>
                 <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/edit_record_data.php?id='.$aud_gravada->guid.'" data-links="0" class="action-icon"><img alt="Edit" class="smallicon" title="Edit" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/edit"></a></td>
             </tr>';
           }
