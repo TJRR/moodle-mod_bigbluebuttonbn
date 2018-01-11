@@ -1713,17 +1713,17 @@ function gera_pdf($id_aud){
   $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE id = ?';
   $aud_gravada = $DB->get_record_sql($sql, array($id_aud));
 
-  // $sql2 = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
-  // $processo = $DB->get_record_sql($sql2, array($aud_gravada->id_bbb));
+  $sql2 = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
+  $processo = $DB->get_record_sql($sql2, array($aud_gravada->id_bbb));
 
   //$sql3 = 'SELECT * FROM {bigbluebuttonbn_partes} WHERE id_bbb = ? and oab="0"';
   // $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
 
-  // if($processo->segredojustica == ''){
-  //   $sigilo = "Público";
-  // }else{
-  //   $sigilo = "Sim";
-  // }
+  if($processo->segredojustica == ''){
+     $sigilo = "Público";
+  }else{
+     $sigilo = "Sim";
+  }
 
   // $ano = date('Y',$aud_gravada->expectedate/1000);
   // $hora = date('h',$aud_gravada->expectedate/1000);
@@ -1745,6 +1745,11 @@ function gera_pdf($id_aud){
   <div style='width:100%; text-align:center;'>
     <img src='pix/cabecalho_tj.jpeg' style='display:block; margin-left:auto; margin-right:auto; width:200px;'>
   </div>
+  <h2>".$aud_gravada->placeidtribunal."</h2>
+  <strong>AUTOS:</strong>&nbsp;&nbsp;&nbsp;<strong>".$aud_gravada->nrprocesso."</strong><br>
+  <strong>SIGILO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$sigilo."</strong><br>
+  <strong>ASSUNTO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$processo->assuntoprincipal."</strong>
+  <h2 style='text-decoration:underline;'>TERMO DE AUDIÊNCIA</h2>
   ".$aud_gravada->description."
   </fieldset>";
   //local
