@@ -345,7 +345,26 @@ function bigbluebuttonbn_view_ended($bbbsession) {
 }
 
 function bigbluebuttonbn_view_recordings($bbbsession, $course) {
-    global $CFG,$DB;
+    global $CFG,$DB,$COURSE;
+
+    // SQL para buscar o magistrado responsável
+    $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email
+            FROM mdl_role_assignments ra, mdl_user u, mdl_course c, mdl_context cxt
+            WHERE ra.userid = u.id
+            AND ra.contextid = cxt.id
+            AND cxt.contextlevel =50
+            AND cxt.instanceid = c.id
+            AND c.id = ?
+            AND roleid = 14";
+    //O Roleid de magistrado no TJ é 14
+    $magistrado_search = $DB->get_record_sql($sql, array($COURSE->id));
+    //Ainda não sei bem qual dos nomes pegar... mas é algum destes (fullname, firstname + lastname)
+    if($magistrado_search){
+      $nome_magistrado = $magistrado_search->fullname;
+    }else{
+      $nome_magistrado = "[[Nome do Magistrado]]";
+    }
+
     if (isset($bbbsession['record']) && $bbbsession['record']) {
         $output = html_writer::tag('h4', get_string('view_section_title_recordings', 'bigbluebuttonbn'));
 
@@ -392,8 +411,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $date_->setTimestamp($record['startTime']/1000);
 
             $ano = date('Y',$record['startTime']/1000);
-            $hora = date_format($date_->sub(new DateInterval('PT4H')), 'H');
-            $minuto = date_format($date_->sub(new DateInterval('PT4H')), 'i');
+            $hora = date_format($date_->sub(new DateInterval('PT2H')), 'H');
+            $minuto = date_format($date_->sub(new DateInterval('PT2H')), 'i');
             setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
             date_default_timezone_set('America/Sao_Paulo');
             $data = strftime('%d de %B de %Y',$record['startTime']/1000);
@@ -412,7 +431,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               $partes_text .= $parte->name;
             }
 
-            $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz [[Nome do Magistrado]] e as partes: ".$partes_text.".
+            $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz ".$nome_magistrado." e as partes: ".$partes_text.".
             Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
             e ficará disponível no endereço eletrônico: <a href='".$record['playbacks']['presentation']['url']."'>".$record['playbacks']['presentation']['url']." .</a></p>
             <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";

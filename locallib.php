@@ -1725,7 +1725,7 @@ function gera_pdf($id_aud){
      $sigilo = "Sim";
   }
 
-  // $ano = date('Y',$aud_gravada->expectedate/1000);
+  $ano = date('Y',$aud_gravada->expectedate/1000);
   // $hora = date('h',$aud_gravada->expectedate/1000);
   // $minuto = date('i',$aud_gravada->expectedate/1000);
   // setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
