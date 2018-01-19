@@ -367,11 +367,9 @@ M.mod_bigbluebuttonbn.broker_actionVerification = function(action, recordingid, 
     var confirmation = '';
     var confirmation_warning = '';
     var is_imported_link = Y.one('#playbacks-' + recordingid).get('dataset').imported;
-
     if( action == 'unpublish' ) {
         //if it has associated links imported in a different course/activity, show a confirmation dialog
         var associated_links = Y.one('#recording-link-' + action + '-' + recordingid).get('dataset').links;
-
         if( associated_links == 0 ) {
         	actionVerification = true
 
@@ -413,13 +411,13 @@ M.mod_bigbluebuttonbn.broker_manageRecording = function(action, recordingid, mee
     console.info('Action: ' + action);
 
     //Before sending the request, let's process a verification
-    if( M.mod_bigbluebuttonbn.broker_actionVerification(action, recordingid, meetingid) ) {
+    //if( M.mod_bigbluebuttonbn.broker_actionVerification(action, recordingid, meetingid) ) {
         var id = bigbluebuttonbn_dataSource.sendRequest({
             request : "action=recording_" + action + "&id=" + recordingid,
             callback : {
                 success : function(e) {
                     if( action == 'delete') {
-                        Y.one('#recording-td-' + recordingid).remove();
+                        //Y.one('#recording-td-' + recordingid).remove();
 
                     } else if( action == 'import') {
                         Y.one('#recording-td-' + recordingid).remove();
@@ -500,7 +498,7 @@ M.mod_bigbluebuttonbn.broker_manageRecording = function(action, recordingid, mee
                 }
             }
         });
-    }
+    //}
 }
 
 M.mod_bigbluebuttonbn.broker_updateRecording = function(action, recordingid) {
