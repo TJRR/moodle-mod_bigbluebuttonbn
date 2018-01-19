@@ -106,7 +106,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
                             var procMask = "9999999-99.9999.9.99.9999";
                             var proc = document.querySelector("#id_nr_process");
                             VMasker(proc).maskPattern(procMask);
-                      </script>';              
+                      </script>';
         }
         $html_process_get .= '</div>';
         $mform->addElement('html', $html_process_get);
@@ -350,7 +350,11 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
           $mform->setDefault('openingtime', 0);
         }
         $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => true), 'onChange=verificaSala();');
-        $mform->setDefault('closingtime', 0);
+        if(isset($_GET['d'])){
+          $mform->setDefault('closingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 09:00'));
+        }else{
+          $mform->setDefault('closingtime', 0);
+        }
         //-------------------------------------------------------------------------------
         // Fourth block ends here
         //-------------------------------------------------------------------------------

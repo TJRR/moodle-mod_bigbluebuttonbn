@@ -418,11 +418,12 @@ M.mod_bigbluebuttonbn.broker_manageRecording = function(action, recordingid, mee
                 success : function(e) {
                     if( action == 'delete') {
                         //Y.one('#recording-td-' + recordingid).remove();
-
+                        location.reload();
                     } else if( action == 'import') {
                         Y.one('#recording-td-' + recordingid).remove();
 
                     } else if( action == 'publish' || action == 'unpublish' ) {
+                        location.reload();
                         if (e.data.status == 'true') {
                             console.info(action + " requested");
 
