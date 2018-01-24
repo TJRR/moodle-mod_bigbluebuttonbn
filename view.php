@@ -451,7 +451,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->fullname."/";
             $aud->files="[{
                     'FileName':'PDF/".$year."/".$course->fullname."/".$record['recordID'].".pdf',
-                    'Size:''<size>',
+                    'Duration':'<duration>'
+                    'Size':'<size>',
                     'Hash':"$record['recordID']
                     "}]";
             $aud->size=0;
@@ -480,15 +481,6 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
           }
         }
 
-        // // Render the table
-        //$output .= bigbluebutton_output_recording_table($bbbsession, $recordings) . "\n";
-        //
-        // if ($bbbsession['managerecordings'] && bigbluebuttonbn_get_cfg_importrecordings_enabled()) {
-        //     $button_import_recordings = html_writer::tag('input', '', array('type' => 'button', 'value' => get_string('view_recording_button_import', 'bigbluebuttonbn'), 'onclick' => 'window.location=\'' . $CFG->wwwroot . '/mod/bigbluebuttonbn/import_view.php?bn=' . $bbbsession['bigbluebuttonbn']->id . '\''));
-        //     $output .= html_writer::start_tag('br');
-        //     $output .= html_writer::tag('span', $button_import_recordings, ['id'=>"import_recording_links_button"]);
-        //     $output .= html_writer::tag('span', '', ['id'=>"import_recording_links_table"]);
-        // }
 
         $output .= '<br>
         <table class="generaltable">
