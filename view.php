@@ -451,9 +451,9 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->fullname."/";
             $aud->files="[{
                     'FileName':'PDF/".$year."/".$course->fullname."/".$record['recordID'].".pdf',
-                    'Duration':'<duration>'
+                    'Duration':'<duration>',
                     'Size':'<size>',
-                    'Hash':"$record['recordID']
+                    'Hash':".$record['recordID'].
                     "}]";
             $aud->size=0;
             $aud->hash=0;
