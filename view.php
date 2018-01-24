@@ -449,7 +449,11 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->expectedate=$processo->openingtime;//$record['startTime'];
             $aud->publishdate=$record['endTime'];
             $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->fullname."/";
-            $aud->files="json{'".$record['recordID']."':'PDF/".$year."/".$course->fullname."/".$record['recordID'].".pdf','<size>','<md5 pdf>','<lenght>'}";
+            $aud->files="[{
+                    'FileName':'PDF/".$year."/".$course->fullname."/".$record['recordID'].".pdf',
+                    'Size:''<size>',
+                    'Hash':"$record['recordID']
+                    "}]";
             $aud->size=0;
             $aud->hash=0;
             $aud->duration=$record['playbacks']['presentation']['length'];
