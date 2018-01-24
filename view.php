@@ -349,7 +349,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
 
     // SQL para buscar o magistrado responsável
     $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email
-            FROM mdl_role_assignments ra, mdl_user u, mdl_course c, mdl_context cxt
+            FROM".$CFG->prefix." role_assignments ra, ".$CFG->prefix."user u, ".$CFG->prefix."course c, ".$CFG->prefix."context cxt
             WHERE ra.userid = u.id
             AND ra.contextid = cxt.id
             AND cxt.contextlevel =50
