@@ -348,14 +348,14 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
     global $CFG,$DB,$COURSE;
 
     // SQL para buscar o magistrado responsável
-    $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email
-            FROM ".$CFG->prefix." role_assignments ra, ".$CFG->prefix."user u, ".$CFG->prefix."course c, ".$CFG->prefix."context cxt
-            WHERE ra.userid = u.id
-            AND ra.contextid = cxt.id
-            AND cxt.contextlevel =50
-            AND cxt.instanceid = c.id
-            AND c.id = ?
-            AND roleid = 14";
+    $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email".
+            "FROM ".$CFG->prefix." role_assignments ra, ".$CFG->prefix."user u, ".$CFG->prefix."course c, ".$CFG->prefix."context cxt".
+            "WHERE ra.userid = u.id".
+            "AND ra.contextid = cxt.id".
+            "AND cxt.contextlevel =50".
+            "AND cxt.instanceid = c.id".
+            "AND c.id = ?".
+            "AND roleid = 14";
     //O Roleid de magistrado no TJ é 14
     $magistrado_search = $DB->get_records_sql($sql, array($COURSE->id));
     //Ainda não sei bem qual dos nomes pegar... mas é algum destes (fullname, firstname + lastname)
