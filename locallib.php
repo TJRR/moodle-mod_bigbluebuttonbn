@@ -292,7 +292,7 @@ function bigbluebuttonbn_getRecordingArrayRow( $recording ) {
         $metadataArray['meta_'.$key] = $value;
     }
 
-    $recordingArrayRow = array( 'recordID' => (string) $recording->recordID, 'meetingID' => (string) $recording->meetingID, 'meetingName' => (string) $recording->name, 'published' => (string) $recording->published, 'startTime' => (string) $recording->startTime, 'endTime' => (string) $recording->endTime, 'playbacks' => $playbackArray ) + $metadataArray;
+    $recordingArrayRow = array( 'recordID' => (string) $recording->recordID, 'meetingID' => (string) $recording->meetingID, 'meetingName' => (string) $recording->name, 'published' => (string) $recording->published, 'startTime' => (string) $recording->startTime, 'endTime' => (string) $recording->endTime, 'size' => (string) $recording->size, 'playbacks' => $playbackArray ) + $metadataArray;
 
     return $recordingArrayRow;
 }
