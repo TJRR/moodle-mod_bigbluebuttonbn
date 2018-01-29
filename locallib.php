@@ -1762,6 +1762,10 @@ function gera_pdf($id_aud){
   $mpdf->WriteHTML($css,1);
   $mpdf->WriteHTML($html);
 
+  //pegando o shortname do curso
+  $aux_name = explode('/',$aud_gravada->basefilepath);
+  $shortname = $aux_name[count($aux_name)-2];
+
   //arrumando o diretorio para salvar
   if(!is_dir($diretorio)){
      mkdir ($diretorio, 0777 ); // criar o diretorio
@@ -1770,7 +1774,7 @@ function gera_pdf($id_aud){
   if(!is_dir($diretorio)){
      mkdir ($diretorio, 0777 ); // criar o diretorio
   }
-  $diretorio = $diretorio."/".$aud_gravada->placeidtribunal;
+  $diretorio = $diretorio."/".$shortname;
   if(!is_dir($diretorio)){
      mkdir ($diretorio, 0777 ); // criar o diretorio
   }

@@ -348,26 +348,25 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
     global $CFG,$DB,$COURSE;
 
     // SQL para buscar o magistrado responsável
-    $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email".
-            "FROM ".$CFG->prefix."role_assignments ra, ".$CFG->prefix."user u, ".$CFG->prefix."course c, ".$CFG->prefix."context cxt".
-            "WHERE ra.userid = u.id".
-            "AND ra.contextid = cxt.id".
-            "AND cxt.contextlevel =50".
-            "AND cxt.instanceid = c.id".
-            "AND c.id = ?".
+    $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email ".
+            "FROM {role_assignments} ra, {user} u, {course} c, {context} cxt ".
+            "WHERE ra.userid = u.id ".
+            "AND ra.contextid = cxt.id ".
+            "AND cxt.contextlevel =50 ".
+            "AND cxt.instanceid = c.id ".
+            "AND c.id = ? ".
             "AND roleid = 14";
     //O Roleid de magistrado no TJ é 14
     $magistrado_search = $DB->get_records_sql($sql, array($COURSE->id));
     //Ainda não sei bem qual dos nomes pegar... mas é algum destes (fullname, firstname + lastname)
     if($magistrado_search){
       foreach ($magistrado_search as $key) {
-        $nome_magistrado = $key->fullname;
+        $nome_magistrado = $key->firstname.' '.$key->lastname;
         break;
       }
     }else{
       $nome_magistrado = "[[Nome do Magistrado]]";
     }
-
     if (isset($bbbsession['record']) && $bbbsession['record']) {
         $output = html_writer::tag('h4', get_string('view_section_title_recordings', 'bigbluebuttonbn'));
 
@@ -408,7 +407,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $sql = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
             $processo = $DB->get_record_sql($sql, array($bbbsession['bigbluebuttonbn']->id));
 
-            $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$aud_gravada->id_bbb,'oab'=>'0'));
+            $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$bbbsession['bigbluebuttonbn']->id,'oab'=>'0'));
 
             $date_ = new DateTime();
             $date_->setTimestamp($record['startTime']/1000);
@@ -438,7 +437,6 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
             e ficará disponível no endereço eletrônico: <a href='".$record['playbacks']['presentation']['url']."'>".$record['playbacks']['presentation']['url']." .</a></p>
             <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";
-
             $year = date("Y", $record['startTime']/1000);
             $aud = new stdClass();
             $aud->id_bbb=$bbbsession['bigbluebuttonbn']->id;
@@ -448,11 +446,11 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->nrprocesso=$record['meetingName'];
             $aud->expectedate=$processo->openingtime;//$record['startTime'];
             $aud->publishdate=$record['endTime'];
-            $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course."/";
+            $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->shortname."/";
             $aud->size=$record['size'];
             $aud->hash=md5($record['recordID']);
             $aud->duration=$record['playbacks']['presentation']['length'];
-            $aud->files='[{"FileName":"PDF/'.$year.'/'.$course.'/'.$record['recordID'].'.pdf"'.','.'"Size":'.$aud->size.','.'"Hash":"'.$aud->hash.'",'.'"Duration":'.$aud->duration.'}]';
+            $aud->files='[{"FileName":"PDF/'.$year.'/'.$course->shortname.'/'.$record['recordID'].'.pdf"'.','.'"Size":'.$aud->size.','.'"Hash":"'.$aud->hash.'",'.'"Duration":'.$aud->duration.'}]';
             $aud->meetingid=$record['meetingID'];
             $aud->link=$record['playbacks']['presentation']['url'];
             $aud->name=$record['meta_bbb-recording-name'];
@@ -472,7 +470,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               $aud_gravada->tags=$record['meta_bbb-recording-tags'];
               $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             }
-            gera_pdf($aud_gravada->id);
+            //gera_pdf($aud_gravada->id);
           }
         }
 
