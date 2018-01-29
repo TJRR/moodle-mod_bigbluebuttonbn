@@ -124,10 +124,16 @@ function bigbluebuttonbn_add_instance($data, $mform) {
           $format = 'Y-m-d H:i:s';
           $x = date($format,$data->openingtime);
           $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
-
           $data_reserva->openingtime = $datebd->getTimestamp();
+          if($data->closingtime == 0){
+            $data_reserva->closingtime = 0;
+          }else{
+            $format = 'Y-m-d H:i:s';
+            $x_close = date($format,$data->closingtime);
+            $datebd_close = DateTime::createFromFormat($format, $x_close, (new DateTimeZone('UTC')));
+            $data_reserva->closingtime = $datebd_close->getTimestamp();
+          }
         }
-        $data_reserva->closingtime = $data->closingtime;
         $data_reserva->timecreated = strtotime(date("Y-m-d H:i:s"));
         $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
       }
