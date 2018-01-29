@@ -410,7 +410,7 @@ bigbluebuttonbn_process_get = function() {
           document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
           document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
 
-          var partes = proc[8].childNodes;
+          var partes = xmlDoc3.getElementsByTagName("partes")[0].childNodes;
           partes.forEach(gravaPartes);
 
         }
