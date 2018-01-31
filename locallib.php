@@ -1755,7 +1755,7 @@ function gera_pdf($id_aud){
   //local
   //$diretorio = '../../../../moodledata/PDF/';
   //servidor
-  $diretorio = '../../../PDF/';
+  $diretorio = '../../../VC/';
   $mpdf=new mPDF();
   $mpdf->SetDisplayMode('fullpage');
   $css = file_get_contents("css/estilo.css");
