@@ -446,11 +446,11 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->nrprocesso=$record['meetingName'];
             $aud->expectedate=$processo->openingtime;//$record['startTime'];
             $aud->publishdate=$record['endTime'];
-            $aud->basefilepath="172.16.1.62/PDF/".$year."/".$course->shortname."/";
+            $aud->basefilepath="172.16.1.62/VC/".$year."/".$course->shortname."/";
             $aud->size=$record['size'];
             $aud->hash=md5($record['recordID']);
             $aud->duration=$record['playbacks']['presentation']['length'];
-            $aud->files='[{"FileName":"PDF/'.$year.'/'.$course->shortname.'/'.$record['recordID'].'.pdf"'.','.'"Size":'.$aud->size.','.'"Hash":"'.$aud->hash.'",'.'"Duration":'.$aud->duration.'}]';
+            $aud->files='[{"FileName":"VC/'.$year.'/'.$course->shortname.'/'.$record['recordID'].'.pdf"'.','.'"Size":'.$aud->size.','.'"Hash":"'.$aud->hash.'",'.'"Duration":'.$aud->duration.'}]';
             $aud->meetingid=$record['meetingID'];
             $aud->link=$record['playbacks']['presentation']['url'];
             $aud->name=$record['meta_bbb-recording-name'];
