@@ -370,48 +370,60 @@ bigbluebuttonbn_process_get = function() {
         if(processo_valido == 1){
 
           var xmlHttp2 = new XMLHttpRequest();
-          xmlHttp2.open( "GET", document.getElementById('get_process').value + '?nrprocesso=' + document.getElementById('id_nr_process').value, false );
-          xmlHttp2.send( null );
-          if (window.DOMParser){
-              parser = new DOMParser();
-              xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
-          }
-          else{
-              xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
-              xmlDoc2.async = false;
-              xmlDoc2.loadXML(xmlHttp2.responseText);
+          var data_post = new FormData();
+          data_post.append('nrprocesso', document.getElementById('id_nr_process').value);
+          xmlHttp2.open( "POST", document.getElementById('get_process').value, true);
+          //Callbacks para erro e work
+          xmlHttp2.addEventListener("load", loadComplete, false);
+          xmlHttp2.addEventListener("error", loadError, false);
+          xmlHttp2.send( data_post );
+
+          function loadError(evt) {
+            console.log("erro ao buscar o post do get_process");
           }
 
-          xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
+          function loadComplete(evt) {
+            if (window.DOMParser){
+                parser = new DOMParser();
+                xmlDoc2 = parser.parseFromString(xmlHttp2.responseText, "text/xml");
+            }
+            else{
+                xmlDoc2 = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc2.async = false;
+                xmlDoc2.loadXML(xmlHttp2.responseText);
+            }
 
-          //convertendo em HTML com um parser do navegador para remover os &lt... etc
-          var el = document.createElement( 'html' );
-          el.innerHTML = xml_final[0].innerHTML;
-          var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
-          if (window.DOMParser){
-              parser = new DOMParser();
-              xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
-          }
-          else{
-              xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
-              xmlDoc3.async = false;
-              xmlDoc3.loadXML(xml_comtags);
-          }
+            xml_final = xmlDoc2.getElementsByTagName("ns2:consultarProcessoResponse")[0].childNodes;
 
-          var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
-          document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
-          document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
-          document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
-          document.getElementById('id_welcome').value = '';
-          if(proc[2].innerHTML == 'true'){
-            document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
-            document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
-          }
-          document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
-          document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
+            //convertendo em HTML com um parser do navegador para remover os &lt... etc
+            var el = document.createElement( 'html' );
+            el.innerHTML = xml_final[0].innerHTML;
+            var xml_comtags = el.getElementsByTagName('body')[0].innerText; //aqui ele pega o xml ja com tags
+            if (window.DOMParser){
+                parser = new DOMParser();
+                xmlDoc3 = parser.parseFromString(xml_comtags, "text/xml");
+            }
+            else{
+                xmlDoc3 = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc3.async = false;
+                xmlDoc3.loadXML(xml_comtags);
+            }
 
-          var partes = xmlDoc3.getElementsByTagName("partes")[0].childNodes;
-          partes.forEach(gravaPartes);
+            var proc = xmlDoc3.getElementsByTagName("processo")[0].childNodes;
+            document.getElementsByName('segredojustica')[0].value = proc[2].innerHTML;
+            document.getElementsByName('assuntoprincipal')[0].value = proc[7].innerHTML;
+            document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = '';
+            document.getElementById('id_welcome').value = '';
+            if(proc[2].innerHTML == 'true'){
+              document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = "<strong>SEGREDO DE JUSTIÇA!</strong><br><br>";
+              document.getElementById('id_welcome').value = "SEGREDO DE JUSTIÇA!\n\n";
+            }
+            document.getElementById('id_introeditoreditable').childNodes[0].innerHTML = document.getElementById('id_introeditoreditable').childNodes[0].innerHTML+"Assunto principal: "+proc[7].innerHTML;
+            document.getElementById('id_welcome').value = document.getElementById('id_welcome').value+"Assunto principal: "+proc[7].innerHTML;
+
+            var partes = xmlDoc3.getElementsByTagName("partes")[0].childNodes;
+            partes.forEach(gravaPartes);
+          }
 
         }
       }else{

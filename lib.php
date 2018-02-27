@@ -217,6 +217,37 @@ function bigbluebuttonbn_update_instance($data, $mform) {
       $reserva_id = $DB->insert_record('bigbluebuttonbn_r_reserved', $data_reserva);
     }
 
+    if(isset($data->partes)){
+      //Deleta as partes anteriores para salvar as novas
+      $DB->delete_records('bigbluebuttonbn_partes', array('id_bbb'=>$data->id));
+
+      //Salvando as partes e os advs de cada parte
+      $partes = explode("///",$data->partes);
+      $advogados = explode("///",$data->advogados);
+
+      $cont = 0;
+      foreach ($partes as $row) {
+        $parte_bd = new stdClass();
+        $parte_bd->id_parte=0;
+        $parte_bd->id_bbb=$data->id;
+        $parte_bd->name=$row;
+        $parte_bd->oab=0;
+        $parte_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+        $parte_id = $DB->insert_record('bigbluebuttonbn_partes', $parte_bd);
+        if($advogados[$cont]!=' '){
+          $adv_aux = explode("---",$advogados[$cont]);
+          $adv_bd = new stdClass();
+          $adv_bd->id_parte=$parte_id;
+          $adv_bd->id_bbb=$data->id;
+          $adv_bd->name=$adv_aux[0];
+          @$adv_bd->oab=$adv_aux[1];
+          $adv_bd->timecreated = strtotime(date("Y-m-d H:i:s"));
+          $adv_id = $DB->insert_record('bigbluebuttonbn_partes', $adv_bd);
+        }
+        $cont++;
+      }
+    }
+
     bigbluebuttonbn_update_media_file($data->id, $context, $draftitemid);
 
     bigbluebuttonbn_process_post_save($data);
@@ -260,6 +291,11 @@ function bigbluebuttonbn_delete_instance($id) {
     if (! $DB->delete_records('event', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id))) {
         $result = false;
     }
+
+    //Deleta as partes
+    $DB->delete_records('bigbluebuttonbn_partes', array('id_bbb'=>$bigbluebuttonbn->id));
+    //Deleta as reservas
+    $DB->delete_records('bigbluebuttonbn_r_reserved', array('id_bbb'=>$bigbluebuttonbn->id));
 
     $log = new stdClass();
 
