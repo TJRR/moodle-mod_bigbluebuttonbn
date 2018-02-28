@@ -487,8 +487,9 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             </tr>
           </thead>
           <tbody>';
+        echo "<!--<div>moderador: ".$bbbsession['moderator']." administrator: ".$bbbsession['administrator']."</div>-->";
         foreach($recordings as $record){
-          if($record['published']=='true'){
+          if($record['published']=='true' || ($record['published']=='false' && ($bbbsession['administrator']==1||$bbbsession['moderator']==1))){
             $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
             $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
             $aud_gravada->publishdate = $aud_gravada->publishdate/1000;
@@ -501,9 +502,13 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
                 <td class="cell c3" style=" text-align:left;">'.date_format($date_->sub(new DateInterval('PT4H')), 'd/m/Y H:i').'</td>
                 <td class="cell c4" style=" text-align:left;">'.$aud_gravada->duration.'</td>
                 <td class="cell c5 lastcol" style="text-align:left; width:10%">
-                  <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>
-                  <a onclick=\'if(confirm("Você tem certeza que deseja ocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a><br>
-                  <a onclick=\'if(confirm("Você tem certeza que deseja excluir esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a><br>
+                  <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
+                  if($record['published']=='true'){
+                    $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja ocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a><br>';
+                  }else{
+                    $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja desocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("publish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/show"></a><br>';
+                  }
+      $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja excluir esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a><br>
                   <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/edit_record_data.php?id='.$aud_gravada->guid.'" data-links="0" class="action-icon"><img alt="Edit" class="smallicon" title="Edit" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/edit"></a></td>
               </tr>';
             }
