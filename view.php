@@ -432,10 +432,10 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               }
               $partes_text .= $parte->name;
             }
-
+            $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$record['recordID'].'&meetingID='.$record['meetingID'];
             $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz ".$nome_magistrado." e as partes: ".$partes_text.".
             Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-            e ficará disponível no endereço eletrônico: <a href='".$record['playbacks']['presentation']['url']."'>".$record['playbacks']['presentation']['url']." .</a></p>
+            e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a></p>
             <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";
             $year = date("Y", $record['startTime']/1000);
             $aud = new stdClass();

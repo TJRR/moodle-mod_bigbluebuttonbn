@@ -387,57 +387,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         //-------------------------------------------------------------------------------
         // Fifth block ends here
-        //-------------------------------------------------------------------------------
-
-        //-------------------------------------------------------------------------------
-        // Fourth block starts here
-        //-------------------------------------------------------------------------------
-        $mform->addElement('header', 'rooms', get_string('mod_form_block_acesso', 'bigbluebuttonbn'));
-
-        $groupmembersselector = new group_members_selector('removeselect', array('groupid' => $groupid, 'courseid' => $course->id));
-        $potentialmembersselector = new group_non_members_selector('addselect', array('groupid' => $groupid, 'courseid' => $course->id));
-        echo "couser id - ".$course->id."<br>";
-        $mform->addElement('html', '<div id="addmembersform">
-          <form id="assignform" method="post" action="'.$CFG->wwwroot.'/group/members.php?group='.$groupid.'">
-          <div>;
-           <input type="hidden" name="sesskey" value="'.p(sesskey()).'" />
-           <table class="generaltable generalbox groupmanagementtable boxaligncenter" summary="">
-            <tr>
-              <td id="existingcell">
-                  <p>
-                    <label for="removeselect">'.print_string('groupmembers', 'group').'</label>
-                  </p>
-                  '.$groupmembersselector->display().'
-                  </td><tr>');
-              // <td id="buttonscell">
-              //   <p class="arrow_button">
-              //       <input name="add" id="add" type="submit" value="'.$OUTPUT->larrow().'&nbsp;'.get_string('add').'" title="'.print_string('add').'" /><br />
-              //       <input name="remove" id="remove" type="submit" value="'.get_string('remove').'&nbsp;'.$OUTPUT->rarrow().'" title="'.print_string('remove').'" />
-              //   </p>
-              // </td>
-              // <td id="potentialcell">
-              //     <p>
-              //       <label for="addselect">'.print_string('potentialmembs', 'group').'</label>
-              //     </p>
-              //     '.$potentialmembersselector->display().'
-              // </td>
-          //    <td>
-          //      <p>'.echo($strusergroupmembership).'</p>
-          //      <div id="group-usersummary"></div>
-          //    </td>
-          //  </tr>
-          // <tr><td colspan="3" id="backcell">
-          //      <input type="submit" name="cancel" value="'.print_string('backtogroups', 'group').'" />
-          //  </td></tr>
-        $mform->addElement('html', '</table>
-              </div>
-              </form>
-            </div>');
-
-
-        //-------------------------------------------------------------------------------
-        // Fourth block starts here
-        //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------        
 
         //-------------------------------------------------------------------------------
         // add standard elements, common to all modules
