@@ -408,7 +408,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
 
           //Pegando dados do processo para colocar na audiencia
           $sql = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
-          $processo = $DB->get_record_sql($sql, array($bbbsesson['bigbluebuttonbn']->id));
+          $processo = $DB->get_record_sql($sql, array($bbbsession['bigbluebuttonbn']->id));
           if($processo->segredojustica == ''){
             $segredo = 0;
           }else{
