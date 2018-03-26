@@ -372,6 +372,7 @@ bigbluebuttonbn_process_get = function() {
           var xmlHttp2 = new XMLHttpRequest();
           var data_post = new FormData();
           data_post.append('nrprocesso', document.getElementById('id_nr_process').value);
+          data_post.append('id', document.getElementById('course_id').value);
           xmlHttp2.open( "POST", document.getElementById('get_process').value, true);
           //Callbacks para erro e work
           xmlHttp2.addEventListener("load", loadComplete, false);

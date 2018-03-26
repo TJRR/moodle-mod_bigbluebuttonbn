@@ -77,6 +77,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $html_process_get = '
                       <div id="fitem_id_nr_process" class="fitem fitem_ftext required">
+                        <input type="hidden" value="'.$course->id.'" id="course_id">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/" id="base_url_get">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_audiencias.php" id="get_audiencias">
                         <input type="hidden" value="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/get_process.php" id="get_process">
@@ -387,7 +388,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         //-------------------------------------------------------------------------------
         // Fifth block ends here
-        //-------------------------------------------------------------------------------        
+        //-------------------------------------------------------------------------------
 
         //-------------------------------------------------------------------------------
         // add standard elements, common to all modules

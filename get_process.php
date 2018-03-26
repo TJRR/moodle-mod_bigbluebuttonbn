@@ -19,22 +19,12 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 $id = required_param('id', PARAM_INT); // Course Module ID, or
-$b  = optional_param('n', 0, PARAM_INT); // bigbluebuttonbn instance ID
-$group  = optional_param('group', 0, PARAM_INT); // group instance ID
 
-if ($id) {
-    $cm = get_coursemodule_from_id('bigbluebuttonbn', $id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $bigbluebuttonbn = $DB->get_record('bigbluebuttonbn', array('id' => $cm->instance), '*', MUST_EXIST);
-} elseif ($b) {
-    $bigbluebuttonbn = $DB->get_record('bigbluebuttonbn', array('id' => $b), '*', MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $bigbluebuttonbn->course), '*', MUST_EXIST);
-    $cm = get_coursemodule_from_instance('bigbluebuttonbn', $bigbluebuttonbn->id, $course->id, false, MUST_EXIST);
-} else {
-    print_error(get_string('view_error_url_missing_parameters', 'bigbluebuttonbn'));
-}
+$params = array('id' => $id);
 
-require_login($course, true, $cm);
+$course = $DB->get_record('course', $params, '*', MUST_EXIST);
+
+require_login($course);
 
 if(isset($_POST['nrprocesso'])){
 
