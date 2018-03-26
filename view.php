@@ -16,6 +16,8 @@ require_once(dirname(__FILE__) . '/Mobile_Detect.php');
 $id = required_param('id', PARAM_INT); // Course Module ID, or
 $b  = optional_param('n', 0, PARAM_INT); // bigbluebuttonbn instance ID
 $group  = optional_param('group', 0, PARAM_INT); // group instance ID
+$SHORTNAME_ANY = 'manager'; //Papel liberado para executar qualquer ação dentro do moodle
+$SHORTNAME_SIGILOSAS = 'moderador'; //Papel liberado para assistir as audiencias sigilosas em caso de liberação explícita dentro do sistema de "Papéis atribuídos localmente" do moodle
 
 if ($id) {
     $cm = get_coursemodule_from_id('bigbluebuttonbn', $id, 0, false, MUST_EXIST);
@@ -345,7 +347,7 @@ function bigbluebuttonbn_view_ended($bbbsession) {
 }
 
 function bigbluebuttonbn_view_recordings($bbbsession, $course) {
-    global $CFG,$DB,$COURSE;
+    global $CFG,$DB,$COURSE,$PAGE,$USER;
 
     // SQL para buscar o magistrado responsável
     $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email ".
@@ -399,14 +401,22 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         // Merge the recordings
         $recordings = array_merge($recordings, $recordings_imported);
 
+        $segredo = 0;
         foreach($recordings as $record){
           $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE guid = ?';
           $aud_gravada = $DB->get_record_sql($sql, array($record['recordID']));
+
+          //Pegando dados do processo para colocar na audiencia
+          $sql = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
+          $processo = $DB->get_record_sql($sql, array($bbbsesson['bigbluebuttonbn']->id));
+          if($processo->segredojustica == ''){
+            $segredo = 0;
+          }else{
+            $segredo = 1;
+          }
+
           if(!$aud_gravada){
             //Montando o campo descrição
-            $sql = 'SELECT * FROM {bigbluebuttonbn} WHERE id = ?';
-            $processo = $DB->get_record_sql($sql, array($bbbsession['bigbluebuttonbn']->id));
-
             $partes = $DB->get_records('bigbluebuttonbn_partes', array('id_bbb'=>$bbbsession['bigbluebuttonbn']->id,'oab'=>'0'));
 
             $date_ = new DateTime();
@@ -459,7 +469,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->id_course=$_GET['id'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
-            gera_pdf($aud_id);
+            //gera_pdf($aud_id);
           }else{
             $aud_gravada->link=$record['playbacks']['presentation']['url'];
             $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
@@ -470,10 +480,46 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               $aud_gravada->tags=$record['meta_bbb-recording-tags'];
               $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             }
-            gera_pdf($aud_gravada->id);
+            //gera_pdf($aud_gravada->id);
           }
         }
 
+        //Início da verificação de usuários
+        $pode_assistir = 0;
+        $pode_editar = 0;
+        $sql = "select * from {context} c where c.instanceid = ? and c.contextlevel = 50";
+        $result = $DB->get_record_sql($sql,array($COURSE->id));
+        $context_course = $result->id;
+        //Verifica se o usuario é gerente
+        $sql_adm = "select count(*) from {user} u
+                inner join {role_assignments} ra on ra.userid = u.id
+                inner join {role} r on r.id = ra.roleid
+                where ra.contextid = ? and u.id = ? and r.archetype = '".$SHORTNAME_ANY."'";
+        $result_course = $DB->get_record_sql($sql_adm,array($context_course,$USER->id));
+        if($bbbsession['administrator']==1 || $result_course->count > 0){
+          //Se for gerente ou adm libera acesso completo
+          $pode_assistir = 1;
+          $pode_editar = 1;
+        }else{
+          //Primeiramente verifica se é segredo de justiça para fazer o bloqueio
+          if($segredo == 1){
+            //Verificando se o usuario tem acesso direto na audiência
+            $sql_user = "select count(*) from {user} u
+                    inner join {role_assignments} ra on ra.userid = u.id
+                    inner join {role} r on r.id = ra.roleid
+                    where ra.contextid = ? and u.id = ? and r.shortname = '".$SHORTNAME_SIGILOSAS."'";
+            $context_module = $PAGE->context;
+            $result_module = $DB->get_record_sql($sql_user,array($context_module->id,$USER->id));
+
+            if($result_module->count>0){
+              $pode_assistir = 1;
+            }
+          }else{
+            //Se caso nao for sigilo todos podem assistir
+            $pode_assistir = 1;
+          }
+        }
+        //Final da verificação de usuario
 
         $output .= '<br>
         <table class="generaltable">
@@ -501,16 +547,20 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
                 <td class="cell c2" style=" text-align:left;">'.$aud_gravada->description.'</td>
                 <td class="cell c3" style=" text-align:left;">'.date_format($date_->sub(new DateInterval('PT4H')), 'd/m/Y H:i').'</td>
                 <td class="cell c4" style=" text-align:left;">'.$aud_gravada->duration.'</td>
-                <td class="cell c5 lastcol" style="text-align:left; width:10%">
-                  <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
-                  if($record['published']=='true'){
-                    $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja ocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a><br>';
-                  }else{
-                    $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja desocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("publish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/show"></a><br>';
+                <td class="cell c5 lastcol" style="text-align:left; width:10%">';
+                  if($pode_assistir==1){
+                    $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
                   }
-      $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja excluir esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a><br>
-                  <a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/edit_record_data.php?id='.$aud_gravada->guid.'" data-links="0" class="action-icon"><img alt="Edit" class="smallicon" title="Edit" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/edit"></a></td>
-              </tr>';
+                  if($pode_editar==1){
+                    if($record['published']=='true'){
+                      $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja ocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("unpublish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/hide"></a><br>';
+                    }else{
+                      $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja desocultar esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("publish", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Hide" class="smallicon" title="Hide" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/show"></a><br>';
+                    }
+                      $output .= '<a onclick=\'if(confirm("Você tem certeza que deseja excluir esta audiência?")){M.mod_bigbluebuttonbn.broker_manageRecording("delete", "'.$aud_gravada->guid.'", "'.$aud_gravada->meetingid.'");}else{return false;}\' data-links="0" class="action-icon" href="#"><img alt="Delete" class="smallicon" title="Delete" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/delete"></a><br>';
+                      $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/edit_record_data.php?id='.$aud_gravada->guid.'" data-links="0" class="action-icon"><img alt="Edit" class="smallicon" title="Edit" src="'.$CFG->wwwroot.'/theme/image.php/clean/core/1513160402/t/edit"></a>';
+                  }
+              $output .= '</td></tr>';
             }
           }
         }

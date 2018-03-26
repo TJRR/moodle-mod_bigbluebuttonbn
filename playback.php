@@ -184,7 +184,7 @@ foreach ($record['playbacks'] as $playback) {
 $token = bigbluebuttonbn_getRecordingToken($bbbsession['endpoint'], $bbbsession['shared_secret'],$_GET['recordID'],$USER->username,$USER->lastip);
 
 // Output starts here.
-echo "<iframe src='".$url."&token=".$token."' frameborder='0' style='overflow:hidden;height:100%;width:100%' height='100%' width='100%'></iframe>";
+echo "<iframe src='".$url."&token=".$token."' frameborder='0' style='overflow:hidden;height:100%;width:100%;' height='100%' width='100%'></iframe>";
 
 function bigbluebutton_is_device_for_mobile_client(){
     $detect = new Mobile_Detect;
