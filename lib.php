@@ -80,7 +80,7 @@ function bigbluebuttonbn_supports($feature) {
  * @return int The id of the newly inserted bigbluebuttonbn record
  */
 function bigbluebuttonbn_add_instance($data, $mform) {
-    global $DB, $CFG;
+    global $DB, $CFG, $USER;
 
     $draftitemid = isset($data->presentation)? $data->presentation: null;
     $context = bigbluebuttonbn_get_context_module($data->coursemodule);
@@ -167,6 +167,25 @@ function bigbluebuttonbn_add_instance($data, $mform) {
       bigbluebuttonbn_update_media_file($bigbluebuttonbn_id, $context, $draftitemid);
 
       bigbluebuttonbn_process_post_save($data);
+
+      if($data->segredojustica != ''){
+        $roles_names = array('Visitante','Participante');
+        foreach ($roles_names as $key) {
+          $sql = 'SELECT * FROM {role} WHERE name = ?';
+          $role_get = $DB->get_record_sql($sql, array($key));
+
+          $remove_permissao = new stdClass();
+          $remove_permissao->contextid = $context->id;
+          $remove_permissao->roleid = $role_get->id;
+          $remove_permissao->capability = 'mod/bigbluebuttonbn:join';
+          $remove_permissao->permission = -1000;
+          $remove_permissao->timemodified = strtotime(date("Y-m-d H:i:s"));
+          $remove_permissao->modifierid = $USER->id;
+
+          $DB->insert_record('role_capabilities', $remove_permissao);
+        }
+      }
+
     }else{
       $bigbluebuttonbn_id = 0;
       echo "<p>Já existe uma audiência agendada para alguma das salas selecionadas. Por favor selecione outra sala ou outra data.</p>";
@@ -185,7 +204,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
  * @return boolean Success/Fail
  */
 function bigbluebuttonbn_update_instance($data, $mform) {
-    global $DB, $CFG;
+    global $DB, $CFG, $USER;
 
     $data->id = $data->instance;
     $draftitemid = isset($data->presentation)? $data->presentation: null;
@@ -251,6 +270,27 @@ function bigbluebuttonbn_update_instance($data, $mform) {
     bigbluebuttonbn_update_media_file($data->id, $context, $draftitemid);
 
     bigbluebuttonbn_process_post_save($data);
+
+    if($data->segredojustica != ''){
+      $roles_names = array('Visitante','Participante');
+      foreach ($roles_names as $key) {
+        $sql = 'SELECT * FROM {role} WHERE name = ?';
+        $role_get = $DB->get_record_sql($sql, array($key));
+
+        //Deleta as roles anteriores para salvar as novas
+        $DB->delete_records('role_capabilities', array('contextid'=>$context->id,'roleid'=>$role_get->id, 'capability'=>'mod/bigbluebuttonbn:join'));
+
+        $remove_permissao = new stdClass();
+        $remove_permissao->contextid = $context->id;
+        $remove_permissao->roleid = $role_get->id;
+        $remove_permissao->capability = 'mod/bigbluebuttonbn:join';
+        $remove_permissao->permission = -1000;
+        $remove_permissao->timemodified = strtotime(date("Y-m-d H:i:s"));
+        $remove_permissao->modifierid = $USER->id;
+
+        $DB->insert_record('role_capabilities', $remove_permissao);
+      }
+    }
 
     return true;
 }

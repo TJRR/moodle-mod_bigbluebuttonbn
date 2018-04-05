@@ -16,8 +16,6 @@ require_once(dirname(__FILE__) . '/Mobile_Detect.php');
 $id = required_param('id', PARAM_INT); // Course Module ID, or
 $b  = optional_param('n', 0, PARAM_INT); // bigbluebuttonbn instance ID
 $group  = optional_param('group', 0, PARAM_INT); // group instance ID
-$SHORTNAME_ANY = 'manager'; //Papel liberado para executar qualquer ação dentro do moodle
-$SHORTNAME_SIGILOSAS = 'moderador'; //Papel liberado para assistir as audiencias sigilosas em caso de liberação explícita dentro do sistema de "Papéis atribuídos localmente" do moodle
 
 if ($id) {
     $cm = get_coursemodule_from_id('bigbluebuttonbn', $id, 0, false, MUST_EXIST);
@@ -485,6 +483,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
         }
 
         //Início da verificação de usuários
+        $SHORTNAME_ANY = 'manager';  //Papel liberado para executar qualquer ação dentro do moodle
+        $SHORTNAME_SIGILOSAS = 'moderador'; //Papel liberado para assistir as audiencias sigilosas em caso de liberação explícita dentro do sistema de "Papéis atribuídos localmente" do moodle
         $pode_assistir = 0;
         $pode_editar = 0;
         $sql = "select * from {context} c where c.instanceid = ? and c.contextlevel = 50";
@@ -510,7 +510,6 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
                     where ra.contextid = ? and u.id = ? and r.shortname = '".$SHORTNAME_SIGILOSAS."'";
             $context_module = $PAGE->context;
             $result_module = $DB->get_record_sql($sql_user,array($context_module->id,$USER->id));
-
             if($result_module->count>0){
               $pode_assistir = 1;
             }
