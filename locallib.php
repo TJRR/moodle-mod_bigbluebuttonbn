@@ -25,6 +25,7 @@ const BIGBLUEBUTTONBN_METHOD_GET = 'GET';
 const BIGBLUEBUTTONBN_METHOD_POST = 'POST';
 
 const BIGBLUEBUTTON_EVENT_ACTIVITY_VIEWED = 'activity_viewed';
+const BIGBLUEBUTTON_EVENT_ACTIVITY_ACESS_NOT_ALLOWED = 'access_not_allowed';
 const BIGBLUEBUTTON_EVENT_MEETING_CREATED = 'meeting_created';
 const BIGBLUEBUTTON_EVENT_MEETING_ENDED = 'meeting_ended';
 const BIGBLUEBUTTON_EVENT_MEETING_JOINED = 'meeting_joined';
@@ -762,6 +763,9 @@ function bigbluebuttonbn_event_log_standard($event_type, $bigbluebuttonbn, $cont
             break;
         case BIGBLUEBUTTON_EVENT_ACTIVITY_VIEWED:
             $event = \mod_bigbluebuttonbn\event\bigbluebuttonbn_activity_viewed::create($event_properties);
+            break;
+        case BIGBLUEBUTTON_EVENT_ACTIVITY_ACESS_NOT_ALLOWED:
+            $event = \mod_bigbluebuttonbn\event\bigbluebuttonbn_activity_access_not_allowed::create($event_properties);
             break;
         case BIGBLUEBUTTON_EVENT_ACTIVITY_MANAGEMENT_VIEWED:
             $event = \mod_bigbluebuttonbn\event\bigbluebuttonbn_activity_management_viewed::create($event_properties);

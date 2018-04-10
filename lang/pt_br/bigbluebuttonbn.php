@@ -311,6 +311,7 @@ $string['event_activity_created'] = 'Atividade Mconf criada';
 $string['event_activity_deleted'] = 'Atividade Mconf deletada';
 $string['event_activity_modified'] = 'Atividade Mconf modificada';
 $string['event_activity_viewed'] = 'Atividade Mconf visualizada';
+$string['event_activity_access_not_allowed'] = 'Sem permissão para acessar atividade Mconf';
 $string['event_activity_viewed_all'] = 'Gerenciamento de atividade Mconf visualizado';
 $string['event_meeting_created'] = 'Conferência Mconf criada';
 $string['event_meeting_ended'] = 'Conferência Mconf terminada a força';

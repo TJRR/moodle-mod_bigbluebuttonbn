@@ -1,10 +1,11 @@
 <?php
 
 /**
- * Local Proxy view for Big Blue Button local security, need additional configuration to 
+ * Local Proxy view for Big Blue Button local security, need additional configuration to
  * work properly.
  *
  * @package   mod_bigbluebuttonbn
+ * @deprecated Não é mais utilizado este método para controle de acesso
  * @author    Luiz Henrique Longhi Rossi  (lh.rossi [at] cognitivabrasil [dt] com [dt] br)
  * @author    Marcos Freitas Nunes  (marcos [at] cognitivabrasil [dt] com [dt] br)
  * @copyright 2017 Cognitiva Brasil Tecnologias Educacionais

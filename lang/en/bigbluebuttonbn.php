@@ -307,6 +307,7 @@ $string['event_activity_created'] = 'Mconf Webconference activity created';
 $string['event_activity_deleted'] = 'Mconf Webconference activity deleted';
 $string['event_activity_modified'] = 'Mconf Webconference activity modified';
 $string['event_activity_viewed'] = 'Mconf Webconference activity viewed';
+$string['event_activity_access_not_allowed'] = 'Don\'t have permission to access Mconf activity';
 $string['event_activity_viewed_all'] = 'Mconf Webconference activity management viewed';
 $string['event_meeting_created'] = 'Mconf Webconference meeting created';
 $string['event_meeting_ended'] = 'Mconf Webconference meeting forcibly ended';

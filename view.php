@@ -29,6 +29,14 @@ if ($id) {
     print_error(get_string('view_error_url_missing_parameters', 'bigbluebuttonbn'));
 }
 
+$context = bigbluebuttonbn_get_context_module($cm->id);
+
+if($bigbluebuttonbn->segredojustica == ''){
+  if (!has_capability('mod/bigbluebuttonbn:join', $context)){
+    bigbluebuttonbn_event_log(BIGBLUEBUTTON_EVENT_ACTIVITY_ACESS_NOT_ALLOWED, $bigbluebuttonbn, $context, $cm);
+  }
+}
+
 require_login($course, true, $cm);
 
 $version_major = bigbluebuttonbn_get_moodle_version_major();
@@ -40,8 +48,6 @@ if ($version_major < '2013111800') {
     //This is valid after v2.6
     $module_version = get_config('mod_bigbluebuttonbn', 'version');
 }
-$context = bigbluebuttonbn_get_context_module($cm->id);
-
 
 bigbluebuttonbn_event_log(BIGBLUEBUTTON_EVENT_ACTIVITY_VIEWED, $bigbluebuttonbn, $context, $cm);
 

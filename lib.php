@@ -178,7 +178,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
           $remove_permissao->contextid = $context->id;
           $remove_permissao->roleid = $role_get->id;
           $remove_permissao->capability = 'mod/bigbluebuttonbn:join';
-          $remove_permissao->permission = -1000;
+          $remove_permissao->permission = -1;
           $remove_permissao->timemodified = strtotime(date("Y-m-d H:i:s"));
           $remove_permissao->modifierid = $USER->id;
 
@@ -284,7 +284,7 @@ function bigbluebuttonbn_update_instance($data, $mform) {
         $remove_permissao->contextid = $context->id;
         $remove_permissao->roleid = $role_get->id;
         $remove_permissao->capability = 'mod/bigbluebuttonbn:join';
-        $remove_permissao->permission = -1000;
+        $remove_permissao->permission = -1;
         $remove_permissao->timemodified = strtotime(date("Y-m-d H:i:s"));
         $remove_permissao->modifierid = $USER->id;
 
