@@ -39,7 +39,7 @@ class bigbluebuttonbn_activity_access_not_allowed extends \core\event\base {
      */
     public function get_description() {
         $a = (object) array('userid' => $this->userid, 'bigbluebuttonbnid' => $this->objectid, 'courseid' => $this->contextinstanceid);
-        return "The user with id '$a->userid' don't have permissio to access the bigbluebuttonbn activity with id '$a->bigbluebuttonbnid' for " .
+        return "The user with id '$a->userid' don't have permission to access the bigbluebuttonbn activity with id '$a->bigbluebuttonbnid' for " .
         "the course id '$a->courseid'.";
     }
 

@@ -31,7 +31,7 @@ if ($id) {
 
 $context = bigbluebuttonbn_get_context_module($cm->id);
 
-if($bigbluebuttonbn->segredojustica == ''){
+if($bigbluebuttonbn->segredojustica != '' && $bigbluebuttonbn->segredojustica != 'false'){
   if (!has_capability('mod/bigbluebuttonbn:join', $context)){
     bigbluebuttonbn_event_log(BIGBLUEBUTTON_EVENT_ACTIVITY_ACESS_NOT_ALLOWED, $bigbluebuttonbn, $context, $cm);
   }

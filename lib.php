@@ -168,7 +168,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
 
       bigbluebuttonbn_process_post_save($data);
 
-      if($data->segredojustica != ''){
+      if($data->segredojustica != '' && $data->segredojustica != 'false'){
         $roles_names = array('Visitante','Participante');
         foreach ($roles_names as $key) {
           $sql = 'SELECT * FROM {role} WHERE name = ?';
@@ -271,7 +271,7 @@ function bigbluebuttonbn_update_instance($data, $mform) {
 
     bigbluebuttonbn_process_post_save($data);
 
-    if($data->segredojustica != ''){
+    if($data->segredojustica != '' && $data->segredojustica != 'false'){
       $roles_names = array('Visitante','Participante');
       foreach ($roles_names as $key) {
         $sql = 'SELECT * FROM {role} WHERE name = ?';
