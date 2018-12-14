@@ -5,6 +5,27 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v2 or later
  */
 
+//Inserindo o evento de clique para testar agenda de salas ao selecionar uma sala
+var base = document.querySelector('#page');
+var selector = '.form-autocomplete-suggestions';
+
+base.addEventListener('click', function(event) {
+  // Como o elemento ainda não está no dom quando colocamos o Listener
+  // precisamos procurar ele baseando-se em um pai com ID, no caso #page
+  // assim pegamos o filho mais 'perto' no caso o primeiro que aparece no dom
+  // e utlizamos o eventlistener nele
+  var closest = event.target.closest(selector);
+  if (closest && base.contains(closest)) {
+    verificaSala();
+    // var selecao_valores = document.getElementById('id_select_rooms').options;
+    // for (var i = 0; i < selecao_valores.length; i++) {
+    //   if(selecao_valores[i].selected){
+    //     console.log(selecao_valores[i]);
+    //   }
+    // }
+  }
+});
+
 bigbluebuttonbn_participant_selection_set = function() {
     bigbluebuttonbn_select_clear('bigbluebuttonbn_participant_selection');
 
@@ -150,9 +171,11 @@ httpGet = function(theUrl)
 verificaSala = function(){
   document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
+  console.log("verifica Sala");
   if(document.getElementById('id_openingtime_enabled').checked == false || document.getElementById('id_closingtime_enabled').checked == false){
     document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
     document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+    console.log("if");
     // var selecteds = 0;
     // var selecao_valores =  document.getElementById('id_select_rooms').options;
     // for (var i = 0; i < selecao_valores.length; i++) {
@@ -169,6 +192,7 @@ verificaSala = function(){
     //   document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
     // }
   }else{
+    console.log("else");
     var openingtime = 0;
     var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00Z';
     openingtime = new Date(data);
@@ -196,6 +220,7 @@ verificaSala = function(){
           document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
           valido = 0;
           selecao_valores[i].selected = false;
+          document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
         }else{
           if(retornohttp==0){
             selecteds = 1;
@@ -207,6 +232,7 @@ verificaSala = function(){
             document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
             valido = 0;
             selecao_valores[i].selected = false;
+            document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
           }
         }
       }

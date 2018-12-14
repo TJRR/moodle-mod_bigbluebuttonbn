@@ -33,6 +33,8 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
 
         $context = bigbluebuttonbn_get_context_course($course->id);
 
+        $bbbADM = has_capability('moodle/category:manage', $context);
+
         //BigBlueButton server data
         $endpoint = bigbluebuttonbn_get_cfg_server_url();
 
@@ -364,24 +366,37 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         // Fifth block starts here
         //-------------------------------------------------------------------------------
-        $link_room = "<a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/rooms_form.php' style='float:right; text-decoration:underline; font-size:0.8em;'>".get_string('mod_form_field_addroom', 'bigbluebuttonbn')."</a>";
+        $link_room = "";
+        if($bbbADM==1){
+          $link_room = "<a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/rooms_form.php' style='float:right; text-decoration:underline; font-size:0.8em;'>".get_string('mod_form_field_addroom', 'bigbluebuttonbn')."</a>";
+        }
         $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn').$link_room);
 
         $rooms_list = bigbluebuttonbn_get_rooms_list();
         $options = array();
+
         foreach ($rooms_list as $key) {
           $options[$key->id] = $key->name;
         }
 
-        $select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onClick='verificaSala();'");
-        $select->setMultiple(true);
+        function callback_autocomplete(){
+          echo '<strong></script>';
+        }
+
+        $search_options = array(
+            'multiple' => true,
+            'valuehtmlcallback' => callback_autocomplete()
+        );
+        $select = $mform->addElement('autocomplete', 'select_rooms',  get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, $search_options);
+
+        //$select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onClick='verificaSala();'");
+        //$select->setMultiple(true);
         if(isset($_GET['update'])){
-          $rooms_list_complete = bigbluebuttonbn_get_rooms_list_complete($current_activity->id);
-          $selecionadas = array();
-          foreach ($rooms_list_complete as $key) {
-            array_push($selecionadas, $key->id_physical_room);
-          }
-          //print_r($selecionadas);
+           $rooms_list_complete = bigbluebuttonbn_get_rooms_list_complete($current_activity->id);
+           $selecionadas = array();
+           foreach ($rooms_list_complete as $key) {
+             array_push($selecionadas, $key->id_physical_room);
+           }      
           $select->setSelected($selecionadas);
         }
         $mform->addRule('select_rooms',null,'required');
@@ -397,6 +412,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         // add standard buttons, common to all modules
         $this->add_action_buttons();
+
     }
 
     function data_preprocessing(&$default_values) {

@@ -13,6 +13,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activityoverview'] = 'Você tem sessões Mconf a seguir';
+$string['allrooms'] = 'Todas as salas';
 $string['bbbduetimeoverstartingtime'] = 'O horário de encerramento desta atividade deve ser maior do que o horário de início';
 $string['bbbdurationwarning'] = 'A duração máxima desta sessão é %duration% minutos.';
 $string['bbbrecordwarning'] = 'Esta sessão pode ser gravada.';
