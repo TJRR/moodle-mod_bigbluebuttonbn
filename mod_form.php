@@ -367,16 +367,16 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         // Fifth block starts here
         //-------------------------------------------------------------------------------
         $link_room = "";
-        if($bbbADM==1){
-          $link_room = "<a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/rooms_form.php' style='float:right; text-decoration:underline; font-size:0.8em;'>".get_string('mod_form_field_addroom', 'bigbluebuttonbn')."</a>";
-        }
+        // if($bbbADM==1){
+        //   $link_room = "<a href='".$CFG->wwwroot."/mod/bigbluebuttonbn/rooms_form.php' style='float:right; text-decoration:underline; font-size:0.8em;'>".get_string('mod_form_field_addroom', 'bigbluebuttonbn')."</a>";
+        // }
         $mform->addElement('header', 'rooms', get_string('mod_form_block_rooms', 'bigbluebuttonbn').$link_room);
 
         $rooms_list = bigbluebuttonbn_get_rooms_list();
         $options = array();
 
         foreach ($rooms_list as $key) {
-          $options[$key->id] = $key->name;
+          $options[$key->id] = $key->fullname;
         }
 
         function callback_autocomplete(){
@@ -396,7 +396,7 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
            $selecionadas = array();
            foreach ($rooms_list_complete as $key) {
              array_push($selecionadas, $key->id_physical_room);
-           }      
+           }
           $select->setSelected($selecionadas);
         }
         $mform->addRule('select_rooms',null,'required');

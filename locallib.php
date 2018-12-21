@@ -1705,7 +1705,7 @@ function bigbluebuttonbn_html2text($html, $len) {
 function bigbluebuttonbn_get_rooms_list() {
     global $DB;
 
-    $table = 'bigbluebuttonbn_rooms';
+    $table = 'course';
 
     //Prepare select for loading records based on existent bigbluebuttonbns
     $select = "";
