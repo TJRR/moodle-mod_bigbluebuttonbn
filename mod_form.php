@@ -347,15 +347,15 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         if( isset($current_activity->openingtime) && $current_activity->openingtime != 0 || isset($current_activity->closingtime) && $current_activity->closingtime != 0 )
             $mform->setExpanded('schedule');
 
-        $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => true), 'onChange=verificaSala();');
+        $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => false), 'onChange=verificaSala();');
         if(isset($_GET['d'])){
-          $mform->setDefault('openingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 08:00'));
+          $mform->setDefault('openingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 00:00'));
         }else{
           $mform->setDefault('openingtime', 0);
         }
-        $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => true), 'onChange=verificaSala();');
+        $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => false), 'onChange=verificaSala();');
         if(isset($_GET['d'])){
-          $mform->setDefault('closingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 09:00'));
+          $mform->setDefault('closingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 00:00'));
         }else{
           $mform->setDefault('closingtime', 0);
         }
@@ -388,6 +388,11 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
             'valuehtmlcallback' => callback_autocomplete()
         );
         $select = $mform->addElement('autocomplete', 'select_rooms',  get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, $search_options);
+
+        //Este teste serve para inserir a sala automaticamente quando é adicionado um processo dentro do curso
+        if(isset($_GET['course'])){
+          $select->setSelected($_GET['course']);
+        }
 
         //$select = $mform->addElement('select', 'select_rooms', get_string('mod_form_field_selectrooms', 'bigbluebuttonbn'), $options, "onClick='verificaSala();'");
         //$select->setMultiple(true);
