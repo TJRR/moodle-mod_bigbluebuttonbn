@@ -361,6 +361,12 @@ function bigbluebuttonbn_delete_instance($id) {
     }
     $log->meta = "{\"has_recordings\":{$has_recordings}}";
 
+    $cm = get_coursemodule_from_instance('bigbluebuttonbn', $bigbluebuttonbn->id, $bigbluebuttonbn->course, false, MUST_EXIST);
+
+    $context = bigbluebuttonbn_get_context_module($cm->id);
+
+    bigbluebuttonbn_event_log(BIGBLUEBUTTON_EVENT_RECORDING_DELETED, $bigbluebuttonbn, $context, $cm);
+
     if (! $returnid = $DB->insert_record('bigbluebuttonbn_logs', $log)) {
         $result = false;
     }
