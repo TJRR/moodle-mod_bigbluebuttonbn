@@ -229,7 +229,6 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         //-------------------------------------------------------------------------------
         if ( $preuploadpresentation_enabled ) {
             $mform->addElement('header', 'preupload', get_string('mod_form_block_presentation', 'bigbluebuttonbn'));
-            $mform->setExpanded('preupload');
 
             $filemanager_options = array();
             $filemanager_options['accepted_types'] = '*';
@@ -344,20 +343,21 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         // Fourth block starts here
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'schedule', get_string('mod_form_block_schedule', 'bigbluebuttonbn'));
-        if( isset($current_activity->openingtime) && $current_activity->openingtime != 0 || isset($current_activity->closingtime) && $current_activity->closingtime != 0 )
-            $mform->setExpanded('schedule');
+        $mform->setExpanded('schedule');
+        // if( isset($current_activity->openingtime) && $current_activity->openingtime != 0 || isset($current_activity->closingtime) && $current_activity->closingtime != 0 )
+        //     $mform->setExpanded('schedule');
 
         $mform->addElement('date_time_selector', 'openingtime', get_string('mod_form_field_openingtime', 'bigbluebuttonbn'), array('optional' => false), 'onChange=verificaSala();');
         if(isset($_GET['d'])){
           $mform->setDefault('openingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 00:00'));
         }else{
-          $mform->setDefault('openingtime', 0);
+          $mform->setDefault('openingtime', strtotime(date('m/d/Y').' 00:00'));
         }
         $mform->addElement('date_time_selector', 'closingtime', get_string('mod_form_field_closingtime', 'bigbluebuttonbn'), array('optional' => false), 'onChange=verificaSala();');
         if(isset($_GET['d'])){
           $mform->setDefault('closingtime', strtotime($_GET['m'].'/'.$_GET['d'].'/'.$_GET['y'].' 00:00'));
         }else{
-          $mform->setDefault('closingtime', 0);
+          $mform->setDefault('closingtime', strtotime(date('m/d/Y').' 00:00'));
         }
         //-------------------------------------------------------------------------------
         // Fourth block ends here

@@ -171,76 +171,57 @@ httpGet = function(theUrl)
 verificaSala = function(){
   document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
-  if(document.getElementById('id_openingtime_enabled').checked == false || document.getElementById('id_closingtime_enabled').checked == false){
-    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-    // var selecteds = 0;
-    // var selecao_valores =  document.getElementById('id_select_rooms').options;
-    // for (var i = 0; i < selecao_valores.length; i++) {
-    //   if(selecao_valores[i].selected){
-    //     selecteds=1;
-    //     break;
-    //   }
-    // }
-    // if(selecteds==1){
-    //   document.getElementById('id_submitbutton').removeAttribute("disabled");
-    //   document.getElementById('id_submitbutton2').removeAttribute("disabled");
-    // }else{
-    //   document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-    //   document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-    // }
-  }else{    
-    var openingtime = 0;
-    var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00Z';
-    openingtime = new Date(data);
-    //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
-    var time_ini = openingtime.getTime()/1000;
 
-    var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00Z';
-    endingtime = new Date(data_fim);
-    var time_fim = endingtime.getTime()/1000;
-    var selecao_valores =  document.getElementById('id_select_rooms').options;
-    var valido = 1;
-    var selecteds = 0;
-    var id_bbb = '';
-    if(document.getElementsByName('idbbb_update')[0].value != '0'){
-      id_bbb = '&id_bbb='+document.getElementsByName('idbbb_update')[0].value;
-    }
-    for (var i = 0; i < selecao_valores.length; i++) {
-      if(selecao_valores[i].selected){
-        var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);
-        if(retornohttp==1){
+  var openingtime = 0;
+  var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00Z';
+  openingtime = new Date(data);
+  //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
+  var time_ini = openingtime.getTime()/1000;
+
+  var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00Z';
+  endingtime = new Date(data_fim);
+  var time_fim = endingtime.getTime()/1000;
+  var selecao_valores =  document.getElementById('id_select_rooms').options;
+  var valido = 1;
+  var selecteds = 0;
+  var id_bbb = '';
+  if(document.getElementsByName('idbbb_update')[0].value != '0'){
+    id_bbb = '&id_bbb='+document.getElementsByName('idbbb_update')[0].value;
+  }
+  for (var i = 0; i < selecao_valores.length; i++) {
+    if(selecao_valores[i].selected){
+      var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);
+      if(retornohttp==1){
+        if(valido==1){
+          alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+        }
+        document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+        document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+        valido = 0;
+        selecao_valores[i].selected = false;
+        document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
+      }else{
+        if(retornohttp==0){
+          selecteds = 1;
+        }else{
           if(valido==1){
-            alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+            alert('Não foi possível acessar o servidor para reservar a sala! Tente novamente');
           }
           document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
           document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
           valido = 0;
           selecao_valores[i].selected = false;
           document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
-        }else{
-          if(retornohttp==0){
-            selecteds = 1;
-          }else{
-            if(valido==1){
-              alert('Não foi possível acessar o servidor para reservar a sala! Tente novamente');
-            }
-            document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-            document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-            valido = 0;
-            selecao_valores[i].selected = false;
-            document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
-          }
         }
       }
     }
-    if(valido == 1 && selecteds == 1){
-      document.getElementById('id_submitbutton').removeAttribute("disabled");
-      document.getElementById('id_submitbutton2').removeAttribute("disabled");
-    }else{
-      document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-      document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-    }
+  }
+  if(valido == 1 && selecteds == 1){
+    document.getElementById('id_submitbutton').removeAttribute("disabled");
+    document.getElementById('id_submitbutton2').removeAttribute("disabled");
+  }else{
+    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
   }
 }
 
@@ -325,7 +306,6 @@ bigbluebuttonbn_process_get = function() {
         var processo_valido = 1;
         if(typeof childs[5] === 'undefined') {
           if(typeof childs[1] === 'undefined'){
-            document.getElementById('id_openingtime_enabled').checked = false;
 
             document.getElementById('nome_audiencia').innerHTML = '';
             document.getElementsByName('tipoaudiencia')[0].value = '';
@@ -368,22 +348,19 @@ bigbluebuttonbn_process_get = function() {
           var datebegin = new Date(thisDateF);
           var today_date = new Date();
           if(datebegin.getTime()>=today_date.getTime()){
-            document.getElementById('id_openingtime_enabled').checked = true;
             document.getElementById('id_openingtime_day').value = diaSimple+'';
             document.getElementById('id_openingtime_month').value = mesSimple+'';
             document.getElementById('id_openingtime_year').value = ano;
             document.getElementById('id_openingtime_hour').value = horaSimple;
             document.getElementById('id_openingtime_minute').value = minSimple;
 
-            document.getElementById('id_closingtime_enabled').checked = true;
             document.getElementById('id_closingtime_day').value = diaSimple+'';
             document.getElementById('id_closingtime_month').value = mesSimple+'';
             document.getElementById('id_closingtime_year').value = ano;
             document.getElementById('id_closingtime_hour').value = horaSimple+1;
             document.getElementById('id_closingtime_minute').value = minSimple;
 
-          }else{
-            document.getElementById('id_openingtime_enabled').checked = false;
+          }else{            
             alert("Processo sem audiência designada");
           }
 
