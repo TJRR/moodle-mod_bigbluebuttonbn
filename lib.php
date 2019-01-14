@@ -94,7 +94,7 @@ function bigbluebuttonbn_add_instance($data, $mform) {
       //Transformando a data em UTC
       $format = 'Y-m-d H:i:s';
       $x = date($format,$data->openingtime);
-      $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+      $datebd = DateTime::createFromFormat($format, $x);
 
       foreach ($data->select_rooms as $row){
         $sql = 'SELECT * FROM {bigbluebuttonbn_r_reserved} WHERE openingtime = ? and id_physical_room = ?';
@@ -123,14 +123,14 @@ function bigbluebuttonbn_add_instance($data, $mform) {
           //Transformando a data em UTC
           $format = 'Y-m-d H:i:s';
           $x = date($format,$data->openingtime);
-          $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+          $datebd = DateTime::createFromFormat($format, $x);
           $data_reserva->openingtime = $datebd->getTimestamp();
           if($data->closingtime == 0){
             $data_reserva->closingtime = 0;
           }else{
             $format = 'Y-m-d H:i:s';
             $x_close = date($format,$data->closingtime);
-            $datebd_close = DateTime::createFromFormat($format, $x_close, (new DateTimeZone('UTC')));
+            $datebd_close = DateTime::createFromFormat($format, $x_close);
             $data_reserva->closingtime = $datebd_close->getTimestamp();
           }
         }
@@ -228,7 +228,7 @@ function bigbluebuttonbn_update_instance($data, $mform) {
       //Transformando a data em UTC
       $format = 'Y-m-d H:i:s';
       $x = date($format,$data->openingtime);
-      $datebd = DateTime::createFromFormat($format, $x, (new DateTimeZone('UTC')));
+      $datebd = DateTime::createFromFormat($format, $x);
 
       $data_reserva->openingtime = $datebd->getTimestamp();
       $data_reserva->closingtime = $data->closingtime;

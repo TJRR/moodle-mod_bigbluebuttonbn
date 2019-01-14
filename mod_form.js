@@ -173,12 +173,12 @@ verificaSala = function(){
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
 
   var openingtime = 0;
-  var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00Z';
+  var data = document.getElementById('id_openingtime_year').value + '-' + ("0" + document.getElementById('id_openingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_openingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_openingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_openingtime_minute').value).substr(-2) +':00';
   openingtime = new Date(data);
   //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
   var time_ini = openingtime.getTime()/1000;
 
-  var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00Z';
+  var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00';
   endingtime = new Date(data_fim);
   var time_fim = endingtime.getTime()/1000;
   var selecao_valores =  document.getElementById('id_select_rooms').options;
@@ -192,14 +192,15 @@ verificaSala = function(){
     if(selecao_valores[i].selected){
       var retornohttp = httpGet(document.getElementById('base_url_get').value+'get_salas.php?id='+selecao_valores[i].value+'&date_ini='+time_ini+'&date_fim='+time_fim+id_bbb);
       if(retornohttp==1){
+        document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+        document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
+        selecao_valores[i].selected = false;
+        console.log(document.getElementById('id_select_rooms').options);
+        document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
         if(valido==1){
           alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
         }
-        document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
-        document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
         valido = 0;
-        selecao_valores[i].selected = false;
-        document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
       }else{
         if(retornohttp==0){
           selecteds = 1;
@@ -360,7 +361,7 @@ bigbluebuttonbn_process_get = function() {
             document.getElementById('id_closingtime_hour').value = horaSimple+1;
             document.getElementById('id_closingtime_minute').value = minSimple;
 
-          }else{            
+          }else{
             alert("Processo sem audiência designada");
           }
 
