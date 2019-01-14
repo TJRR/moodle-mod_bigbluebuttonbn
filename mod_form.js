@@ -7,9 +7,10 @@
 
 //Inserindo o evento de clique para testar agenda de salas ao selecionar uma sala
 var base = document.querySelector('#page');
-var selector = '.form-autocomplete-suggestions';
+//var selector = '.form-autocomplete-suggestions';
+var selector = '.form-autocomplete-selection';
 
-base.addEventListener('click', function(event) {
+base.addEventListener('DOMNodeInserted', function(event) {
   // Como o elemento ainda não está no dom quando colocamos o Listener
   // precisamos procurar ele baseando-se em um pai com ID, no caso #page
   // assim pegamos o filho mais 'perto' no caso o primeiro que aparece no dom
@@ -17,12 +18,6 @@ base.addEventListener('click', function(event) {
   var closest = event.target.closest(selector);
   if (closest && base.contains(closest)) {
     verificaSala();
-    // var selecao_valores = document.getElementById('id_select_rooms').options;
-    // for (var i = 0; i < selecao_valores.length; i++) {
-    //   if(selecao_valores[i].selected){
-    //     console.log(selecao_valores[i]);
-    //   }
-    // }
   }
 });
 
@@ -195,8 +190,14 @@ verificaSala = function(){
         document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
         document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
         selecao_valores[i].selected = false;
-        console.log(document.getElementById('id_select_rooms').options);
-        document.getElementsByClassName('form-autocomplete-selection')[0].innerHTML = '';
+        tags_selecteds = document.getElementsByClassName('form-autocomplete-selection')[0].children;
+        for (var j = 0; j < tags_selecteds.length; j++) {
+          if(typeof tags_selecteds[j].dataset.value !== 'undefined'){
+            if(tags_selecteds[j].dataset.value == selecao_valores[i].value){
+              tags_selecteds[j].parentElement.removeChild(tags_selecteds[j]);
+            }
+          }
+        }
         if(valido==1){
           alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
         }
