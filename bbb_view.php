@@ -1,6 +1,6 @@
 <?php
 /**
- * View for BigBlueButton interaction  
+ * View for BigBlueButton interaction
  *
  * @package   mod_bigbluebuttonbn
  * @author    Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
@@ -89,6 +89,8 @@ switch (strtolower($action)) {
                             "meta_bn-recording-ready-url" => $bbbsession['recordingReadyURL'],
                             "meta_invitation-url" => $bbbsession['courseURL'],
                             "meta_bbb-recording-litigation" => (isset($litigation) && $litigation != '') ? $litigation : $bbbsession['contextActivityLitigation'],
+                            "meta_html5autoswaplayout" => "true",
+                            "meta_html5autosharewebcam" => "true",
                     );
 
                     if (bigbluebuttonbn_server_offers_bn_capabilities() && bigbluebuttonbn_get_cfg_recordingready_enabled()) {
