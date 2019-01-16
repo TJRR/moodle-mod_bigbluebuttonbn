@@ -1705,13 +1705,10 @@ function bigbluebuttonbn_html2text($html, $len) {
 function bigbluebuttonbn_get_rooms_list() {
     global $DB;
 
-    $table = 'course';
-
-    //Prepare select for loading records based on existent bigbluebuttonbns
-    $select = "";
+    $sql = 'SELECT * FROM {course} ORDER BY fullname';
 
     //Execute select for loading records based on existent bigbluebuttonbns
-    $records = $DB->get_records_select($table, $select);
+    $records = $DB->get_records_sql($sql);
 
     return $records;
 }
