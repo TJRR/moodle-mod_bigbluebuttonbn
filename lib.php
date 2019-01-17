@@ -662,12 +662,13 @@ function bigbluebuttonbn_process_post_save(&$bigbluebuttonbn) {
         } else {
             $event->durationtime = 0;
         }
+        if ( $aux = $DB->get_field('event', 'id', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id)) ) {
+            $DB->delete_records('event', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id));
+        }
 
-        if ( $event->id = $DB->get_field('event', 'id', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id)) ) {
-            $calendarevent = calendar_event::load($event->id);
-            $calendarevent->update($event);
-        } else {
-            calendar_event::create($event);
+        foreach ($bigbluebuttonbn->select_rooms as $row) {
+          $event->courseid = $row;
+          calendar_event::create($event);
         }
 
     } else {
