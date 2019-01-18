@@ -173,6 +173,8 @@ verificaSala = function(){
   //openingtime = new Date( openingtime.getUTCFullYear(), openingtime.getUTCMonth(), openingtime.getUTCDate(), openingtime.getUTCHours(), openingtime.getUTCMinutes(), openingtime.getUTCSeconds());
   var time_ini = openingtime.getTime()/1000;
 
+  var nrsala_atual = document.getElementById('course_id').value;
+
   var data_fim = document.getElementById('id_closingtime_year').value + '-' + ("0" + document.getElementById('id_closingtime_month').value).substr(-2) + '-' + ("0"+document.getElementById('id_closingtime_day').value).substr(-2) + 'T' + ("0"+document.getElementById('id_closingtime_hour').value).substr(-2) + ':'+ ("0"+document.getElementById('id_closingtime_minute').value).substr(-2) +':00';
   endingtime = new Date(data_fim);
   var time_fim = endingtime.getTime()/1000;
@@ -189,17 +191,21 @@ verificaSala = function(){
       if(retornohttp==1){
         document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
         document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
-        selecao_valores[i].selected = false;
-        tags_selecteds = document.getElementsByClassName('form-autocomplete-selection')[0].children;
-        for (var j = 0; j < tags_selecteds.length; j++) {
-          if(typeof tags_selecteds[j].dataset.value !== 'undefined'){
-            if(tags_selecteds[j].dataset.value == selecao_valores[i].value){
-              tags_selecteds[j].parentElement.removeChild(tags_selecteds[j]);
+        var msg = "Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra data ou horário.";
+        if(nrsala_atual!=selecao_valores[i].value){
+          msg = "Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.";
+          selecao_valores[i].selected = false;
+          tags_selecteds = document.getElementsByClassName('form-autocomplete-selection')[0].children;
+          for (var j = 0; j < tags_selecteds.length; j++) {
+            if(typeof tags_selecteds[j].dataset.value !== 'undefined'){
+              if(tags_selecteds[j].dataset.value == selecao_valores[i].value){
+                tags_selecteds[j].parentElement.removeChild(tags_selecteds[j]);
+              }
             }
           }
         }
         if(valido==1){
-          alert("Já existe uma audiência marcada nesta sala para esta data. Por favor escolha outra sala ou outra data.");
+          alert(msg);
         }
         valido = 0;
       }else{
