@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die;
 global $BIGBLUEBUTTONBN_CFG, $CFG;
 
 require_once(dirname(__FILE__).'/lib.php');
-include("mpdf60/mpdf.php");
+require_once __DIR__ . '/vendor/autoload.php';
 
 const BIGBLUEBUTTONBN_FORCED = true;
 
@@ -1772,11 +1772,14 @@ function gera_pdf($id_aud){
   <h2 style='text-decoration:underline;'>TERMO DE AUDIÊNCIA</h2>
   ".$aud_gravada->description."
   </fieldset>";
+
   //local
   //$diretorio = '../../../../moodledata/PDF/';
+  //Novo MPDF
+  //$diretorio = '../../../moodledata/';
   //servidor
   $diretorio = '../../../VC/';
-  $mpdf=new mPDF();
+  $mpdf=new \Mpdf\Mpdf();
   $mpdf->SetDisplayMode('fullpage');
   $css = file_get_contents("css/estilo.css");
   $mpdf->WriteHTML($css,1);
@@ -1798,5 +1801,5 @@ function gera_pdf($id_aud){
   if(!is_dir($diretorio)){
      mkdir ($diretorio, 0777 ); // criar o diretorio
   }
-  $mpdf->Output($diretorio.'/'.$aud_gravada->guid.'.pdf','F');
+  $mpdf->Output($diretorio.'/'.$aud_gravada->guid.'.pdf',\Mpdf\Output\Destination::FILE);
 }
