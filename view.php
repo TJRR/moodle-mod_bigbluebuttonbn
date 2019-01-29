@@ -429,7 +429,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $ano = date('Y',$record['startTime']/1000);
             $hora = date_format($date_->sub(new DateInterval('PT2H')), 'H');
             $minuto = date_format($date_->sub(new DateInterval('PT2H')), 'i');
-            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+            setlocale(LC_TIME, 'pt_BR.utf-8');
             date_default_timezone_set('America/Sao_Paulo');
             $data = strftime('%d de %B de %Y',$record['startTime']/1000);
 
