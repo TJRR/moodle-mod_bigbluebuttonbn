@@ -224,11 +224,11 @@ $bbbsession['contextActivityLitigation'] = "";
 
 $bigbluebuttonbn_activity = 'open';
 $now = time();
-if (!empty($bigbluebuttonbn->openingtime) && $now < ($bigbluebuttonbn->openingtime - "3600")) {
+if (!empty($bigbluebuttonbn->openingtime) && $now < ($bigbluebuttonbn->openingtime - "14400")) {
     //ACTIVITY HAS NOT BEEN OPENED
     $bigbluebuttonbn_activity = 'not_started';
 
-} else if (!empty($bigbluebuttonbn->closingtime) && $now > ($bigbluebuttonbn->closingtime + "3600")) {
+} else if (!empty($bigbluebuttonbn->closingtime) && $now > ($bigbluebuttonbn->closingtime + "14400")) {
     //ACTIVITY HAS BEEN CLOSED
     $bigbluebuttonbn_activity = 'ended';
     $bbbsession['presentation'] = bigbluebuttonbn_get_presentation_array($context, $bigbluebuttonbn->presentation);
