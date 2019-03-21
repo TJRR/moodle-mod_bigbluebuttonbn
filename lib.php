@@ -668,7 +668,8 @@ function bigbluebuttonbn_process_post_save(&$bigbluebuttonbn) {
 
         foreach ($bigbluebuttonbn->select_rooms as $row) {
           $event->courseid = $row;
-          calendar_event::create($event);
+          $save_event = clone $event;        
+          calendar_event::create($save_event);
         }
 
     } else {
