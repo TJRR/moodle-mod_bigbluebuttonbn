@@ -656,26 +656,23 @@ function bigbluebuttonbn_process_post_save(&$bigbluebuttonbn) {
         $event->modulename  = 'bigbluebuttonbn';
         $event->instance    = $bigbluebuttonbn->id;
         $event->timestart   = $bigbluebuttonbn->openingtime;
-
         if ( $bigbluebuttonbn->closingtime ){
             $event->durationtime = $bigbluebuttonbn->closingtime - $bigbluebuttonbn->openingtime;
         } else {
             $event->durationtime = 0;
         }
-        if ( $aux = $DB->get_field('event', 'id', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id)) ) {
+        if ( $aux = $DB->record_exists('event', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id)) ) {
             $DB->delete_records('event', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id));
         }
-
         foreach ($bigbluebuttonbn->select_rooms as $row) {
           $event->courseid = $row;
-          $save_event = clone $event;        
+          $save_event = clone $event;
           calendar_event::create($save_event);
         }
 
     } else {
         $DB->delete_records('event', array('modulename'=>'bigbluebuttonbn', 'instance'=>$bigbluebuttonbn->id));
     }
-
     if( isset($bigbluebuttonbn->notification) && $bigbluebuttonbn->notification ) {
         // Prepare message
         $msg = new stdClass();
