@@ -182,7 +182,7 @@ $bbbsession['courseURL'] = $CFG->wwwroot . '/course/view.php?id=' . $bigbluebutt
 $bbbsession['logoutURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_view.php?action=logout&id=' . $id . '&bn=' . $bbbsession['bigbluebuttonbn']->id;
 $bbbsession['recordingReadyURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_broker.php?action=recording_ready';
 $bbbsession['joinURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_view.php?action=join&id=' . $id . '&bigbluebuttonbn=' . $bbbsession['bigbluebuttonbn']->id;
-
+$bbbsession['cmURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/view.php?id='.$id;
 // Output starts here
 echo $OUTPUT->header();
 
