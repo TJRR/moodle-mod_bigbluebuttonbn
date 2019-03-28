@@ -20,6 +20,10 @@ $sql = "SELECT * FROM {bigbluebuttonbn} bbb where bbb.meetingid = '".explode('-'
 
 $bbb = $DB->get_record_sql($sql);
 
+$sql_course = "SELECT * FROM {course} c where c.id = '".$bbb->course."'";
+
+$course = $DB->get_record_sql($sql_course);
+
 // SQL para buscar o magistrado responsável
 $sql = "SELECT c.id AS id, roleid, c.fullname, u.username, u.firstname, u.lastname, u.email ".
         "FROM {role_assignments} ra, {user} u, {course} c, {context} cxt ".
@@ -113,7 +117,7 @@ if (isset($bbb->record) && $bbb->record) {
           }
           $partes_text .= $parte->name;
         }
-        $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$record['recordID'].'&meetingID='.$record['meetingID'];
+        $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.explode('-',$_GET['meetingId'])[2].'&recordID='.$record['recordID'].'&meetingID='.$record['meetingID'];
         $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz ".$nome_magistrado." e as partes: ".$partes_text.".
         Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
         e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a></p>
@@ -137,7 +141,7 @@ if (isset($bbb->record) && $bbb->record) {
         $aud->name=$record['meta_bbb-recording-name'];
         $aud->description=$descricao;//$record['meta_bbb-recording-description'];
         $aud->tags=$record['meta_bbb-recording-tags'];
-        $aud->id_course=$_GET['id'];
+        $aud->id_course=explode('-',$_GET['meetingId'])[2];
         $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
         $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
         gera_pdf($aud_id);
