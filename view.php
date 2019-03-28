@@ -283,13 +283,13 @@ function bigbluebuttonbn_view($bbbsession, $activity, $course) {
     echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_action_button_box');
     echo '<br><br><span id="join_button"></span>&nbsp;<span id="end_button"></span>' . "\n";
     echo $OUTPUT->box_end();
-    // Show mobile client options if mobile is detected
-    if ($bbbsession['ismobilesession'])
-    {
-        echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_action_button_box');
-        include 'mobile_apps.php';
-        echo $OUTPUT->box_end();
-    }
+    // // Show mobile client options if mobile is detected
+    // if ($bbbsession['ismobilesession'])
+    // {
+    //     echo $OUTPUT->box_start('generalbox boxaligncenter', 'bigbluebuttonbn_view_action_button_box');
+    //     include 'mobile_apps.php';
+    //     echo $OUTPUT->box_end();
+    // }
 
     if ($activity == 'not_started') {
         // Do nothing
