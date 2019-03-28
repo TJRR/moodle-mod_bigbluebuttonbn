@@ -180,13 +180,13 @@ class mod_bigbluebuttonbn_mod_form extends moodleform_mod {
         }
         $mform->setType('wait', PARAM_INT);
 
-        if ( $userlimit_editable ) {
-            $mform->addElement('text', 'userlimit', get_string('mod_form_field_userlimit','bigbluebuttonbn'), 'maxlength="3" size="5"' );
-            $mform->addHelpButton('userlimit', 'mod_form_field_userlimit', 'bigbluebuttonbn');
-            $mform->setDefault( 'userlimit', $userlimit_default );
-        } else {
-            $mform->addElement('hidden', 'userlimit', $userlimit_default );
-        }
+        // if ( $userlimit_editable ) {
+        //     $mform->addElement('text', 'userlimit', get_string('mod_form_field_userlimit','bigbluebuttonbn'), 'maxlength="3" size="5"' );
+        //     $mform->addHelpButton('userlimit', 'mod_form_field_userlimit', 'bigbluebuttonbn');
+        //     $mform->setDefault( 'userlimit', $userlimit_default );
+        // } else {
+        $mform->addElement('hidden', 'userlimit', 0);
+        // }
         $mform->setType('userlimit', PARAM_TEXT);
 
         if ( floatval($serverVersion) >= 0.8 ) {
