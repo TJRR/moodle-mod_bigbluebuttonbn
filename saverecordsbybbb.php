@@ -16,7 +16,7 @@ global $CFG,$DB,$COURSE,$PAGE,$USER;
 $bbbendpoint = bigbluebuttonbn_get_cfg_server_url();
 $bbbshared_secret = bigbluebuttonbn_get_cfg_shared_secret();
 
-$sql = "SELECT * FROM {bigbluebuttonbn} bbb where bbb.meetingid = '".$_GET['meetingId']."'";
+$sql = "SELECT * FROM {bigbluebuttonbn} bbb where bbb.meetingid = '".explode('-',$_GET['meetingId'])[0]."'";
 
 $bbb = $DB->get_record_sql($sql);
 
