@@ -224,6 +224,17 @@ verificaSala = function(){
       }
     }
   }
+
+  //Verifica processo
+  document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
+  document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
+  document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
+  var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
+  if(existe_processo==1){
+    //alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
+    valido=0;
+  }
+
   if(valido == 1 && selecteds == 1){
     document.getElementById('id_submitbutton').removeAttribute("disabled");
     document.getElementById('id_submitbutton2').removeAttribute("disabled");
@@ -240,6 +251,8 @@ verificaProcesso = function(){
   var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
   if(existe_processo==1){
     alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
+    document.getElementById('id_submitbutton').setAttribute("disabled","disabled");
+    document.getElementById('id_submitbutton2').setAttribute("disabled","disabled");
     return 1;
   }else{
     return 0;
@@ -322,6 +335,7 @@ bigbluebuttonbn_process_get = function() {
           }else{
             alert('Processo sem audiência designada');
           }
+          verificaSala();
           //Aqui caso eventualmente precisarmos tratar a mensagem enviada quando um processo não tem audiência
           //tratando o xml para inserir as tags certinho
           // var el2 = document.createElement( 'html' );
