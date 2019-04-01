@@ -229,10 +229,12 @@ verificaSala = function(){
   document.getElementsByName('name')[0].value = document.getElementById('id_nr_process').value;
   document.getElementsByClassName('visibleifjs')[0].style.visibility = "hidden";
   document.getElementsByClassName('visibleifjs')[1].style.visibility = "hidden";
-  var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
-  if(existe_processo==1){
-    //alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
-    valido=0;
+  if(document.getElementsByName('idbbb_update')[0]==0){
+    var existe_processo = httpGet(document.getElementById('base_url_get').value+'get_process_saved.php?nrprocesso='+document.getElementById('id_nr_process').value);
+    if(existe_processo==1){
+      //alert("Esse processo já foi cadastrado no sistema de videoconferência, utilize o sistema de busca para localizá-lo");
+      valido=0;
+    }
   }
 
   if(valido == 1 && selecteds == 1){
