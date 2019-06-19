@@ -1727,7 +1727,7 @@ function bigbluebuttonbn_get_rooms_list_complete($idbbb) {
     return $records;
 }
 
-function gera_pdf($id_aud){
+function gera_pdf($id_aud, $link_atualizado){
   global $DB;
 
   $sql = 'SELECT * FROM {bigbluebuttonbn_a_record} WHERE id = ?';
@@ -1770,7 +1770,7 @@ function gera_pdf($id_aud){
   <strong>SIGILO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$sigilo."</strong><br>
   <strong>ASSUNTO:</strong>&nbsp;&nbsp;&nbsp;<strong>".$processo->assuntoprincipal."</strong>
   <h2 style='text-decoration:underline;'>TERMO DE AUDIÊNCIA</h2>
-  ".$aud_gravada->description."
+  ".$aud_gravada->description."<br><br>".$link_atualizado."
   </fieldset>";
 
   //local
