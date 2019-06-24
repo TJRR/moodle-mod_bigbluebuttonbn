@@ -13,9 +13,10 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once(dirname(__FILE__) . '/Mobile_Detect.php');
 
-$id = required_param('id', PARAM_INT); // Course Module ID, or
-$b  = optional_param('n', 0, PARAM_INT); // bigbluebuttonbn instance ID
-$group  = optional_param('group', 0, PARAM_INT); // group instance ID
+$sql = "SELECT cm.id, bbb.guid, bbb.meetingid FROM {course_modules} cm, {modules} m, {bigbluebuttonbn_a_record} bbb where m.name = 'bigbluebuttonbn' and m.id = cm.module and cm.instance = bbb.id_bbb and bbb.guid = '".$_GET['recordID']."'";
+
+$result = $DB->get_record_sql($sql);
+$id = $result->id;
 
 if ($id) {
     $cm = get_coursemodule_from_id('bigbluebuttonbn', $id, 0, false, MUST_EXIST);
@@ -30,6 +31,9 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
+
+//Creating meetingID by bbbserver model
+$meetingIDBBB = $bigbluebuttonbn->meetingid.'-'.$bigbluebuttonbn->course.'-'.$bigbluebuttonbn->id;
 
 $version_major = bigbluebuttonbn_get_moodle_version_major();
 if ($version_major < '2013111800') {
@@ -170,7 +174,7 @@ $bbbsession['recordingReadyURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_bro
 $bbbsession['joinURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_view.php?action=join&id=' . $id . '&bigbluebuttonbn=' . $bbbsession['bigbluebuttonbn']->id;
 
 //Pegando a URL do playback e verificando se existe mais de um, se sim pega o correto de acordo com o recordID
-$record = bigbluebuttonbn_getRecordingArray($_GET['recordID'],$_GET['meetingID'], $bbbsession['endpoint'], $bbbsession['shared_secret']);
+$record = bigbluebuttonbn_getRecordingArray($_GET['recordID'],$meetingID, $bbbsession['endpoint'], $bbbsession['shared_secret']);
 $url = '';
 foreach ($record['playbacks'] as $playback) {
   $verifica_meeting = explode('meetingId=',$playback['url']);

@@ -445,11 +445,10 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               }
               $partes_text .= $parte->name;
             }
-            $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$record['recordID'].'&meetingID='.$record['meetingID'];
-            $link_atualizado = "O Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-            e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a>";
+            $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?recordID='.$record['recordID'];
             $descricao = "<p>Aos ".$data.", às ".$hora."h".$minuto."min, na Sala de Audiências da ".$course->fullname.", presentes o Juiz ".$nome_magistrado." e as partes: ".$partes_text.".
-            Aberta a audiência referente ao processo acima identificado</p>
+            Aberta a audiência referente ao processo acima identificado, o Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
+            e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a></p>
             <p>Foram tomados os depoimentos, ouvido o Ministério Público e a Defesa.</p>";
             $year = date("Y", $record['startTime']/1000);
             $aud = new stdClass();
@@ -473,11 +472,8 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $aud->id_course=$_GET['id'];
             $aud->timecreated = strtotime(date("Y-m-d H:i:s"));
             $aud_id = $DB->insert_record('bigbluebuttonbn_a_record', $aud);
-            gera_pdf($aud_id, $link_atualizado);
+            //gera_pdf($aud_id);
           }else{
-            $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid;
-            $link_atualizado = "O Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-            e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a>";
             $aud_gravada->link=$record['playbacks']['presentation']['url'];
             $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             if($aud_gravada->id_course==''||$aud_gravada->id_course==0){
@@ -487,7 +483,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
               $aud_gravada->tags=$record['meta_bbb-recording-tags'];
               $DB->update_record('bigbluebuttonbn_a_record', $aud_gravada, false);
             }
-            gera_pdf($aud_gravada->id, $link_atualizado);
+            //gera_pdf($aud_gravada->id);
           }
         }
 
@@ -528,6 +524,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
           }
         }
         //Final da verificação de usuario
+
         $output .= '<br>
         <table class="generaltable">
           <thead>
@@ -549,17 +546,14 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $date_ = new DateTime();
             $date_->setTimestamp($aud_gravada->publishdate);
             if($aud_gravada){
-              $url_gravacao = $CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid;
-              $link_atualizado = "O Juiz esclareceu às partes que o depoimento será registrado através de gravação de áudio e vídeo digital que será acostado aos autos
-              e ficará disponível no endereço eletrônico: <a href='".$url_gravacao."'>".$url_gravacao." .</a>";
               $output .= '<tr>
                 <td class="cell c1" style=" text-align:left;">'.$aud_gravada->name.'</td>
-                <td class="cell c2" style=" text-align:left;">'.$aud_gravada->description.'<br><br>'.$link_atualizado.'</td>
+                <td class="cell c2" style=" text-align:left;">'.$aud_gravada->description.'</td>
                 <td class="cell c3" style=" text-align:left;">'.date_format($date_->sub(new DateInterval('PT4H')), 'd/m/Y H:i').'</td>
                 <td class="cell c4" style=" text-align:left;">'.$aud_gravada->duration.'</td>
                 <td class="cell c5 lastcol" style="text-align:left; width:10%">';
                   if($pode_assistir==1){
-                    $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
+                    $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?recordID='.$aud_gravada->guid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
                   }
                   if($pode_editar==1){
                     if($record['published']=='true'){
