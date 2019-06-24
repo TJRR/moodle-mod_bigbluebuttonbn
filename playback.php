@@ -185,7 +185,7 @@ foreach ($record['playbacks'] as $playback) {
 }
 
 //Chamar a função que gera o token;
-$token = bigbluebuttonbn_getRecordingToken($bbbsession['endpoint'], $bbbsession['shared_secret'],$_GET['recordID'],$USER->username,$USER->lastip);
+$token = bigbluebuttonbn_getRecordingToken($bbbsession['endpoint'], $bbbsession['shared_secret'],$_GET['recordID'],$USER->username,$_SERVER['REMOTE_ADDR']);
 
 // Output starts here.
 echo "<iframe src='".$url."&token=".$token."' frameborder='0' style='overflow:hidden;height:100%;width:100%;' height='100%' width='100%'></iframe>";
