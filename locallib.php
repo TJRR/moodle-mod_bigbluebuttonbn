@@ -137,7 +137,7 @@ function bigbluebuttonbn_getRecordingsURL( $URL, $SALT, $meetingID=null ) {
 
 function bigbluebuttonbn_getRecordingsURLByRecordID( $URL, $SALT, $recordID=null ) {
     $base_url_record = $URL."api/getRecordings?";
-    if( $meetingID == null ) {
+    if( $recordID == null ) {
         $params = "";
     } else {
         $params = "recordID=".urlencode($recordID);
