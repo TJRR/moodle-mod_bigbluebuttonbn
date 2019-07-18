@@ -554,6 +554,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
                 <td class="cell c5 lastcol" style="text-align:left; width:10%">';
                   if($pode_assistir==1){
                     $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/playback.php?recordID='.$aud_gravada->guid.'" data-links="0" class="action-icon" target="_blank"><img alt="Audiência" class="smallicon" title="Audiência" src="'.$CFG->wwwroot.'/pix/e/insert_edit_video.png"></a><br>';
+                    $output .= '<a href="'.$CFG->wwwroot.'/mod/bigbluebuttonbn/download.php?id='.$_GET['id'].'&recordID='.$aud_gravada->guid.'&meetingID='.$aud_gravada->meetingid.'" data-links="0" class="action-icon" target="_blank"><img alt="Download da Gravação" class="smallicon" title="Download da Gravação" src="'.$CFG->wwwroot.'/pix/e/save.png"></a><br>';
                   }
                   if($pode_editar==1){
                     if($record['published']=='true'){
