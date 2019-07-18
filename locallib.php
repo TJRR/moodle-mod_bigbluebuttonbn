@@ -135,6 +135,17 @@ function bigbluebuttonbn_getRecordingsURL( $URL, $SALT, $meetingID=null ) {
     return $url;
 }
 
+function bigbluebuttonbn_getRecordingsURLByRecordID( $URL, $SALT, $recordID=null ) {
+    $base_url_record = $URL."api/getRecordings?";
+    if( $meetingID == null ) {
+        $params = "";
+    } else {
+        $params = "recordID=".urlencode($recordID);
+    }
+    $url = $base_url_record.$params."&checksum=".sha1("getRecordings".$params.$SALT);
+    return $url;
+}
+
 function bigbluebuttonbn_getRecordingTokenURL( $URL, $SALT, $meetingID, $username, $userip ) {
     $base_url_record = $URL."api/getRecordingToken?";
     $params = "meetingID=".$meetingID."&authUser=".$username."&authAddr=".$userip;
@@ -269,7 +280,12 @@ function bigbluebuttonbn_index_recordings($recordings, $index_key='recordID') {
 function bigbluebuttonbn_getRecordingArray( $recordingID, $meetingID, $URL, $SALT ) {
     $recordingArray = array();
 
-    $xml = bigbluebuttonbn_wrap_xml_load_file( bigbluebuttonbn_getRecordingsURL( $URL, $SALT, $meetingID ) );
+    //esse teste é feito para caso não se tenha o meetingID ele faz a busca via recordingid
+    if($meetingID){
+      $xml = bigbluebuttonbn_wrap_xml_load_file( bigbluebuttonbn_getRecordingsURL( $URL, $SALT, $meetingID ) );
+    }else{
+      $xml = bigbluebuttonbn_wrap_xml_load_file( bigbluebuttonbn_getRecordingsURLByRecordID( $URL, $SALT, $recordingID ) );
+    }
 
     if ( $xml && $xml->returncode == 'SUCCESS' && isset($xml->recordings) ) { //If there were meetings already created
         foreach ($xml->recordings->recording as $recording) {

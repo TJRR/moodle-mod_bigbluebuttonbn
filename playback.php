@@ -33,7 +33,7 @@ if ($id) {
 require_login($course, true, $cm);
 
 //Creating meetingID by bbbserver model
-$meetingIDBBB = $bigbluebuttonbn->meetingid.'-'.$bigbluebuttonbn->course.'-'.$bigbluebuttonbn->id;
+//$meetingIDBBB = $bigbluebuttonbn->meetingid.'-'.$bigbluebuttonbn->course.'-'.$bigbluebuttonbn->id;
 
 $version_major = bigbluebuttonbn_get_moodle_version_major();
 if ($version_major < '2013111800') {
@@ -174,7 +174,7 @@ $bbbsession['recordingReadyURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_bro
 $bbbsession['joinURL'] = $CFG->wwwroot . '/mod/bigbluebuttonbn/bbb_view.php?action=join&id=' . $id . '&bigbluebuttonbn=' . $bbbsession['bigbluebuttonbn']->id;
 
 //Pegando a URL do playback e verificando se existe mais de um, se sim pega o correto de acordo com o recordID
-$record = bigbluebuttonbn_getRecordingArray($_GET['recordID'],$meetingIDBBB, $bbbsession['endpoint'], $bbbsession['shared_secret']);
+$record = bigbluebuttonbn_getRecordingArray($_GET['recordID'], null, $bbbsession['endpoint'], $bbbsession['shared_secret']);
 $url = '';
 foreach ($record['playbacks'] as $playback) {
   $verifica_meeting = explode('meetingId=',$playback['url']);
