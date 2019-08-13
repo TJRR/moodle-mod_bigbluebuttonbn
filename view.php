@@ -292,7 +292,9 @@ function bigbluebuttonbn_view($bbbsession, $activity, $course) {
     // }
 
     if ($activity == 'not_started') {
-        // Do nothing
+        // we need to look out of recordings because even if the recording not started, we can have anothers recordings older than that one
+        //changed by Alan - Cognitiva Brasil
+        bigbluebuttonbn_view_recordings($bbbsession, $course);
     } else {
         if ($activity == 'ended') {
             bigbluebuttonbn_view_ended($bbbsession);
@@ -430,6 +432,7 @@ function bigbluebuttonbn_view_recordings($bbbsession, $course) {
             $minuto = date_format($date_->sub(new DateInterval('PT2H')), 'i');
             setlocale(LC_TIME, 'pt_BR.utf-8');
             date_default_timezone_set('America/Sao_Paulo');
+
             $data = strftime('%d de %B de %Y',$record['startTime']/1000);
 
             if($processo->segredojustica == ''){
