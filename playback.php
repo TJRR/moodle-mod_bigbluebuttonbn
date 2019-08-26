@@ -179,7 +179,8 @@ $url = '';
 foreach ($record['playbacks'] as $playback) {
   $verifica_meeting = explode('meetingId=',$playback['url']);
   if($verifica_meeting[count($verifica_meeting)-1] == $_GET['recordID']){
-    $url = $playback['url'];
+    $arr = parse_url($playback['url']);
+    $url = $arr['scheme'].'://'.$arr['host'].'/editor/captions/'.$_GET['recordID'];
     break;
   }
 }
