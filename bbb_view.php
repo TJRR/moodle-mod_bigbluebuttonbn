@@ -91,6 +91,8 @@ switch (strtolower($action)) {
                             "meta_bbb-recording-litigation" => (isset($litigation) && $litigation != '') ? $litigation : $bbbsession['contextActivityLitigation'],
                             "meta_html5autoswaplayout" => "true",
                             "meta_html5autosharewebcam" => "true",
+                            "userdata-autoShareWebcam" => "true",
+                            "userdata-autoSwapLayout" => "true",
                     );
 
                     if (bigbluebuttonbn_server_offers_bn_capabilities() && bigbluebuttonbn_get_cfg_recordingready_enabled()) {
