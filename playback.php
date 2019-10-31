@@ -30,6 +30,12 @@ if ($id) {
     print_error(get_string('view_error_url_missing_parameters', 'bigbluebuttonbn'));
 }
 
+if ( $course->visible == "0") {
+    $url = "https://projudi.tjrr.jus.br/projudi/scriba/api/getRecording/" . $_GET['recordID'] . "?transcription=true";
+    header('Location: ' . $url, true, 301);
+    exit();
+}
+
 require_login($course, true, $cm);
 
 //Creating meetingID by bbbserver model
